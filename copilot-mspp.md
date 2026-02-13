@@ -3,14 +3,13 @@
 **Document Control**
 
 - **Version:** 1.1
-- **Date:** February 9, 2026
-- **Author:** CloudStrucc Inc.
+- **Date:** February 12, 2026 (updated)
 - **Classification:** Protected B
 - **Review Cycle:** Annual
 
 ---
 
-## Executive Summary
+## Overview
 
 This build book provides comprehensive procedures for disabling Microsoft Copilot features across Microsoft 365, Power Platform, and Azure environments to maintain compliance with Protected B data handling requirements and ITSG-33 security controls.
 
@@ -195,8 +194,8 @@ Get-Module Microsoft.PowerApps.Administration.PowerShell -ListAvailable
 
 # Connect to Microsoft Graph
 Write-Host "`n╔════════════════════════════════════════════════════════════╗" -ForegroundColor Cyan
-Write-Host "║          COPILOT COMPONENT DISCOVERY SCRIPT                  ║" -ForegroundColor Cyan
-Write-Host "║                                                              ║" -ForegroundColor Cyan
+Write-Host "║          COPILOT COMPONENT DISCOVERY SCRIPT                                                                        ║" -ForegroundColor Cyan
+Write-Host "║                                                                                                                    ║" -ForegroundColor Cyan
 Write-Host "╚════════════════════════════════════════════════════  ════════╝`n" -ForegroundColor Cyan
 
 Write-Host "Connecting to Microsoft Graph..." -ForegroundColor Yellow
@@ -419,8 +418,8 @@ return $uniqueApps
 #Requires -Modules Microsoft.PowerApps.Administration.PowerShell
 
 Write-Host "`n╔════════════════════════════════════════════════════════════╗" -ForegroundColor Cyan
-Write-Host "║     POWER PLATFORM COPILOT TENANT CONFIGURATION            ║" -ForegroundColor Cyan
-Write-Host "║                                                            ║" -ForegroundColor Cyan
+Write-Host "║     POWER PLATFORM COPILOT TENANT CONFIGURATION                                                                  ║" -ForegroundColor Cyan
+Write-Host "║                                                                                                                  ║" -ForegroundColor Cyan
 Write-Host "╚════════════════════════════════════════════════════════════╝`n" -ForegroundColor Cyan
 
 # Connect to Power Platform
@@ -584,8 +583,8 @@ Write-Host "`n══════════════════════
 #Requires -Modules Microsoft.PowerApps.Administration.PowerShell
 
 Write-Host "`n╔════════════════════════════════════════════════════════════╗" -ForegroundColor Cyan
-Write-Host "║     POWER PLATFORM ENVIRONMENT VERIFICATION                ║" -ForegroundColor Cyan
-Write-Host "║                                                            ║" -ForegroundColor Cyan
+Write-Host "║     POWER PLATFORM ENVIRONMENT VERIFICATION                                                                      ║" -ForegroundColor Cyan
+Write-Host "║                                                                                                                  ║" -ForegroundColor Cyan
 Write-Host "╚════════════════════════════════════════════════════════════╝`n" -ForegroundColor Cyan
 
 # Connect to Power Platform
@@ -698,7 +697,7 @@ Write-Host "`n✓ Manual verification guide saved to: $guidePath" -ForegroundCol
 
 # Display summary
 Write-Host "`n╔════════════════════════════════════════════════════════════╗" -ForegroundColor Cyan
-Write-Host "║                   VERIFICATION SUMMARY                     ║" -ForegroundColor Cyan
+Write-Host "║                   VERIFICATION SUMMARY                                                                           ║" -ForegroundColor Cyan
 Write-Host "╚════════════════════════════════════════════════════════════╝" -ForegroundColor Cyan
 
 Write-Host "`nTotal Environments: $($environments.Count)" -ForegroundColor White
@@ -761,8 +760,8 @@ For each environment in the exported CSV:
 #Requires -Modules Microsoft.Graph.Authentication, Microsoft.Graph.Applications
 
 Write-Host "`n╔════════════════════════════════════════════════════════════╗" -ForegroundColor Cyan
-Write-Host "║     SERVICE PRINCIPAL DISABLE SCRIPT                       ║" -ForegroundColor Cyan
-Write-Host "║                                                             ║" -ForegroundColor Cyan
+Write-Host "║     SERVICE PRINCIPAL DISABLE SCRIPT                                                                             ║" -ForegroundColor Cyan
+Write-Host "║                                                                                                                   ║" -ForegroundColor Cyan
 Write-Host "╚════════════════════════════════════════════════════════════╝`n" -ForegroundColor Cyan
 
 # Connect to Microsoft Graph
@@ -928,7 +927,7 @@ Write-Host "`n✓ Results exported to: $exportPath" -ForegroundColor Green
 
 # Display summary
 Write-Host "`n╔════════════════════════════════════════════════════════════╗" -ForegroundColor Cyan
-Write-Host "║                  OPERATION SUMMARY                         ║" -ForegroundColor Cyan
+Write-Host "║                  OPERATION SUMMARY                                                                               ║" -ForegroundColor Cyan
 Write-Host "╚════════════════════════════════════════════════════════════╝" -ForegroundColor Cyan
 
 Write-Host "`nTotal Processed: $($results.Count)" -ForegroundColor White
@@ -1014,8 +1013,8 @@ return $results
 #Requires -Modules Microsoft.Graph.Authentication, Microsoft.Graph.Identity.SignIns
 
 Write-Host "`n╔════════════════════════════════════════════════════════════╗" -ForegroundColor Cyan
-Write-Host "║     CONDITIONAL ACCESS POLICY CREATION                     ║" -ForegroundColor Cyan
-Write-Host "║                                                            ║" -ForegroundColor Cyan
+Write-Host "║     CONDITIONAL ACCESS POLICY CREATION                                                                           ║" -ForegroundColor Cyan
+Write-Host "║                                                                                                                  ║" -ForegroundColor Cyan
 Write-Host "╚════════════════════════════════════════════════════════════╝`n" -ForegroundColor Cyan
 
 # Connect to Microsoft Graph
@@ -1290,8 +1289,8 @@ Write-Host "`n══════════════════════
 # Date: 2026-02-09
 
 Write-Host "`n╔════════════════════════════════════════════════════════════╗" -ForegroundColor Cyan
-Write-Host "║     M365 COPILOT CONFIGURATION DOCUMENTATION               ║" -ForegroundColor Cyan
-Write-Host "║                                                             ║" -ForegroundColor Cyan
+Write-Host "║     M365 COPILOT CONFIGURATION DOCUMENTATION                                                                     ║" -ForegroundColor Cyan
+Write-Host "║                                                                                                                   ║" -ForegroundColor Cyan
 Write-Host "╚════════════════════════════════════════════════════════════╝`n" -ForegroundColor Cyan
 
 Write-Host "🔗 M365 Admin Center URL:" -ForegroundColor Cyan
@@ -1389,8 +1388,8 @@ param(
 )
 
 Write-Host "`n╔════════════════════════════════════════════════════════════╗" -ForegroundColor Cyan
-Write-Host "║     COPILOT COMPLIANCE VERIFICATION REPORT                ║" -ForegroundColor Cyan
-Write-Host "║                                                           ║" -ForegroundColor Cyan
+Write-Host "║     COPILOT COMPLIANCE VERIFICATION REPORT                                                                      ║" -ForegroundColor Cyan
+Write-Host "║                                                                                                                 ║" -ForegroundColor Cyan
 Write-Host "╚════════════════════════════════════════════════════════════╝`n" -ForegroundColor Cyan
 
 $results = @()
@@ -1749,7 +1748,7 @@ $results += $result
 # GENERATE SUMMARY REPORT
 # ============================================================
 Write-Host "`n╔════════════════════════════════════════════════════════════╗" -ForegroundColor Cyan
-Write-Host "║                   VERIFICATION SUMMARY                     ║" -ForegroundColor Cyan
+Write-Host "║                   VERIFICATION SUMMARY                                                                           ║" -ForegroundColor Cyan
 Write-Host "╚════════════════════════════════════════════════════════════╝`n" -ForegroundColor Cyan
 
 $summary = @{
