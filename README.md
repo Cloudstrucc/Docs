@@ -69,6 +69,7 @@ Click to expand the "External models" subsection:
 All settings below are found under the **Copilot Studio** section:
 
 ##### B.1: Computer Use
+*Note - these settings, if on, doesn not mean that the feature is set up, its instead "idle" and is available to be set up by system administrators only.*
 - ☐ **Computer Use** → OFF
 - **CRITICAL**: AI automates interactions but may cause unintended actions compromising device, data, or account security
 
@@ -85,6 +86,7 @@ All settings below are found under the **Copilot Studio** section:
 - Description: Prevents Copilot Studio agents from invoking other agents
 
 ##### B.5: Hosted Browser (PREVIEW, TENANT-LEVEL)
+*Note - these settings, if on, doesn not mean that the feature is set up, its instead "idle" and is available to be set up by system administrators only.*
 - ☐ **Hosted Browser in Copilot Studio** → OFF
 - **CRITICAL**: Data flows to Windows 365 outside Azure compliance boundary
 
@@ -730,6 +732,7 @@ Discovery Time: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 ---
 
 ## Critical Settings Summary
+*Note - these settings, if on, doesn not mean that the feature is set up, its instead "idle" and is available to be set up by system administrators only.*
 
 ### Total Settings to Disable: 34+
 
@@ -744,6 +747,7 @@ Discovery Time: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 | Dynamics 365 Sales | 2 | Environment |
 
 ### Most Critical Settings (Data Residency/Security)
+*Note - these settings, if on, doesn not mean that the feature is set up, its instead "idle" and is available to be set up by system administrators only.*
 
 | Setting | Location | Priority | Reason |
 |---------|----------|----------|--------|
