@@ -1,0 +1,63 @@
+# Copilot Ignore Files
+copilot-mspp-ignore.md
+**/copilot-mspp-ignore.md
+
+# PowerShell
+*.ps1xml
+*.psc1
+*.psd1
+*.psm1
+*.log
+
+# Temporary Files
+*.tmp
+*.temp
+~$*
+
+# OS Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Output Files (optional - uncomment if needed)
+# *.csv
+# *.json
+# *.html
+# *.txt
+
+# Screenshot Files (optional - uncomment if needed)
+# *.png
+# *.jpg
+# *.jpeg
+
+# Sensitive Information
+*.env
+.env.local
+.env.*.local
+secrets.json
+appsettings.Development.json
+
+# Build Artifacts
+bin/
+obj/
+dist/
+build/
+
+# Package Managers
+node_modules/
+packages/
+.pnpm-store/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
