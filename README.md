@@ -26,9 +26,52 @@ Install-Module Microsoft.PowerApps.Administration.PowerShell -Force -AllowClobbe
 - **Conditional Access Administrator** - For CA policy creation
 - **Global Administrator** - For M365 settings (or specific service admin roles)
 
-## Script Execution Order
+## Implementation Steps
 
-### Step 1: Discovery
+### Step 1: Power Platform Tenant Configuration (MANUAL)
+
+**Purpose:** Disable Copilot at the tenant level to prevent it from being enabled in any Power Platform environment.
+
+**Configuration URL:** https://admin.powerplatform.microsoft.com/copilot/settings
+
+#### Manual Procedure:
+
+1. **Navigate** to: https://admin.powerplatform.microsoft.com/copilot/settings
+2. **Authenticate** with Power Platform Administrator credentials
+3. **Capture "Before" Screenshot** showing current state of all settings
+4. **Configure the following settings to OFF:**
+
+   - ☐ **Copilot** (main toggle at top)
+   - ☐ **Copilot in Power Apps**
+   - ☐ **Copilot in Power Automate**
+   - ☐ **Copilot in Power Pages**
+   - ☐ **Allow users to analyze data using an AI-powered chat experience in canvas apps**
+   - ☐ **Move data across regions** ⚠️ CRITICAL for data residency
+   - ☐ **Bing search** (if present)
+   - ☐ **Generative AI features** (if present)
+5. **Click Save**
+6. **Confirm changes** when prompted
+7. **Capture "After" Screenshot** showing all settings disabled (OFF)
+8. **Capture "Confirmation" Screenshot** of save success message
+
+**⏱️ Propagation Time:**
+
+- Most environments: 1-4 hours
+- All environments: Up to 24 hours
+- Verify in Step 3 after propagation period
+
+**Documentation Script (Optional):**
+After completing the manual steps above, you can run this script to document the configuration:
+
+```powershell
+.\02-Disable-PowerPlatform-Copilot-Tenant.ps1
+```
+
+**Outputs:** `TenantCopilotConfig_[timestamp].csv`
+
+---
+
+### Step 2: Discovery
 
 **Script:** `01-Discover-CopilotApps.ps1`**Purpose:** Identify all Copilot components in your tenant**Runtime:** 2-5 minutes**Outputs:**
 
@@ -39,19 +82,9 @@ Install-Module Microsoft.PowerApps.Administration.PowerShell -Force -AllowClobbe
 .\01-Discover-CopilotApps.ps1
 ```
 
-### Step 2 2: Power Platform Configuration
+---
 
-**Script:** `02-Disable-PowerPlatform-Copilot-Tenant.ps1`**Purpose:** Document Power Platform tenant-level Copilot configuration**Runtime:** Manual**Action Required:**
-
-1. Navigate to https://admin.powerplatform.microsoft.com/copilot/settings
-2. Disable all 8 Copilot settings
-3. Capture screenshots
-
-**Outputs:** `TenantCopilotConfig_[timestamp].csv`
-
-```powershell
-.\02-Disable-PowerPlatform-Copilot-Tenant.ps1
-```
+### Step 3: Power Platform Environment Verification
 
 **Script:** `03-Verify-Environment-Copilot-Settings.ps1`**Purpose:** Generate environment verification checklist**Runtime:** 5-10 minutes**Outputs:**
 
@@ -62,7 +95,11 @@ Install-Module Microsoft.PowerApps.Administration.PowerShell -Force -AllowClobbe
 .\03-Verify-Environment-Copilot-Settings.ps1
 ```
 
-### Step 3: Entra ID Configuration
+**Note:** This script generates URLs for manual verification of each environment. Follow the generated guide to verify Copilot is disabled in each Power Platform environment.
+
+---
+
+### Step 4: Entra ID - Disable Service Principals
 
 **Script:** `04-Disable-Copilot-ServicePrincipals.ps1`
 **Purpose:** Disable Copilot service principals
@@ -73,6 +110,12 @@ Install-Module Microsoft.PowerApps.Administration.PowerShell -Force -AllowClobbe
 .\04-Disable-Copilot-ServicePrincipals.ps1
 ```
 
+**Note:** Some Microsoft-managed service principals cannot be directly disabled. These will be blocked by the Conditional Access policy in the next step.
+
+---
+
+### Step 5: Entra ID - Create Conditional Access Policy
+
 **Script:** `05-Create-CA-Policy-BlockCopilot.ps1`
 **Purpose:** Create Conditional Access policy to block Copilot
 **Runtime:** 1-2 minutes
@@ -82,32 +125,76 @@ Install-Module Microsoft.PowerApps.Administration.PowerShell -Force -AllowClobbe
 .\05-Create-CA-Policy-BlockCopilot.ps1
 ```
 
-### Step 4: M365 Configuration
+**What this does:**
 
-**Script:** `06-Document-M365-Copilot-Settings.ps1`**Purpose:** Document M365 Copilot configuration**Runtime:** Manual**Action Required:**
+- Creates a Conditional Access policy named "BLOCK - Microsoft Copilot Services"
+- Blocks ALL Copilot applications (including Microsoft-managed apps)
+- Applies to all users (except optional break-glass accounts)
+- Takes effect immediately
 
-1. Navigate to M365 Admin Center
-2. Disable M365 Copilot settings
-3. Remove all Copilot licenses
+---
 
-**Outputs:** `M365_Copilot_Config_[timestamp].csv`
+### Step 6: M365 Copilot Configuration (MANUAL)
+
+**Purpose:** Disable M365 Copilot features and remove licenses
+
+**Configuration URL:** https://admin.microsoft.com/Adminportal/Home#/Settings/Services
+
+#### Manual Procedure:
+
+1. **Navigate to M365 Admin Center:** https://admin.microsoft.com
+2. **Go to Settings → Org settings → Services**
+3. **Select "Microsoft 365 Copilot"** (if present)
+4. **Disable ALL settings:**
+
+   - ☐ Allow users to access Microsoft Copilot
+   - ☐ Allow Copilot to access web content
+   - ☐ Allow Copilot in Microsoft 365 apps
+5. **Click Save**
+6. **License Management:**
+
+   - Navigate to **Billing → Licenses**
+   - Search for "Copilot" licenses
+   - Remove ALL user assignments (target: 0 assigned)
+   - Document license counts
+7. **Capture Screenshots:**
+
+   - Before configuration
+   - After configuration (all settings OFF)
+   - License status (0 assignments)
+
+**Documentation Script (Optional):**
+After completing the manual steps, run:
 
 ```powershell
 .\06-Document-M365-Copilot-Settings.ps1
 ```
 
-### Verification
+**Outputs:** `M365_Copilot_Config_[timestamp].csv`
+
+---
+
+### Step 7: Verification
 
 **Script:** `99-Verify-Copilot-Disabled.ps1`**Purpose:** Comprehensive compliance verification**Runtime:** 10-15 minutes**Outputs:**
 
 - `CopilotComplianceReport_[timestamp].csv`
-- `CopilotComplianceReport_[timestamp].html`
 
 ```powershell
 .\99-Verify-Copilot-Disabled.ps1
 ```
 
-### Optional: Scheduled Monitoring
+**Verification Checklist:**
+
+- ✅ Power Platform tenant settings (manual verification)
+- ✅ No active Copilot service principals
+- ✅ Conditional Access policy enabled
+- ✅ M365 Copilot disabled
+- ✅ All documentation generated
+
+---
+
+### Step 8: Scheduled Monitoring (Optional)
 
 **Script:** `Create-ScheduledCopilotCheck.ps1`
 **Purpose:** Create monthly automated compliance check
@@ -116,6 +203,10 @@ Install-Module Microsoft.PowerApps.Administration.PowerShell -Force -AllowClobbe
 ```powershell
 .\Create-ScheduledCopilotCheck.ps1
 ```
+
+Creates a Windows scheduled task that runs the verification script monthly.
+
+---
 
 ## Automated Monitoring with Microsoft Purview/Defender
 
@@ -388,71 +479,90 @@ Discovery Time: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 }
 ```
 
+---
+
 ## Quick Start Guide
 
-### Step 1: Install Prerequisites
+### Complete Implementation (All Steps)
 
 ```powershell
-# Run as Administrator
-Install-Module Microsoft.Graph.Authentication -Force
-Install-Module Microsoft.Graph.Applications -Force
-Install-Module Microsoft.Graph.Identity.SignIns -Force
-Install-Module Microsoft.PowerApps.Administration.PowerShell -Force
-```
+# Step 1: MANUAL - Power Platform Tenant Settings
+# Navigate to: https://admin.powerplatform.microsoft.com/copilot/settings
+# Disable all 8 Copilot settings (see Step 1 above)
+# Then document:
+.\02-Disable-PowerPlatform-Copilot-Tenant.ps1
 
-### Step 2: Execute Scripts in Order
-
-```powershell
-# Phase 1: Discovery
+# Step 2: Discovery
 .\01-Discover-CopilotApps.ps1
 
-# Phase 2: Power Platform (includes manual steps)
-.\02-Disable-PowerPlatform-Copilot-Tenant.ps1
+# Step 3: Environment Verification (generates manual checklist)
 .\03-Verify-Environment-Copilot-Settings.ps1
 
-# Phase 3: Entra ID
+# Step 4: Disable Service Principals
 .\04-Disable-Copilot-ServicePrincipals.ps1
+
+# Step 5: Create Conditional Access Policy
 .\05-Create-CA-Policy-BlockCopilot.ps1
 
-# Phase 4: M365 (manual steps)
+# Step 6: MANUAL - M365 Copilot Settings
+# Navigate to: https://admin.microsoft.com
+# Disable M365 Copilot, remove licenses (see Step 6 above)
+# Then document:
 .\06-Document-M365-Copilot-Settings.ps1
 
-# Verification
+# Step 7: Verification
 .\99-Verify-Copilot-Disabled.ps1
 ```
 
-### Step 3: Review Results
+### Review Results
 
 1. Check all CSV files for completion status
-2. Review HTML compliance report
+2. Review compliance report
 3. Ensure all screenshots captured
 4. Store documentation in your compliance repository
+
+---
 
 ## Important URLs
 
 ### Direct Configuration Links
 
-| Component                       | URL                                                                                                                |
-| ------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| Power Platform Copilot Settings | https://admin.powerplatform.microsoft.com/copilot/settings                                                         |
-| Power Platform Environments     | https://admin.powerplatform.microsoft.com/environments                                                             |
-| Entra ID Service Principals     | https://portal.azure.com/#view/Microsoft_AAD_IAM/StartboardApplicationsMenuBlade/~/AppAppsPreview                  |
-| Conditional Access Policies     | https://portal.azure.com/#view/Microsoft_AAD_ConditionalAccess/ConditionalAccessBlade/~/Policies                   |
-| M365 Copilot Settings           | https://admin.microsoft.com/Adminportal/Home#/Settings/Services                                                    |
-| Azure Automation Accounts       | https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.Automation%2FautomationAccounts |
+| Component                                 | URL                                                                                                                |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| **Power Platform Copilot Settings** | https://admin.powerplatform.microsoft.com/copilot/settings                                                         |
+| Power Platform Environments               | https://admin.powerplatform.microsoft.com/environments                                                             |
+| Entra ID Service Principals               | https://portal.azure.com/#view/Microsoft_AAD_IAM/StartboardApplicationsMenuBlade/~/AppAppsPreview                  |
+| Conditional Access Policies               | https://portal.azure.com/#view/Microsoft_AAD_ConditionalAccess/ConditionalAccessBlade/~/Policies                   |
+| **M365 Copilot Settings**           | https://admin.microsoft.com/Adminportal/Home#/Settings/Services                                                    |
+| Azure Automation Accounts                 | https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.Automation%2FautomationAccounts |
 
-## Critical Settings
+---
 
-### Power Platform - ALL Must Be OFF
+## Critical Settings Checklist
 
-1. ✅ Copilot (main toggle)
-2. ✅ Copilot in Power Apps
-3. ✅ Copilot in Power Automate
-4. ✅ Copilot in Power Pages
-5. ✅ AI data analysis
-6. ✅ **Move data across regions** (CRITICAL for data residency)
-7. ✅ Bing search
-8. ✅ Generative AI features
+### Power Platform Tenant - ALL Must Be OFF ⚠️
+
+| Setting                            | Status | Priority           |
+| ---------------------------------- | ------ | ------------------ |
+| Copilot (main toggle)              | ☐ OFF | Critical           |
+| Copilot in Power Apps              | ☐ OFF | Critical           |
+| Copilot in Power Automate          | ☐ OFF | Critical           |
+| Copilot in Power Pages             | ☐ OFF | Critical           |
+| AI data analysis                   | ☐ OFF | High               |
+| **Move data across regions** | ☐ OFF | **CRITICAL** |
+| Bing search                        | ☐ OFF | Medium             |
+| Generative AI features             | ☐ OFF | High               |
+
+### M365 - ALL Must Be OFF
+
+| Setting                                 | Status | Priority |
+| --------------------------------------- | ------ | -------- |
+| Allow users to access Microsoft Copilot | ☐ OFF | Critical |
+| Allow Copilot to access web content     | ☐ OFF | High     |
+| Allow Copilot in Microsoft 365 apps     | ☐ OFF | Critical |
+| Copilot licenses assigned to users      | ☐ 0   | Critical |
+
+---
 
 ## Troubleshooting
 
@@ -485,6 +595,15 @@ Install-Module Microsoft.PowerApps.Administration.PowerShell -Force -AllowClobbe
 - Review runbook job output for specific errors
 - Ensure modules are compatible with PowerShell 7.2 runtime
 
+### Power Platform Settings Not Saving
+
+- Ensure you have Power Platform Administrator role
+- Try different browser (Edge or Chrome recommended)
+- Clear browser cache and retry
+- Verify no conflicting group policies
+
+---
+
 ## Best Practices
 
 ### Data Residency
@@ -513,6 +632,8 @@ Install-Module Microsoft.PowerApps.Administration.PowerShell -Force -AllowClobbe
 - Implement least-privilege access for service accounts
 - Enable audit logging for all administrative actions
 - Review sign-in logs regularly for blocked Copilot access attempts
+
+---
 
 ## Architecture Overview
 
@@ -545,6 +666,8 @@ Install-Module Microsoft.PowerApps.Administration.PowerShell -Force -AllowClobbe
     Azure OpenAI Services (External)
 ```
 
+---
+
 ## Support and Contributions
 
 For issues, questions, or contributions:
@@ -554,16 +677,20 @@ For issues, questions, or contributions:
 - Verify all prerequisites are met
 - Test in non-production environment first
 
+---
+
 ## License
 
 These scripts are provided as-is for organizational use. Modify as needed for your specific requirements.
 
+---
+
 ## Change Log
 
-| Version | Date       | Changes                                                        |
-| ------- | ---------- | -------------------------------------------------------------- |
-| 1.0     | 2026-02-05 | Initial release                                                |
-| 1.1     | 2026-02-09 | Added direct Copilot settings URL, Purview/Defender automation |
+| Version | Date       | Changes                                                                               |
+| ------- | ---------- | ------------------------------------------------------------------------------------- |
+| 1.0     | 2026-02-05 | Initial release                                                                       |
+| 1.1     | 2026-02-09 | Added direct Copilot settings URL, Purview/Defender automation, detailed manual steps |
 
 ---
 
