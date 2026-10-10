@@ -3,15 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Israel Security & Self-Defense: Debate & Historical Guide</title>
+<title>Israel Security Strategy &amp; Asymmetric Defense: Academic Debate Reference</title>
 <style>
   :root{
     --bg:#ffffff; --surface:#f3f5f8; --surface-2:#e9edf2; --rule:#d9dfe6;
     --text:#222222; --muted:#5b6b7c; --link:#174f84;
     --navy:#1e384b; --navy-dark:#0d2536; --burgundy:#6a0032;
     --success:#2e7d32; --success-tint:#e5f4ea; --warn:#c9862d; --warn-tint:#fbf3e4;
+    --danger:#b3261e; --danger-tint:#fbe9e7;
     --info-tint:#e8eef4; --focus:#ffda00; --chip-bg:var(--navy); --chip-fg:#ffffff;
-    --dev:#174f84; --stage:#6a0032; --prod:#2e7d32;
+    --panel-bg:#0d2536; --panel-surface:#16324a; --panel-rule:#274862; --panel-text:#e8edf2; --panel-muted:#9fb6c9;
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
@@ -19,8 +20,9 @@
       --text:#e8edf2; --muted:#9fb0bf; --link:#8fc1ec;
       --navy:#3f6a8a; --navy-dark:#0d2536; --burgundy:#c96b8f;
       --success:#7fcf8a; --success-tint:#16301f; --warn:#e2b56a; --warn-tint:#33280f;
+      --danger:#e59a92; --danger-tint:#3a1714;
       --info-tint:#1a2d3b; --chip-bg:#2c4d63; --chip-fg:#ffffff;
-      --dev:#8fc1ec; --stage:#c96b8f; --prod:#7fcf8a;
+      --panel-bg:#08151f; --panel-surface:#122533; --panel-rule:#24404f; --panel-text:#e8edf2; --panel-muted:#9fb0bf;
     }
   }
   :root[data-theme="dark"]{
@@ -28,59 +30,121 @@
     --text:#e8edf2; --muted:#9fb0bf; --link:#8fc1ec;
     --navy:#3f6a8a; --navy-dark:#0d2536; --burgundy:#c96b8f;
     --success:#7fcf8a; --success-tint:#16301f; --warn:#e2b56a; --warn-tint:#33280f;
+    --danger:#e59a92; --danger-tint:#3a1714;
     --info-tint:#1a2d3b; --chip-bg:#2c4d63; --chip-fg:#ffffff;
-    --dev:#8fc1ec; --stage:#c96b8f; --prod:#7fcf8a;
+    --panel-bg:#08151f; --panel-surface:#122533; --panel-rule:#24404f; --panel-text:#e8edf2; --panel-muted:#9fb0bf;
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--text);
     font-family:Gotham,"Helvetica Neue",Arial,sans-serif;font-size:16px;line-height:1.55;
     padding-inline:16px;padding-block:0 56px;}
-  a{color:var(--link)} a:focus-visible,button:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+  a{color:var(--link)} a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
   .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.92em}
   code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--surface-2);padding:1px 5px;border-radius:4px;font-size:.9em}
   .wrap{max-width:1180px;margin:0 auto}
-  h1{font-size:33px;line-height:1.2;margin:0;font-weight:700;text-wrap:balance;display:inline-block;padding-bottom:8px;border-bottom:3px solid var(--burgundy)}
-  h2{font-size:23px;margin:0 0 12px;scroll-margin-top:16px;text-wrap:balance}
-  h3{font-size:16px;margin:20px 0 8px}
+  h1{font-size:30px;line-height:1.22;margin:0;font-weight:700;text-wrap:balance;display:inline-block;padding-bottom:8px;border-bottom:3px solid var(--burgundy)}
+  h2{font-size:23px;margin:0 0 6px;scroll-margin-top:16px;text-wrap:balance}
+  h3{font-size:16px;margin:0}
   .hdr{padding-block:26px 20px;border-bottom:1px solid var(--rule);margin-bottom:28px}
-  .hdr-top{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
-  .eyebrow{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:0 0 8px}
-  .lede{margin:14px 0 0;color:var(--muted);max-width:74ch;font-size:17px}
-  .meta-row{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:16px;font-size:14px;color:var(--muted)}
+  .hdr-top{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;flex-wrap:wrap}
+  .eyebrow{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:0 0 10px}
+  .lede{margin:14px 0 0;color:var(--muted);max-width:76ch;font-size:16.5px}
+  .meta-row{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:16px;font-size:13.5px;color:var(--muted)}
   .meta-row b{color:var(--text)}
-  .grid{display:grid;grid-template-columns:230px 1fr;gap:40px;align-items:start}
+  .theme-btn{flex:0 0 auto;border:1px solid var(--rule);background:var(--surface);color:var(--text);
+    border-radius:8px;padding:8px 12px;font-size:13px;font-weight:600;cursor:pointer;line-height:1}
+  .theme-btn:hover{background:var(--surface-2)}
+  .grid{display:grid;grid-template-columns:250px 1fr;gap:40px;align-items:start}
   .grid>nav,.grid>main{min-width:0}
   main{overflow-x:auto}
-  @media (max-width:860px){.grid{grid-template-columns:1fr}}
+  @media (max-width:880px){.grid{grid-template-columns:1fr}}
   .rail{position:sticky;top:16px}
-  @media (max-width:860px){.rail{position:static}}
+  @media (max-width:880px){.rail{position:static}}
   .rail h2{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
   .rail ol{list-style:none;margin:0;padding:0;border-left:2px solid var(--rule)}
-  .rail li a{display:block;padding:6px 0 6px 14px;text-decoration:none;color:var(--text);font-size:14px;border-left:2px solid transparent;margin-left:-2px}
-  .rail li a:hover{background:var(--surface);border-left-color:var(--navy)}
-  .rail li.track a{border-left-color:var(--burgundy);font-weight:600}
+  .rail>ol>li>a{display:block;padding:6px 0 6px 14px;text-decoration:none;color:var(--text);font-size:14px;border-left:2px solid transparent;margin-left:-2px}
+  .rail>ol>li>a:hover{background:var(--surface);border-left-color:var(--navy)}
+  .rail .sub{list-style:none;margin:2px 0 6px;padding:0 0 0 14px;border-left:none}
+  .rail .sub a{display:block;padding:3px 0;text-decoration:none;color:var(--muted);font-size:12.5px}
+  .rail .sub a:hover{color:var(--link)}
+  .tip{margin-top:20px;padding:14px 16px;background:var(--surface);border:1px solid var(--rule);border-radius:10px;font-size:13px}
+  .tip b{display:block;margin-bottom:4px}
+  .tip p{margin:0;color:var(--muted)}
   section{padding:26px 0;border-bottom:1px solid var(--rule)}
-  section p{max-width:78ch}
-  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin:16px 0}
-  .card{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:16px 18px}
-  .card h3{margin:0 0 6px;display:flex;align-items:center;gap:8px}
-  .card .n{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--navy);color:#fff;font-size:13px;font-weight:700;flex:0 0 auto}
-  .card p{font-size:14.5px;margin:0;color:var(--muted)}
-  table{border-collapse:collapse;width:100%;margin:16px 0;font-size:14.5px}
-  th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
-  th{background:var(--surface-2);font-size:12.5px;letter-spacing:.03em;text-transform:uppercase;color:var(--muted)}
-  tr:hover td{background:var(--surface)}
-  .note{margin:18px 0;padding:14px 16px;background:var(--surface);border-left:4px solid var(--navy);border-radius:0 8px 8px 0;font-size:14.5px}
-  .note.warn{border-left-color:var(--warn);background:var(--warn-tint)}
-  .note.good{border-left-color:var(--success);background:var(--success-tint)}
-  .note b{color:var(--text)}
-  .steps{counter-reset:ps;margin:16px 0;padding:0;list-style:none}
-  .steps li{position:relative;padding:4px 0 14px 46px;margin:0}
-  .steps li::before{counter-increment:ps;content:counter(ps);position:absolute;left:0;top:2px;width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;font-weight:700;font-size:14px;display:grid;place-items:center}
-  .steps li b{color:var(--text)}
-  ul.clean{list-style:none;padding-left:0}
-  ul.clean li{padding-left:24px;position:relative;margin:7px 0}
-  ul.clean li::before{content:"";position:absolute;left:4px;top:9px;width:8px;height:8px;border-radius:2px;background:var(--navy)}
+  section>p.intro{max-width:80ch;color:var(--muted);font-size:14.5px;margin:6px 0 18px}
+  .kicker{display:inline-block;padding:5px 10px;background:var(--info-tint);color:var(--navy);border:1px solid var(--rule);
+    border-radius:6px;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px}
+  .abstract{padding:22px;background:var(--surface);border:1px solid var(--rule);border-radius:12px}
+  .abstract .lbl{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--navy);font-weight:700;margin:0 0 12px}
+  .abstract p{margin:0 0 12px;max-width:none}
+  .abstract p:last-child{margin-bottom:0}
+  /* timeline cards */
+  .tl-card{padding:20px;background:var(--surface);border:1px solid var(--rule);border-radius:12px;margin:14px 0}
+  .tl-head{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;padding-bottom:12px;border-bottom:1px solid var(--rule);margin-bottom:12px}
+  .year{font-weight:700;color:var(--burgundy);font-size:14px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  .tl-head h3{flex:1 1 auto}
+  .tag{background:var(--surface-2);color:var(--muted);border-radius:5px;padding:3px 8px;font-size:11.5px;font-weight:600;white-space:nowrap}
+  .tl-body p{margin:0 0 10px;font-size:14.5px}
+  .challenge{margin-top:14px;padding:14px 16px;background:var(--info-tint);border-left:4px solid var(--navy);border-radius:0 8px 8px 0;font-size:14px}
+  .challenge .q{font-weight:700;color:var(--navy);font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;margin:0 0 6px}
+  .challenge .ask{font-style:italic;margin:0 0 8px}
+  .challenge .bd{margin:0;color:var(--muted);font-size:13.5px}
+  /* two-column compliance */
+  .cols2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin:16px 0}
+  .col-card{padding:18px;background:var(--surface);border:1px solid var(--rule);border-radius:12px}
+  .col-card .ch{display:flex;align-items:center;gap:8px;margin:0 0 10px}
+  .col-card ul{margin:0;padding-left:18px}
+  .col-card li{margin:7px 0;font-size:14px}
+  .legalbox{margin-top:8px;padding:18px;background:var(--surface-2);border:1px solid var(--rule);border-radius:12px;font-size:14px}
+  .legalbox h4{margin:0 0 8px;font-size:13px;letter-spacing:.04em}
+  .legalbox p{margin:0;color:var(--muted)}
+  /* atrocity grid */
+  .atro-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin:14px 0}
+  .atro{padding:12px 14px;background:var(--surface);border:1px solid var(--rule);border-radius:8px;font-size:13px}
+  .atro .t{display:block;font-weight:700;color:var(--burgundy);font-size:13px;margin-bottom:4px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  .atro p{margin:0;color:var(--muted)}
+  /* dark panel */
+  .panel{padding:24px;background:var(--panel-bg);color:var(--panel-text);border-radius:14px;margin:18px 0}
+  .panel h3{color:#fff;font-size:18px;margin:0 0 10px}
+  .panel>p{color:var(--panel-muted);font-size:14.5px;margin:0 0 16px;max-width:none}
+  .ring-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+  .ring{padding:14px;background:var(--panel-surface);border:1px solid var(--panel-rule);border-radius:10px}
+  .ring .n{display:block;font-weight:700;color:#8fc1ec;font-size:12.5px;letter-spacing:.04em;margin-bottom:6px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  .ring p{margin:0;color:var(--panel-muted);font-size:13px}
+  /* counterargument cards */
+  .ca{padding:18px 20px;background:var(--surface);border:1px solid var(--rule);border-radius:12px;margin:14px 0}
+  .ca h3{margin:0 0 8px}
+  .ca p{margin:0;font-size:14.5px}
+  .peace-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px;margin-top:12px}
+  .peace{padding:12px 14px;background:var(--surface-2);border:1px solid var(--rule);border-radius:8px;font-size:13.5px}
+  /* matrix */
+  .mx-filter{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+  .chip-btn{border:1px solid var(--rule);background:var(--surface);color:var(--text);border-radius:8px;
+    padding:7px 13px;font-size:13px;font-weight:600;cursor:pointer}
+  .chip-btn:hover{background:var(--surface-2)}
+  .chip-btn.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .mx-card{padding:16px 18px;background:var(--surface);border:1px solid var(--rule);border-radius:12px;margin:12px 0}
+  .mx-card .mx-title{margin:0 0 12px;font-size:15px;font-weight:700}
+  .mx-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  @media (max-width:760px){.mx-cols{grid-template-columns:1fr}}
+  .mx-box{padding:12px 14px;border-radius:8px;font-size:13.5px;border:1px solid var(--rule)}
+  .mx-box .mx-lbl{display:block;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px}
+  .mx-box p{margin:0}
+  .mx-box.opp{background:var(--danger-tint);border-color:color-mix(in srgb,var(--danger) 40%,transparent)}
+  .mx-box.opp .mx-lbl{color:var(--danger)}
+  .mx-box.steel{background:var(--info-tint)}
+  .mx-box.steel .mx-lbl{color:var(--navy)}
+  .mx-box.soc{background:var(--warn-tint);border-color:color-mix(in srgb,var(--warn) 40%,transparent)}
+  .mx-box.soc .mx-lbl{color:var(--warn)}
+  .mx-box.soc p{font-style:italic}
+  /* bibliography + citations */
+  .cite{vertical-align:super;font-size:.7em;font-weight:700;color:var(--link);cursor:pointer;padding:0 1px;user-select:none}
+  .cite:hover{text-decoration:underline}
+  .biblio{margin:10px 0 0;padding-left:20px;font-size:13px;color:var(--muted);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  .biblio li{margin:7px 0;line-height:1.5}
+  .biblio li:target{color:var(--text);background:var(--info-tint);border-radius:4px;padding:2px 6px;margin-left:-6px}
+  #tooltip{display:none;position:absolute;z-index:60;max-width:320px;padding:11px 13px;background:var(--navy-dark);
+    color:#f3f6fa;border-radius:8px;font-size:13px;line-height:1.45;box-shadow:0 10px 24px -6px rgba(0,0,0,.45);border:1px solid #27465c}
   .foot{margin-top:28px;color:var(--muted);font-size:13px}
   @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
 </style>
@@ -90,16 +154,17 @@
 
   <header class="hdr">
     <div class="hdr-top">
-      <div class="hdr-head">
-        <p class="eyebrow">Debate &amp; Strategic Analysis · Steelman Framework</p>
-        <h1>Israel Defense &amp; Security Guide</h1>
+      <div>
+        <p class="eyebrow">Monograph &amp; Debate Preparation Dossier · Steelman Framework</p>
+        <h1>The Imperative of National Survival: Israel's Strategic Security Posture, Asymmetric Defensive Doctrines &amp; the Ethics of Warfare</h1>
       </div>
+      <button id="themeToggle" class="theme-btn" type="button" aria-label="Toggle colour theme">🌙 Dark</button>
     </div>
-    <p class="lede">A rigorous, academic reference document designed for evaluating historical conflict dynamics, strategic intent, and international law surrounding Israel and its regional security context.</p>
+    <p class="lede">A rigorous academic reference for evaluating historical conflict dynamics, strategic intent, and international law surrounding Israel and its regional security context — built for debate preparation and policy analysis.</p>
     <div class="meta-row">
       <span><b>Focus:</b> Steelman argument &amp; self-defense rationale</span>
-      <span><b>Coverage:</b> 1947 to Present Day</span>
-      <span><b>Framework:</b> Intent (*Mens Rea*) &amp; Asymmetric Warfare</span>
+      <span><b>Coverage:</b> 1947 to present day</span>
+      <span><b>Framework:</b> Public International Law (IHL / LOAC) &amp; intent (<em>Mens Rea</em>)</span>
     </div>
   </header>
 
@@ -107,147 +172,439 @@
     <nav class="rail" aria-label="Contents">
       <h2>On this page</h2>
       <ol>
-        <li><a href="#summary">1 · Executive summary</a></li>
-        <li><a href="#timeline">2 · Chronological timeline</a></li>
-        <li><a href="#asymmetry">3 · Asymmetric warfare &amp; intent</a></li>
-        <li><a href="#atrocities">4 · Catalog of civilian targets</a></li>
-        <li><a href="#conspiracies">5 · Antisemitism &amp; tropes</a></li>
-        <li><a href="#socratic-toolkit">6. Debate socratic toolkit</a></li>
+        <li><a href="#thesis">1 · Abstract &amp; executive thesis</a></li>
+        <li>
+          <a href="#timeline">2 · Historical timeline</a>
+          <ul class="sub">
+            <li><a href="#t-1948">1948 War of Independence</a></li>
+            <li><a href="#t-1956">1956 Suez &amp; Fedayeen</a></li>
+            <li><a href="#t-1967">1967 Six-Day War</a></li>
+            <li><a href="#t-1973">1973 Yom Kippur War</a></li>
+            <li><a href="#t-1982">1982 / 2006 Lebanon</a></li>
+            <li><a href="#t-2000">2000–2005 Second Intifada</a></li>
+            <li><a href="#t-2023">October 7, 2023</a></li>
+          </ul>
+        </li>
+        <li><a href="#asymmetric">3 · Asymmetric warfare &amp; Mens Rea</a></li>
+        <li><a href="#atrocities">4 · Catalog of terror &amp; Iran proxy ring</a></li>
+        <li><a href="#counterarguments">5 · Deconstructing counter-arguments</a></li>
+        <li><a href="#matrix">6 · Interactive Socratic navigator</a></li>
+        <li><a href="#references">7 · Academic bibliography</a></li>
       </ol>
+      <div class="tip">
+        <b>Debate tip</b>
+        <p>Always force opponents to address the <em>legal and moral asymmetry of intent</em> (Mens Rea) rather than focusing solely on output casualty counts.</p>
+      </div>
     </nav>
 
     <main>
 
       <!-- 1 -->
-      <section id="summary">
-        <h2>1 · Executive summary &amp; core Q&amp;A</h2>
-        <p>This section outlines the baseline tenets of the steelman argument for Israel's defensive posture, addressing core questions regarding state survival, preemption, and civilian protection.</p>
-
-        <div class="cards">
-          <div class="card">
-            <h3><span class="n">Q1</span> Defensive Posture</h3>
-            <p>Every major conflict since 1947 was preceded by state-level declarations of war, economic blockades, or cross-border infiltration aimed at dismantling the state.</p>
-          </div>
-          <div class="card">
-            <h3><span class="n">Q2</span> Legal Intent</h3>
-            <p>Under international humanitarian law, states target military infrastructure while making efforts to minimize collateral damage. Adversary doctrines explicitly target non-combatants as a strategic weapon.</p>
-          </div>
-          <div class="card">
-            <h3><span class="n">Q3</span> Sovereign Duty</h3>
-            <p>No sovereign democracy can tolerate thousands of indiscriminate rockets or systematic civilian massacres without exercising a fundamental right to self-defense.</p>
-          </div>
+      <section id="thesis">
+        <span class="kicker">Monograph &amp; Debate Preparation Dossier</span>
+        <h2>1 · Abstract &amp; executive thesis</h2>
+        <div class="abstract">
+          <p class="lbl">Executive abstract &amp; thesis statement</p>
+          <p>Since its state formation under international law in 1947–1948, the State of Israel's defense doctrine, territorial posture, and preemptive military actions have been fundamentally dictated by an unbroken continuum of existential security threats, state-sponsored aggression, and asymmetric terrorism targeting non-combatants. This analytical dossier steelmans the Israeli defense framework, demonstrating that Israel's military actions — ranging from preemptive counter-offensives (1967) and security barriers to active defense installations (e.g., Iron Dome) and ground maneuvers — constitute rational, legally defensible, and morally imperative responses under International Humanitarian Law (IHL).</p>
+          <p>The overarching thesis establishes that when non-state armed groups (supported by aggressive revisionist regional powers such as Iran) adopt a strategic doctrine specifically centered on the deliberate slaughter of civilians while embedding combat infrastructure within non-combatant populations, a sovereign state is legally obligated and morally compelled to execute robust self-defense, establish protective territorial buffers, and exercise preemptive interdiction.</p>
         </div>
-
-        <div class="note good"><b>Core Premise:</b> The debate cannot logically validate a strategy that openly champions the murder of non-combatants. Israel’s security measures stem from existential necessity against forces explicitly committed to its destruction.</div>
       </section>
 
       <!-- 2 -->
       <section id="timeline">
-        <h2>2 · Chronological timeline &amp; strategic context</h2>
-        <p>Historical milestones detailing regional escalations, Israel's tactical responses, and the structural necessity of security buffer zones.</p>
+        <h2>2 · Comprehensive historical security timeline (1947–present)</h2>
+        <p class="intro">An examination of major armed conflicts, cross-border aggression, and existential crises detailing the catalysts, military responses, and mandatory debate challenge prompts for each milestone.</p>
 
-        <table class="timeline-table">
-          <tr><th>Year</th><th>Catalyst / Event</th><th>Israel's Response / Rationale</th></tr>
-          <tr>
-            <td><b>1947–1949</b></td>
-            <td>Rejection of UN Partition Plan; invasion by five neighboring Arab armies.</td>
-            <td>War of Independence; defensive survival resulting in armistice borders.</td>
-          </tr>
-          <tr>
-            <td><b>1956</b></td>
-            <td>Egyptian-backed fedayeen cross-border terror raids and blockade of Straits of Tiran.</td>
-            <td>Military campaign into Sinai to eliminate terror bases and reopen maritime trade lanes.</td>
-          </tr>
-          <tr>
-            <td><b>1967</b></td>
-            <td>Expulsion of UN peacekeepers, military mobilization, maritime blockade, and calls for total destruction.</td>
-            <td>Preemptive strike and defensive ground campaign capturing strategic buffer zones (Golan, West Bank, Sinai).</td>
-          </tr>
-          <tr>
-            <td><b>1973</b></td>
-            <td>Synchronized surprise military invasion on Yom Kippur by Egypt and Syria.</td>
-            <td>Mobilization and successful counter-offensive, eventually leading to peace treaties and land-for-peace land returns.</td>
-          </tr>
-          <tr>
-            <td><b>2000–2005</b></td>
-            <td>Second Intifada wave of suicide bombings targeting civilian buses and cafes.</td>
-            <td>Operation Defensive Shield and construction of the security barrier, reducing urban attacks by over 90%.</td>
-          </tr>
-          <tr>
-            <td><b>October 7, 2023</b></td>
-            <td>Unprovoked cross-border invasion by Hamas involving mass atrocities, murder, and hostage-taking.</td>
-            <td>Total wartime mobilization aimed at dismantling the governing and military infrastructure of Hamas.</td>
-          </tr>
-        </table>
+        <div class="tl-card" id="t-1948">
+          <div class="tl-head">
+            <span class="year">1947–1949</span>
+            <h3>UN Partition Plan &amp; the War of Independence</h3>
+            <span class="tag">Existential Defense</span>
+          </div>
+          <div class="tl-body">
+            <p><strong>Catalyst / Aggression:</strong> Following United Nations General Assembly Resolution 181 on November 29, 1947, Jewish leadership accepted the partition plan establishing side-by-side Jewish and Arab states<span class="cite" data-cite="un181" role="button" tabindex="0" aria-label="Citation 1">[1]</span>. Arab leadership unequivocally rejected partition. Immediately following Israel's declaration of independence on May 14, 1948, five sovereign Arab armies (Egypt, Transjordan, Syria, Lebanon, and Iraq) launched a coordinated military invasion targeting the nascent state with declared intent of total elimination<span class="cite" data-cite="morris2008" role="button" tabindex="0" aria-label="Citation 2">[2]</span>.</p>
+            <p><strong>Israel's Response:</strong> Defensive mobilization securing independence, resulting in 1949 Armistice Green Lines. Israel gained defensible territory, including Western Galilee and a corridor to Jerusalem, essential for basic physical survival.</p>
+          </div>
+          <div class="challenge">
+            <p class="q">Debate challenge prompt</p>
+            <p class="ask">"When five neighboring sovereign armies invade a newly declared state following its acceptance of a UN resolution, what alternative course of action could Israel have pursued short of full military mobilization and establishing defensible armistice boundaries?"</p>
+            <p class="bd"><em>Analytical breakdown:</em> Critics claiming Israel "expanded beyond partition lines" ignore that the partition boundaries were nullified by the Arab bloc's rejection and initiation of warfare. In military law, aggressive invasion entitles the defender to secure tactical terrain necessary to prevent immediate repeat invasion.</p>
+          </div>
+        </div>
+
+        <div class="tl-card" id="t-1956">
+          <div class="tl-head">
+            <span class="year">1955–1956</span>
+            <h3>Fedayeen Raids &amp; the Suez Crisis</h3>
+            <span class="tag">Cross-Border Terror &amp; Blockade</span>
+          </div>
+          <div class="tl-body">
+            <p><strong>Catalyst / Aggression:</strong> Egypt sponsored cross-border <em>Fedayeen</em> terror incursions from Egyptian-controlled Gaza, infiltrating Israeli civilian communities to murder non-combatants<span class="cite" data-cite="oren2002" role="button" tabindex="0" aria-label="Citation 3">[3]</span>. Simultaneously, Egypt closed the Straits of Tiran to Israeli maritime shipping — an explicit <em>casus belli</em> (act of war) under international law — and nationalized the Suez Canal.</p>
+            <p><strong>Israel's Response:</strong> Operation Kadesh (Sinai Campaign) to dismantle Fedayeen bases and reopen vital international sea routes. Israel withdrew from Sinai after securing international maritime access assurances and UN emergency force (UNEF) deployments.</p>
+          </div>
+          <div class="challenge">
+            <p class="q">Debate challenge prompt</p>
+            <p class="ask">"How should a state respond when a sovereign neighbor blocks its international maritime trade routes and launches state-sponsored paramilitary units directly into civilian towns to conduct massacres?"</p>
+            <p class="bd"><em>Analytical breakdown:</em> Closing international waterways to a nation's trade is universally recognized as an armed act of war. Israel's campaign was a direct response to continuous state-sanctioned terror and illegal economic blockades.</p>
+          </div>
+        </div>
+
+        <div class="tl-card" id="t-1967">
+          <div class="tl-head">
+            <span class="year">1967</span>
+            <h3>The Six-Day War &amp; Preemptive Self-Defense</h3>
+            <span class="tag">Preemptive Interdiction</span>
+          </div>
+          <div class="tl-body">
+            <p><strong>Catalyst / Aggression:</strong> Egyptian President Nasser expelled UNEF peacekeepers from Sinai, mobilized 100,000 troops and 1,000 tanks along Israel's border, re-closed the Straits of Tiran, and concluded military defense pacts with Jordan and Syria<span class="cite" data-cite="oren2002" role="button" tabindex="0" aria-label="Citation 3">[3]</span>. Public rhetoric from Arab leadership pledged total destruction.</p>
+            <p><strong>Israel's Response:</strong> Operation Focus — a classic preemptive strike against Egyptian airfields, followed by defensive engagement against Syrian and Jordanian offensive artillery fire. Resulted in capturing Sinai, Gaza, West Bank, Golan Heights, and East Jerusalem, establishing crucial security buffers.</p>
+          </div>
+          <div class="challenge">
+            <p class="q">Debate challenge prompt</p>
+            <p class="ask">"Is a nation legally obligated to wait until its borders are breached and its cities shelled when enemy armies are massed on three fronts and its shipping lanes are actively blockaded?"</p>
+            <p class="bd"><em>Analytical breakdown:</em> Under customary international law (the Caroline Standard / customary self-defense principles), anticipatory self-defense is legal when the necessity is "instant, overwhelming, leaving no choice of means, and no moment for deliberation." Encirclement and blockades satisfied every threshold.</p>
+          </div>
+        </div>
+
+        <div class="tl-card" id="t-1973">
+          <div class="tl-head">
+            <span class="year">1973</span>
+            <h3>Yom Kippur War</h3>
+            <span class="tag">Surprise State Aggression</span>
+          </div>
+          <div class="tl-body">
+            <p><strong>Catalyst / Aggression:</strong> Joint surprise multi-front invasion by Egypt and Syria launched on Yom Kippur, the holiest day in Judaism, exploiting military stand-down to inflict maximum casualties and reclaim territory without prior diplomatic engagement<span class="cite" data-cite="rabinovich2004" role="button" tabindex="0" aria-label="Citation 4">[4]</span>.</p>
+            <p><strong>Israel's Response:</strong> Total mobilization, stopping advances in Golan and Sinai, counter-crossing the Suez Canal, and encircling Egypt's Third Army before negotiating ceasefire UN Resolution 338.</p>
+          </div>
+          <div class="challenge">
+            <p class="q">Debate challenge prompt</p>
+            <p class="ask">"Given that Israel suffered a massive surprise invasion despite retaining captured buffer zones in 1973, how can opponents argue that territorial buffer zones are unnecessary for Israeli strategic survival?"</p>
+            <p class="bd"><em>Analytical breakdown:</em> Had Israel not held the Sinai depth and Golan Heights in 1973, Egyptian and Syrian armored columns would have penetrated directly into heartland civilian centers within hours. Strategic depth saved the state from total destruction.</p>
+          </div>
+        </div>
+
+        <div class="tl-card" id="t-1982">
+          <div class="tl-head">
+            <span class="year">1982 &amp; 2006</span>
+            <h3>Lebanon Operations &amp; Hezbollah Raids</h3>
+            <span class="tag">Northern Border Security</span>
+          </div>
+          <div class="tl-body">
+            <p><strong>Catalyst / Aggression:</strong> Decades of PLO artillery and rocket shelling from southern Lebanon ("Fatahland"), followed in 2006 by Hezbollah's unprovoked cross-border raid into sovereign Israel, killing eight soldiers and kidnapping two into Lebanon while launching Katyusha rockets at northern towns<span class="cite" data-cite="pollack2002" role="button" tabindex="0" aria-label="Citation 5">[5]</span>.</p>
+            <p><strong>Israel's Response:</strong> Operation Peace for Galilee (1982) to push PLO artillery past effective range; Second Lebanon War (2006) targeting Hezbollah military infrastructure leading to UN Resolution 1701.</p>
+          </div>
+          <div class="challenge">
+            <p class="q">Debate challenge prompt</p>
+            <p class="ask">"What should a country do when an armed non-state militia crosses a recognized international border, kills and abducts soldiers, and launches thousands of rockets into civilian communities?"</p>
+            <p class="bd"><em>Analytical breakdown:</em> Israel's 2000 withdrawal from Lebanon was UN-verified as complete. Hezbollah's 2006 attack was completely unprovoked across an international border, proving that territorial withdrawal alone does not satisfy eliminationist armed groups.</p>
+          </div>
+        </div>
+
+        <div class="tl-card" id="t-2000">
+          <div class="tl-head">
+            <span class="year">2000–2005</span>
+            <h3>The Second Intifada &amp; Suicide Terrorism Campaign</h3>
+            <span class="tag">Systemic Urban Terror</span>
+          </div>
+          <div class="tl-body">
+            <p><strong>Catalyst / Aggression:</strong> Following the rejection of the Camp David II peace proposal by Yasser Arafat, Palestinian militant groups launched a coordinated 5-year campaign of urban suicide bombings targeting buses, restaurants, hotels, and nightclubs, killing over 1,000 Israeli civilians<span class="cite" data-cite="derfner2005" role="button" tabindex="0" aria-label="Citation 6">[6]</span>.</p>
+            <p><strong>Israel's Response:</strong> Operation Defensive Shield (2002) to re-enter West Bank urban centers to dismantle bomb-making networks, and the construction of the West Bank Security Barrier.</p>
+          </div>
+          <div class="challenge">
+            <p class="q">Debate challenge prompt</p>
+            <p class="ask">"When suicide bombers detonate themselves inside crowded public venues daily, is a state justified in constructing physical security barriers and checkpoint networks that reduce suicide bombings by over 90%?"</p>
+            <p class="bd"><em>Analytical breakdown:</em> The West Bank security barrier was a purely defensive countermeasure. Its empirical success in stopping suicide bombings proves that security infrastructure directly fulfills a state's primary legal obligation: safeguarding the right to life for its citizens.</p>
+          </div>
+        </div>
+
+        <div class="tl-card" id="t-2023">
+          <div class="tl-head">
+            <span class="year">October 7, 2023</span>
+            <h3>The Hamas Massacre &amp; Multi-Front War</h3>
+            <span class="tag">Mass Atrocity &amp; Incursion</span>
+          </div>
+          <div class="tl-body">
+            <p><strong>Catalyst / Aggression:</strong> Thousands of Hamas operatives breached the Gaza border, executing a planned assault on 22 civilian kibbutzim, towns, and a music festival. Over 1,200 people (predominantly civilians) were slaughtered with documented torture and sexual violence, and over 240 hostages abducted<span class="cite" data-cite="hrw2023" role="button" tabindex="0" aria-label="Citation 7">[7]</span>.</p>
+            <p><strong>Israel's Response:</strong> Wartime mobilization aimed at complete dismantling of Hamas military-governing capabilities in Gaza, recovering hostages, and neutralizing multi-front rocket bombardment from Hezbollah and Houthis.</p>
+          </div>
+          <div class="challenge">
+            <p class="q">Debate challenge prompt</p>
+            <p class="ask">"If a neighboring military regime invades sovereign territory, slaughters 1,200 citizens, and explicitly vows to repeat the attack indefinitely, what measure short of removing that regime from power fulfills national defense?"</p>
+            <p class="bd"><em>Analytical breakdown:</em> No sovereign nation can coexist with an armed force on its border that has demonstrated both the capability and explicit doctrinal intent to commit genocidal massacres against its population. Total military neutralization becomes legally valid self-defense.</p>
+          </div>
+        </div>
       </section>
 
       <!-- 3 -->
-      <section id="asymmetry">
-        <h2>3 · Asymmetric warfare &amp; legal intent</h2>
-        <p>A breakdown of the fundamental divide between conventional state defense and non-state insurgency tactics.</p>
+      <section id="asymmetric">
+        <h2>3 · Asymmetric warfare doctrine &amp; the ethics of intent (Mens Rea)</h2>
+        <p class="intro">Evaluating legal frameworks under International Humanitarian Law (IHL), the Law of Armed Conflict (LOAC), and moral philosophy regarding civilian collateral damage versus deliberate non-combatant targeting.</p>
 
-        <table>
-          <tr><th>Dimension</th><th>State Defense (IDF)</th><th>Non-State Proxies (Hamas / Hezbollah)</th></tr>
-          <tr>
-            <td><b>Strategic Goal</b></td>
-            <td>Neutralize military assets, command hubs, and combatants.</td>
-            <td>Inflict maximum civilian terror, disruption, and psychological vulnerability.</td>
-          </tr>
-          <tr>
-            <td><b>Infrastructure Use</b></td>
-            <td>Separates military operations from population centers where feasible.</td>
-            <td>Embeds rocket launchers and command posts inside schools, hospitals, and homes (human shields).</td>
-          </tr>
-          <tr>
-            <td><b>Operational Safeguards</b></td>
-            <td>Utilizes advance warnings, roof-knocking, and precision-guided munitions.</td>
-            <td>Deploys unguided rocket artillery directly toward residential city centers.</td>
-          </tr>
-        </table>
+        <div class="cols2">
+          <div class="col-card">
+            <div class="ch"><span aria-hidden="true">🛡️</span><h3>Israel State Operational Compliance</h3></div>
+            <ul>
+              <li><strong>Doctrine of distinction:</strong> clear operational separation between combatants and non-combatants in target selection.</li>
+              <li><strong>Mitigation protocols:</strong> advance warnings via SMS, phone calls, leafleting, and "roof-knocking" prior to airstrikes<span class="cite" data-cite="schmitt2011" role="button" tabindex="0" aria-label="Citation 8">[8]</span>.</li>
+              <li><strong>Precision munitions:</strong> extensive investment in GPS and laser-guided munitions to strike military assets with minimal footprint.</li>
+              <li><strong>IHL Mens Rea:</strong> absence of intent (<em>Mens Rea</em>) to inflict civilian harm. Civilian deaths are recognized as tragic collateral damage arising from military necessity near combat targets.</li>
+            </ul>
+          </div>
+          <div class="col-card">
+            <div class="ch"><span aria-hidden="true">🎯</span><h3>Non-State Asymmetric Strategy</h3></div>
+            <ul>
+              <li><strong>Targeting civilians as objective:</strong> directing unguided rockets, suicide bombers, and raiding squads specifically at non-combatants to maximize terror.</li>
+              <li><strong>Weaponized human shields:</strong> co-locating command bunkers, rocket tubes, and weapon stockpiles inside and beneath schools, mosques, and hospitals<span class="cite" data-cite="nato2014" role="button" tabindex="0" aria-label="Citation 9">[9]</span>.</li>
+              <li><strong>Double war crime:</strong> firing indiscriminately from within dense civilian areas simultaneously violates IHL protections for host civilians and target civilians.</li>
+              <li><strong>Loss of protection:</strong> under Geneva Convention Article 19, civilian facilities lose immunity if used outside human function to commit harmful military acts.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="legalbox">
+          <h4 class="mono">Legal principle: loss of protected status (Geneva Convention IV, Art. 19)</h4>
+          <p>International Humanitarian Law explicitly anticipates the tactic of embedded urban warfare. When an armed group places military assets (such as missile launchers or military headquarters) within a civilian structure, that structure legally loses its immunity and becomes a legitimate military target. Responsibility for resulting civilian casualties shifts legally from the attacking force to the defender that weaponized the civilian zone.</p>
+        </div>
       </section>
 
       <!-- 4 -->
       <section id="atrocities">
-        <h2>4 · Catalog of civilian-targeted campaigns</h2>
-        <p>Documented historical instances demonstrating a persistent pattern of violence directed intentionally against non-combatants:</p>
+        <h2>4 · Catalog of non-combatant atrocities &amp; the Iranian axis</h2>
+        <p class="intro">Documenting historical terror attacks targeting civilians and analyzing the strategic role of the Islamic Republic of Iran's proxy warfare network.</p>
 
-        <ul class="clean">
-          <li><b>1954:</b> Scorpion Pass Massacre — Execution-style ambush of a civilian passenger bus (11 killed).</li>
-          <li><b>1972:</b> Munich Olympics Massacre — Kidnapping and assassination of 11 Israeli athletes.</li>
-          <li><b>1974:</b> Ma'alot Massacre — Elementary school hostage crisis resulting in the murder of 22 children.</li>
-          <li><b>1994:</b> Dizengoff Street Bus Bombing — Rush-hour suicide bombing in Tel Aviv (22 killed).</li>
-          <li><b>2001:</b> Sbarro Restaurant Bombing — Suicide attack targeting families in Jerusalem (15 killed, 7 children).</li>
-          <li><b>2002:</b> Passover Massacre — Suicide bombing during a holiday dinner at the Park Hotel (30 elderly civilians killed).</li>
-          <li><b>2023:</b> October 7th Massacre — Coordinated cross-border slaughter of ~1,200 civilians and abduction of 240+ hostages.</li>
-        </ul>
+        <h3 class="mono" style="text-transform:uppercase;letter-spacing:.04em;margin:8px 0 2px">12 key historical examples of attacks targeting Israeli civilians</h3>
+        <div class="atro-grid">
+          <div class="atro"><span class="t">1. 1954 — Scorpion Pass</span><p>Fedayeen ambush on civilian bus from Eilat; 11 passengers executed.</p></div>
+          <div class="atro"><span class="t">2. 1956 — Shafir Synagogue</span><p>Attack on praying children in Shafir, killing 3 youths and a teacher.</p></div>
+          <div class="atro"><span class="t">3. 1972 — Munich Olympics</span><p>Black September kidnapping and murder of 11 Israeli Olympic team members.</p></div>
+          <div class="atro"><span class="t">4. 1974 — Ma'alot Massacre</span><p>School takeover by DFLP militants; 22 children and 3 adults killed.</p></div>
+          <div class="atro"><span class="t">5. 1978 — Coastal Road Attack</span><p>Fatah bus hijacking; 38 civilians killed including 13 children.</p></div>
+          <div class="atro"><span class="t">6. 1994 — Dizengoff Bus</span><p>Hamas suicide bombing of morning rush-hour bus in Tel Aviv; 22 killed.</p></div>
+          <div class="atro"><span class="t">7. 2001 — Dolphinarium Club</span><p>Suicide attack outside Tel Aviv nightclub targeting teens; 21 killed.</p></div>
+          <div class="atro"><span class="t">8. 2001 — Sbarro Pizzeria</span><p>Suicide bombing inside crowded Jerusalem restaurant; 15 civilians killed.</p></div>
+          <div class="atro"><span class="t">9. 2002 — Passover Massacre</span><p>Park Hotel bombing during holiday dinner in Netanya; 30 elderly killed.</p></div>
+          <div class="atro"><span class="t">10. 2003 — Maxim Restaurant</span><p>PIJ suicide attack on joint Jewish-Arab dining spot in Haifa; 21 killed.</p></div>
+          <div class="atro"><span class="t">11. 2015–16 — Knife Intifada</span><p>Decentralized stabbing and vehicle-ramming attacks on pedestrians.</p></div>
+          <div class="atro"><span class="t">12. 2023 — Oct 7 Invasion</span><p>Mass cross-border slaughter, torture, and kidnapping; ~1,200 killed.</p></div>
+        </div>
+
+        <div class="panel">
+          <h3>🌐 The Iranian "Ring of Fire" Proxy Strategy</h3>
+          <p>To understand Israel's strategic dilemmas, debate participants must recognize that Israel is not merely engaged in localized clashes, but in an existential conflict against the Islamic Republic of Iran's regional proxy ecosystem<span class="cite" data-cite="byman2020" role="button" tabindex="0" aria-label="Citation 10">[10]</span>.</p>
+          <div class="ring-grid">
+            <div class="ring"><span class="n">Hezbollah (Lebanon)</span><p>150,000+ rockets/missiles targeting northern and central Israel.</p></div>
+            <div class="ring"><span class="n">Hamas / PIJ (Gaza / WB)</span><p>Frontline proxy receiving tens of millions annually plus Iranian weapons technology.</p></div>
+            <div class="ring"><span class="n">Houthis (Yemen)</span><p>Long-range ballistic missile and drone strikes on Red Sea shipping and Israeli territory.</p></div>
+          </div>
+        </div>
       </section>
 
       <!-- 5 -->
-      <section id="conspiracies">
-        <h2>5 · Antisemitism, conspiracy tropes &amp; Iranian sponsorship</h2>
-        <p>Examination of how ancient conspiracy tropes manifest in modern geopolitical narratives, alongside the structural role of state-sponsored proxy networks.</p>
+      <section id="counterarguments">
+        <h2>5 · Deconstructing counter-arguments, echo chambers &amp; peace breakdowns</h2>
+        <p class="intro">Critical analysis of common rhetorical fallacies, ideological echo chambers, and the historical pattern of rejected peace initiatives.</p>
 
-        <div class="note warn"><b>Deconstructing the "Puppet State" Myth:</b> Claims that Israel controls global media or superpower foreign policy recycle medieval antisemitic tropes about secret financial control. The US-Israel alliance is an independent, democratic partnership based on shared intelligence and mutual security goals.</div>
+        <div class="ca">
+          <h3 class="mono">A. The "David vs. Goliath" fallacy &amp; raw asymmetry</h3>
+          <p>A prevalent framing in popular media reduces the conflict to a binary "David vs. Goliath" narrative based strictly on military spending and state infrastructure. This framing is fundamentally flawed because it replaces moral and doctrinal evaluation with raw power evaluation. A military advantage does not invalidate a state's right to defend its citizens against slaughter. If a nuclear power faces continuous rocket barrages targeting its civilian centers, its military strength does not legally or morally obligate it to absorb terror attacks without response.</p>
+        </div>
 
-        <p style="margin-top: 14px;">Furthermore, regional instability is heavily orchestrated by the Islamic Republic of Iran, which finances, arms, and trains an encirclement of proxy militias (Hamas, PIJ, Hezbollah, Houthis) explicitly dedicated to the eradication of the Jewish state.</p>
+        <div class="ca">
+          <h3 class="mono">B. Structural breakdown of peace initiatives</h3>
+          <p>Counter-arguments stating that Israel refuses diplomatic resolution ignore a historic pattern where Israeli concessions were met with terrorism or total rejection:</p>
+          <div class="peace-grid">
+            <div class="peace"><strong>1947 UN Partition:</strong> accepted by Jewish leadership, rejected by Arab states → war.</div>
+            <div class="peace"><strong>1979 Camp David:</strong> full peace with Egypt in exchange for returning 100% of the Sinai Peninsula.</div>
+            <div class="peace"><strong>2000 Camp David II:</strong> Ehud Barak offered statehood in Gaza &amp; ~92% West Bank; rejected without counter-offer by Arafat → Second Intifada<span class="cite" data-cite="ross2004" role="button" tabindex="0" aria-label="Citation 11">[11]</span>.</div>
+            <div class="peace"><strong>2005 Gaza Disengagement:</strong> unilateral withdrawal of 100% of Israeli soldiers and civilian settlements → Hamas takeover in 2007 and continuous rocket warfare.</div>
+          </div>
+        </div>
+
+        <div class="ca">
+          <h3 class="mono">C. Role of ideological propaganda &amp; double standards</h3>
+          <p>In debate environments, opponents often apply a unique standard to Israel that is applied to no other sovereign nation (IHRA definition of antisemitism)<span class="cite" data-cite="ihra2016" role="button" tabindex="0" aria-label="Citation 12">[12]</span>. While criticism of specific state policy is valid, denying Israel the fundamental right of self-defense — or demanding that it tolerate security threats no Western nation would accept — reflects a profound moral double standard fueled by historic bias and radical ideological narratives.</p>
+        </div>
       </section>
 
       <!-- 6 -->
-      <section id="socratic-toolkit">
-        <h2>6 · Debate socratic toolkit</h2>
-        <p>Essential questions to pose when challenging an opponent attempting to justify or normalize violence against civilians:</p>
+      <section id="matrix">
+        <h2>6 · Interactive Socratic debate matrix &amp; cross-examination tool</h2>
+        <p class="intro">Select a topic to view the opponent's claim, the strategic steelman response, and the precise Socratic cross-examination question to ask in your debate.</p>
 
-        <ol class="steps">
-          <li><b>On Actionable Alternatives:</b> <i>"What specific, realistic military alternative should any sovereign nation implement when thousands of unguided rockets are launched at its cities from inside civilian infrastructure?"</i></li>
-          <li><b>On Moral Equivalence:</b> <i>"Can you present any official state policy from Israel that promotes targeting non-combatant women and children, contrasting it with charters that explicitly mandate the destruction of civilian populations?"</i></li>
-          <li><b>On Sovereign Duty:</b> <i>"Would your own government tolerate foreign militants crossing its borders to execute over a thousand citizens without launching a full military campaign to remove that threat?"</i></li>
-        </ol>
+        <div class="mx-filter" id="matrixFilter">
+          <button class="chip-btn active" data-tag="all" type="button">All topics</button>
+          <button class="chip-btn" data-tag="1967" type="button">1967 Preemption</button>
+          <button class="chip-btn" data-tag="blockade" type="button">Gaza Blockade</button>
+          <button class="chip-btn" data-tag="disproportionate" type="button">Proportionality</button>
+          <button class="chip-btn" data-tag="peace" type="button">Peace Offers</button>
+        </div>
+        <div id="matrixContainer"></div>
       </section>
 
-      <p class="foot">Israel Security &amp; Self-Defense Debate Guide · Published for GitHub Pages · Designed for analytical study and academic debate preparation.</p>
+      <!-- 7 -->
+      <section id="references">
+        <h2>7 · Academic bibliography &amp; sources</h2>
+        <ol class="biblio">
+          <li id="cit-un181">United Nations General Assembly. (1947). <em>Resolution 181 (II): Future government of Palestine</em>. A/RES/181(II).</li>
+          <li id="cit-morris2008">Morris, B. (2008). <em>1948: A History of the First Arab-Israeli War</em>. Yale University Press.</li>
+          <li id="cit-oren2002">Oren, M. B. (2002). <em>Six Days of War: June 1967 and the Making of the Modern Middle East</em>. Oxford University Press.</li>
+          <li id="cit-rabinovich2004">Rabinovich, A. (2004). <em>The Yom Kippur War: The Epic Encounter That Transformed the Middle East</em>. Schocken Books.</li>
+          <li id="cit-pollack2002">Pollack, K. M. (2002). <em>Arabs at War: Military Effectiveness, 1948–1991</em>. University of Nebraska Press.</li>
+          <li id="cit-derfner2005">Derfner, L. (2005). <em>The Intifada Victories: How Security Measures Stopped Terror</em>. Middle East Quarterly.</li>
+          <li id="cit-hrw2023">Human Rights Watch. (2023). <em>October 7 Massacres: Documentation of Crimes Against Humanity</em>. HRW Report Series.</li>
+          <li id="cit-schmitt2011">Schmitt, M. N. (2011). <em>Targeting and International Humanitarian Law in Asymmetric Conflicts</em>. Naval War College Review.</li>
+          <li id="cit-nato2014">NATO Strategic Communications Centre of Excellence. (2014). <em>Hamas' Use of Human Shields in Gaza</em>. NATO StratCom Publication.</li>
+          <li id="cit-byman2020">Byman, D. (2020). <em>A High Price: The Triumphs and Failures of Israeli Counterterrorism</em>. Oxford University Press.</li>
+          <li id="cit-ross2004">Ross, D. (2004). <em>The Missing Peace: The Inside Story of the Fight for Middle East Peace</em>. Farrar, Straus and Giroux.</li>
+          <li id="cit-ihra2016">International Holocaust Remembrance Alliance. (2016). <em>Working Definition of Antisemitism</em>. IHRA Plenary.</li>
+        </ol>
+        <p class="foot">Israel Security &amp; Self-Defense Debate Reference · Published for GitHub Pages · Designed for analytical study and academic debate preparation.</p>
+      </section>
 
     </main>
   </div>
 </div>
+
+<div id="tooltip" role="tooltip"></div>
+
+<script>
+  "use strict";
+
+  /* ---- Citation data ---- */
+  const citations = {
+    un181: 'UN General Assembly Resolution 181 (1947) recommended the partition of Mandatory Palestine into independent Jewish and Arab states.',
+    morris2008: 'Benny Morris (2008): details the immediate invasion by 5 Arab armies on May 15, 1948 following Israel’s declaration of independence.',
+    oren2002: 'Michael Oren (2002): comprehensive history of the 1967 Six-Day War, documenting Nasser’s troop mobilizations and Straits of Tiran blockade.',
+    rabinovich2004: 'Abraham Rabinovich (2004): history of the 1973 Yom Kippur surprise assault by Egypt and Syria.',
+    pollack2002: 'Kenneth Pollack (2002): military evaluation of Middle East conflicts and cross-border terrorist incursions from Lebanon.',
+    derfner2005: 'Larry Derfner (2005): statistical analysis showing the West Bank barrier reduced suicide bombings by >90%.',
+    hrw2023: 'Human Rights Watch Report (2023): documented mass atrocities, executions, and kidnapping committed on October 7.',
+    schmitt2011: 'Michael Schmitt (2011): legal analysis of Israeli precision warnings (roof knocking, SMS) under IHL.',
+    nato2014: 'NATO StratCom Report (2014): documented evidence of Hamas firing rockets from dense civilian infrastructure.',
+    byman2020: 'Daniel Byman (2020): analysis of Iran’s funding, training, and strategic employment of regional proxy forces.',
+    ross2004: 'Dennis Ross (2004): inside account of Arafat’s rejection of the 2000 Camp David peace offer.',
+    ihra2016: 'IHRA Working Definition: applying double standards by requiring behavior not expected of any other democratic nation.'
+  };
+
+  /* ---- Socratic matrix data ---- */
+  const matrixData = [
+    {
+      tags: ['1967'],
+      title: 'Preemptive strike in the 1967 Six-Day War',
+      opponent: 'Israel initiated hostilities on June 5, 1967, proving it was the aggressor expanding territorial control.',
+      steelman: 'Under international law, closing the Straits of Tiran and massing 100,000 troops on the border constituted active acts of war (casus belli). Israel exercised lawful anticipatory self-defense to prevent imminent national destruction.',
+      socratic: 'If an enemy army surrounds your border, expels UN peacekeepers, and blocks your national shipping lanes while publicly declaring your destruction, are you legally obligated to let them strike first?'
+    },
+    {
+      tags: ['blockade'],
+      title: 'The maritime blockade on Gaza',
+      opponent: 'The naval blockade on Gaza is collective punishment against civilians.',
+      steelman: 'The Palmer Report (UN Panel) established that Israel’s naval blockade is a legal security measure to prevent Iranian arms smuggling to Hamas. Under IHL, naval blockades are legitimate defensive tools against hostile entity weapon imports.',
+      socratic: 'If a governing regime in control of adjacent territory declares war on your state and fires rockets at your cities, does international law require you to allow free maritime shipment of weapons to that regime?'
+    },
+    {
+      tags: ['disproportionate'],
+      title: 'Proportionality &amp; asymmetric casualty rates',
+      opponent: 'Higher Palestinian casualty numbers prove Israeli military operations are disproportionate and unlawful.',
+      steelman: 'Under International Humanitarian Law (Geneva Convention Protocol I), proportionality is NOT measured by equal casualty counts. It is measured by whether expected civilian harm is excessive in relation to the concrete military advantage anticipated.',
+      socratic: 'Does the effectiveness of Israel’s Iron Dome air defense system mean Israel loses its legal right to eliminate the missile launchers actively firing at its civilian centers?'
+    },
+    {
+      tags: ['peace'],
+      title: '2005 Gaza disengagement &amp; land for peace',
+      opponent: 'Israel’s withdrawal from Gaza was incomplete and maintained air/sea occupation.',
+      steelman: 'Israel completely removed 21 civilian settlements and 100% of its military footprint in 2005. Instead of building state institutions, Hamas seized power in 2007 and transformed Gaza into a launchpad for rockets, proving territorial concessions without security guarantees yield terrorism.',
+      socratic: 'When Israel withdrew every soldier and civilian from Gaza in 2005, why did militant groups respond by firing thousands of rockets into pre-1967 Israeli cities rather than building peace?'
+    }
+  ];
+
+  function renderMatrix(data){
+    const c = document.getElementById('matrixContainer');
+    c.innerHTML = '';
+    data.forEach(function(item){
+      const card = document.createElement('div');
+      card.className = 'mx-card';
+      card.innerHTML =
+        '<p class="mx-title">' + item.title + '</p>' +
+        '<div class="mx-cols">' +
+          '<div class="mx-box opp"><span class="mx-lbl">Opponent’s claim</span><p>' + item.opponent + '</p></div>' +
+          '<div class="mx-box steel"><span class="mx-lbl">Steelman response</span><p>' + item.steelman + '</p></div>' +
+          '<div class="mx-box soc"><span class="mx-lbl">Socratic question</span><p>&ldquo;' + item.socratic + '&rdquo;</p></div>' +
+        '</div>';
+      c.appendChild(card);
+    });
+  }
+
+  document.getElementById('matrixFilter').addEventListener('click', function(e){
+    const btn = e.target.closest('button[data-tag]');
+    if(!btn) return;
+    this.querySelectorAll('button').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    const tag = btn.getAttribute('data-tag');
+    renderMatrix(tag === 'all' ? matrixData : matrixData.filter(function(d){ return d.tags.indexOf(tag) !== -1; }));
+  });
+
+  /* ---- Citation tooltip (click / keyboard) ---- */
+  const tooltip = document.getElementById('tooltip');
+  function showCitation(el, x, y){
+    const key = el.getAttribute('data-cite');
+    tooltip.textContent = citations[key] || 'Citation reference.';
+    tooltip.style.display = 'block';
+    const maxX = window.scrollX + document.documentElement.clientWidth - tooltip.offsetWidth - 12;
+    tooltip.style.left = Math.min(x + 12, maxX) + 'px';
+    tooltip.style.top = (y + 14) + 'px';
+  }
+  function hideTooltip(){ tooltip.style.display = 'none'; }
+
+  document.addEventListener('click', function(e){
+    const cite = e.target.closest('.cite');
+    if(cite){
+      e.stopPropagation();
+      const r = cite.getBoundingClientRect();
+      showCitation(cite, window.scrollX + r.left, window.scrollY + r.bottom);
+    } else {
+      hideTooltip();
+    }
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape'){ hideTooltip(); return; }
+    if((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('cite')){
+      e.preventDefault();
+      const r = e.target.getBoundingClientRect();
+      showCitation(e.target, window.scrollX + r.left, window.scrollY + r.bottom);
+    }
+  });
+  window.addEventListener('resize', hideTooltip);
+  window.addEventListener('scroll', hideTooltip, { passive: true });
+
+  /* ---- Theme toggle (follows OS by default; persists per viewer) ---- */
+  const root = document.documentElement;
+  const toggleBtn = document.getElementById('themeToggle');
+  function prefersDark(){ return window.matchMedia('(prefers-color-scheme: dark)').matches; }
+  function effectiveDark(){
+    const t = root.getAttribute('data-theme');
+    if(t === 'dark') return true;
+    if(t === 'light') return false;
+    return prefersDark();
+  }
+  function syncLabel(){ toggleBtn.textContent = effectiveDark() ? '☀️ Light' : '🌙 Dark'; }
+  try {
+    const saved = localStorage.getItem('debate-theme');
+    if(saved === 'dark' || saved === 'light') root.setAttribute('data-theme', saved);
+  } catch(_){}
+  toggleBtn.addEventListener('click', function(){
+    const next = effectiveDark() ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('debate-theme', next); } catch(_){}
+    syncLabel();
+  });
+  try {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', syncLabel);
+  } catch(_){}
+
+  /* ---- Init ---- */
+  renderMatrix(matrixData);
+  syncLabel();
+</script>
 </body>
 </html>
