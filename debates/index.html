@@ -124,6 +124,18 @@
   .ca p{margin:0;font-size:14.5px}
   .peace-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px;margin-top:12px}
   .peace{padding:12px 14px;background:var(--surface-2);border:1px solid var(--rule);border-radius:8px;font-size:13.5px}
+  /* enriched record cards (catalog + peace) */
+  .rec-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:14px;margin:14px 0}
+  .rec{padding:18px;background:var(--surface);border:1px solid var(--rule);border-radius:12px}
+  .rec-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 10px;margin-bottom:10px;padding-bottom:9px;border-bottom:1px solid var(--rule)}
+  .rec-head h3{font-size:15px}
+  .rec .row{font-size:14px;margin:9px 0}
+  .rec .row .rl,.rec .q-row .rl{display:block;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-bottom:3px}
+  .rec .row.atrocity .rl{color:var(--danger)}
+  .rec .row.response .rl{color:var(--success)}
+  .rec .q-row{margin-top:10px;padding:11px 13px;background:var(--info-tint);border-left:4px solid var(--navy);border-radius:0 8px 8px 0;font-size:13.5px}
+  .rec .q-row .rl{color:var(--navy)}
+  .rec .q-row .qq{margin:0;font-style:italic}
   /* matrix */
   .mx-filter{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
   .chip-btn{border:1px solid var(--rule);background:var(--surface);color:var(--text);border-radius:8px;
@@ -399,20 +411,87 @@
         <h2>4 · Catalog of non-combatant atrocities &amp; the Iranian axis</h2>
         <p class="intro">Documenting historical terror attacks targeting civilians and analyzing the strategic role of the Islamic Republic of Iran's proxy warfare network.</p>
 
-        <h3 class="mono" style="text-transform:uppercase;letter-spacing:.04em;margin:8px 0 2px">12 key historical examples of attacks targeting Israeli civilians</h3>
-        <div class="atro-grid">
-          <div class="atro"><span class="t">1. 1954 — Scorpion Pass</span><p>Fedayeen ambush on civilian bus from Eilat; 11 passengers executed.</p></div>
-          <div class="atro"><span class="t">2. 1956 — Shafir Synagogue</span><p>Attack on praying children in Shafir, killing 3 youths and a teacher.</p></div>
-          <div class="atro"><span class="t">3. 1972 — Munich Olympics</span><p>Black September kidnapping and murder of 11 Israeli Olympic team members.</p></div>
-          <div class="atro"><span class="t">4. 1974 — Ma'alot Massacre</span><p>School takeover by DFLP militants; 22 children and 3 adults killed.</p></div>
-          <div class="atro"><span class="t">5. 1978 — Coastal Road Attack</span><p>Fatah bus hijacking; 38 civilians killed including 13 children.</p></div>
-          <div class="atro"><span class="t">6. 1994 — Dizengoff Bus</span><p>Hamas suicide bombing of morning rush-hour bus in Tel Aviv; 22 killed.</p></div>
-          <div class="atro"><span class="t">7. 2001 — Dolphinarium Club</span><p>Suicide attack outside Tel Aviv nightclub targeting teens; 21 killed.</p></div>
-          <div class="atro"><span class="t">8. 2001 — Sbarro Pizzeria</span><p>Suicide bombing inside crowded Jerusalem restaurant; 15 civilians killed.</p></div>
-          <div class="atro"><span class="t">9. 2002 — Passover Massacre</span><p>Park Hotel bombing during holiday dinner in Netanya; 30 elderly killed.</p></div>
-          <div class="atro"><span class="t">10. 2003 — Maxim Restaurant</span><p>PIJ suicide attack on joint Jewish-Arab dining spot in Haifa; 21 killed.</p></div>
-          <div class="atro"><span class="t">11. 2015–16 — Knife Intifada</span><p>Decentralized stabbing and vehicle-ramming attacks on pedestrians.</p></div>
-          <div class="atro"><span class="t">12. 2023 — Oct 7 Invasion</span><p>Mass cross-border slaughter, torture, and kidnapping; ~1,200 killed.</p></div>
+        <h3 class="mono" style="text-transform:uppercase;letter-spacing:.04em;margin:8px 0 2px">Catalog of terror: atrocity &rarr; Israel's response &rarr; challenge question</h3>
+        <p class="intro" style="margin-top:6px">Each entry pairs a documented attack on civilians with the defensive action it triggered and the question an opponent must answer.</p>
+        <div class="rec-grid">
+
+          <div class="rec">
+            <div class="rec-head"><span class="year">1954</span><h3>Scorpion Pass Massacre</h3></div>
+            <div class="row atrocity"><span class="rl">Atrocity</span>Palestinian/Bedouin fedayeen ambushed a civilian passenger bus traveling from Eilat, murdering 11 passengers execution-style.</div>
+            <div class="row response"><span class="rl">Israel's response</span>Targeted counter-infiltrations to secure the borders.</div>
+            <div class="q-row"><span class="rl">Challenge question</span><p class="qq">What nation on earth would tolerate passenger buses being ambushed without hunting down the killers?</p></div>
+          </div>
+
+          <div class="rec">
+            <div class="rec-head"><span class="year">1972</span><h3>Munich Olympics Massacre</h3></div>
+            <div class="row atrocity"><span class="rl">Atrocity</span>The Palestinian terrorist group Black September kidnapped and murdered 11 Israeli Olympic team members and coaches.</div>
+            <div class="row response"><span class="rl">Israel's response</span>Operation Wrath of God &mdash; systematically tracking down and eliminating the perpetrators of the massacre.</div>
+            <div class="q-row"><span class="rl">Challenge question</span><p class="qq">Is a state not obligated to hunt down international terrorists who murder its citizens on foreign soil?</p></div>
+          </div>
+
+          <div class="rec">
+            <div class="rec-head"><span class="year">1974</span><h3>Ma'alot Massacre</h3></div>
+            <div class="row atrocity"><span class="rl">Atrocity</span>Palestinian militants took over an elementary school in Ma'alot, holding over 100 children hostage and murdering 22 children and 3 adults.</div>
+            <div class="row response"><span class="rl">Israel's response</span>Special forces rescue operations and increased border security.</div>
+            <div class="q-row"><span class="rl">Challenge question</span><p class="qq">If gunmen storm an elementary school to execute children, what is the exact moral response of a defending military?</p></div>
+          </div>
+
+          <div class="rec">
+            <div class="rec-head"><span class="year">1978</span><h3>Coastal Road Massacre</h3></div>
+            <div class="row atrocity"><span class="rl">Atrocity</span>Fatah militants hijacked a civilian bus on Israel's highway, murdering 38 civilians, including 13 children.</div>
+            <div class="row response"><span class="rl">Israel's response</span>Operation Litani, pushing PLO forces north of the Litani River in Lebanon.</div>
+            <div class="q-row"><span class="rl">Challenge question</span><p class="qq">Should Israel have simply asked the PLO nicely to stop hijacking buses, or was a military incursion to clear out the staging grounds justified?</p></div>
+          </div>
+
+          <div class="rec">
+            <div class="rec-head"><span class="year">1994</span><h3>Dizengoff Street Bus Bombing</h3></div>
+            <div class="row atrocity"><span class="rl">Atrocity</span>A Hamas suicide bomber blew up a public city bus in Tel Aviv during morning rush hour, killing 22 civilians.</div>
+            <div class="row response"><span class="rl">Israel's response</span>Increased internal security checkpoints and intelligence operations.</div>
+            <div class="q-row"><span class="rl">Challenge question</span><p class="qq">How do you defend civilians from walking human bombs without strict security measures?</p></div>
+          </div>
+
+          <div class="rec">
+            <div class="rec-head"><span class="year">2001</span><h3>Dolphinarium Discotheque Bombing</h3></div>
+            <div class="row atrocity"><span class="rl">Atrocity</span>A Hamas suicide bomber blew himself up outside a Tel Aviv nightclub, specifically targeting teenagers waiting in line, killing 21 young people.</div>
+            <div class="row response"><span class="rl">Israel's response</span>Expanded targeted counter-terrorism sweeps in the West Bank.</div>
+            <div class="q-row"><span class="rl">Challenge question</span><p class="qq">Is it &ldquo;disproportionate&rdquo; to stop teenagers from being blown to pieces outside a nightclub?</p></div>
+          </div>
+
+          <div class="rec">
+            <div class="rec-head"><span class="year">2001</span><h3>Sbarro Restaurant Bombing</h3></div>
+            <div class="row atrocity"><span class="rl">Atrocity</span>A suicide attack inside a crowded pizza restaurant in Jerusalem killed 15 civilians, including 7 children.</div>
+            <div class="row response"><span class="rl">Israel's response</span>Operation Defensive Shield to dismantle bomb-making infrastructure.</div>
+            <div class="q-row"><span class="rl">Challenge question</span><p class="qq">What would your government do if family restaurants were systematically blown up week after week?</p></div>
+          </div>
+
+          <div class="rec">
+            <div class="rec-head"><span class="year">2002</span><h3>Passover Massacre</h3></div>
+            <div class="row atrocity"><span class="rl">Atrocity</span>A Hamas suicide bomber detonated explosives inside the Park Hotel in Netanya during a Passover Seder dinner, killing 30 mostly elderly Holocaust survivors and civilians.</div>
+            <div class="row response"><span class="rl">Israel's response</span>The decision to construct the West Bank security barrier.</div>
+            <div class="q-row"><span class="rl">Challenge question</span><p class="qq">Do you oppose the security fence that stopped suicide bombers? If so, are you volunteering to stand unprotected in restaurants as human shields?</p></div>
+          </div>
+
+          <div class="rec">
+            <div class="rec-head"><span class="year">2003</span><h3>Maxim Restaurant Bombing</h3></div>
+            <div class="row atrocity"><span class="rl">Atrocity</span>An Islamic Jihad suicide bomber attacked a beachfront family restaurant in Haifa, killing 21 civilians, including Jewish and Arab families dining together.</div>
+            <div class="row response"><span class="rl">Israel's response</span>Airstrikes against terrorist training camps in Syria.</div>
+            <div class="q-row"><span class="rl">Challenge question</span><p class="qq">When a terrorist cell is funded and harbored across a sovereign border, how should that state respond?</p></div>
+          </div>
+
+          <div class="rec">
+            <div class="rec-head"><span class="year">2015&ndash;2016</span><h3>The &ldquo;Knife Intifada&rdquo;</h3></div>
+            <div class="row atrocity"><span class="rl">Atrocity</span>A wave of decentralized stabbing and vehicle-ramming attacks targeting random Israeli civilians on public streets.</div>
+            <div class="row response"><span class="rl">Israel's response</span>Enhanced urban policing and deployment of security forces at transit hubs.</div>
+            <div class="q-row"><span class="rl">Challenge question</span><p class="qq">How do you stop random individuals from stabbing civilians on the street without armed security and checkpoints?</p></div>
+          </div>
+
+          <div class="rec">
+            <div class="rec-head"><span class="year">Oct 7, 2023</span><h3>The Hamas Massacre</h3></div>
+            <div class="row atrocity"><span class="rl">Atrocity</span>An unprovoked cross-border invasion by Hamas murdering ~1,200 people, committing mass sexual violence, mutilation, and abducting 240+ hostages.<span class="cite" data-cite="hrw2023" role="button" tabindex="0" aria-label="Citation 7">[7]</span></div>
+            <div class="row response"><span class="rl">Israel's response</span>Total wartime mobilization to dismantle Hamas's governance and military infrastructure in Gaza.</div>
+            <div class="q-row"><span class="rl">Challenge question</span><p class="qq">If your neighbor broke into your home, murdered your family, raped your daughters, and promised to do it again, what would you do? Why hold Israel to a standard no human being applies to themselves?</p></div>
+          </div>
+
         </div>
 
         <div class="panel">
@@ -438,12 +517,51 @@
 
         <div class="ca">
           <h3 class="mono">B. Structural breakdown of peace initiatives</h3>
-          <p>Counter-arguments stating that Israel refuses diplomatic resolution ignore a historic pattern where Israeli concessions were met with terrorism or total rejection:</p>
-          <div class="peace-grid">
-            <div class="peace"><strong>1947 UN Partition:</strong> accepted by Jewish leadership, rejected by Arab states → war.</div>
-            <div class="peace"><strong>1979 Camp David:</strong> full peace with Egypt in exchange for returning 100% of the Sinai Peninsula.</div>
-            <div class="peace"><strong>2000 Camp David II:</strong> Ehud Barak offered statehood in Gaza &amp; ~92% West Bank; rejected without counter-offer by Arafat → Second Intifada<span class="cite" data-cite="ross2004" role="button" tabindex="0" aria-label="Citation 11">[11]</span>.</div>
-            <div class="peace"><strong>2005 Gaza Disengagement:</strong> unilateral withdrawal of 100% of Israeli soldiers and civilian settlements → Hamas takeover in 2007 and continuous rocket warfare.</div>
+          <p>Counter-arguments stating that Israel refuses diplomatic resolution ignore a historic pattern where Israeli concessions were met with terrorism or total rejection. Each entry below pairs the peace effort with how it was broken, and the question an opponent must answer:</p>
+          <div class="rec-grid">
+
+            <div class="rec">
+              <div class="rec-head"><span class="year">1947</span><h3>The UN Partition Plan (Resolution 181)</h3></div>
+              <div class="row response"><span class="rl">The peace effort</span>Jewish leadership accepted the UN plan to create two states (Jewish and Arab).</div>
+              <div class="row atrocity"><span class="rl">How it was broken</span>Arab leadership rejected coexistence entirely, launching a war of annihilation the moment independence was declared.</div>
+              <div class="q-row"><span class="rl">Challenge question</span><p class="qq">If you reject a state when offered 100% of what you claim you want &mdash; because you refuse to let a Jewish state exist &mdash; who is truly to blame for your statelessness?</p></div>
+            </div>
+
+            <div class="rec">
+              <div class="rec-head"><span class="year">1967</span><h3>Post-Six-Day War &ldquo;Land for Peace&rdquo; (Resolution 242)</h3></div>
+              <div class="row response"><span class="rl">The peace effort</span>Israel offered to return captured territories in exchange for peace and recognition.</div>
+              <div class="row atrocity"><span class="rl">How it was broken</span>The Arab League issued the infamous &ldquo;Three No's&rdquo; at the Khartoum Conference: no peace with Israel, no recognition of Israel, no negotiations with Israel.</div>
+              <div class="q-row"><span class="rl">Challenge question</span><p class="qq">How do you make peace with an adversary whose official policy is &ldquo;Three No's&rdquo;?</p></div>
+            </div>
+
+            <div class="rec">
+              <div class="rec-head"><span class="year">1978&ndash;1979</span><h3>Camp David Accords &amp; Egyptian Peace Treaty</h3></div>
+              <div class="row response"><span class="rl">The peace effort</span>Israel negotiated directly with Egypt, signing a historic peace treaty and returning the entire Sinai Peninsula.</div>
+              <div class="row atrocity"><span class="rl">How it was broken</span>Egypt's President Anwar Sadat was assassinated by Islamist extremists for making peace with Israel, and the rest of the Arab world ostracized Egypt for decades.</div>
+              <div class="q-row"><span class="rl">Challenge question</span><p class="qq">Does Israel trading the entire Sinai Peninsula &mdash; larger than Israel itself &mdash; not prove it trades land for peace, while the rejectionist front trades peace for perpetual war?</p></div>
+            </div>
+
+            <div class="rec">
+              <div class="rec-head"><span class="year">1993&ndash;1995</span><h3>The Oslo Accords</h3></div>
+              <div class="row response"><span class="rl">The peace effort</span>Israel signed the Oslo Accords, recognizing the PLO, establishing the Palestinian Authority, and transferring self-governance over West Bank and Gaza cities to Palestinian leadership.</div>
+              <div class="row atrocity"><span class="rl">How it was broken</span>Instead of building a state, Palestinian leadership unleashed the Second Intifada, rewarding peace gestures with suicide bombings that murdered over 1,000 Israelis.</div>
+              <div class="q-row"><span class="rl">Challenge question</span><p class="qq">When you hand over land and self-rule, and your reward is a wave of suicide bombings, what lesson is a democracy supposed to learn?</p></div>
+            </div>
+
+            <div class="rec">
+              <div class="rec-head"><span class="year">2000&ndash;2001</span><h3>Camp David Summit &amp; Taba Negotiations</h3></div>
+              <div class="row response"><span class="rl">The peace effort</span>Israel offered a Palestinian state encompassing nearly 95&ndash;100% of the West Bank and Gaza, with East Jerusalem as its capital.</div>
+              <div class="row atrocity"><span class="rl">How it was broken</span>Yasser Arafat rejected the offer outright, made no counter-proposal, and launched the bloody Second Intifada.<span class="cite" data-cite="ross2004" role="button" tabindex="0" aria-label="Citation 11">[11]</span></div>
+              <div class="q-row"><span class="rl">Challenge question</span><p class="qq">If someone rejects a sovereign state and chooses terror instead, are they fighting for freedom, or for the destruction of Israel?</p></div>
+            </div>
+
+            <div class="rec">
+              <div class="rec-head"><span class="year">2005</span><h3>Unilateral Disengagement from Gaza</h3></div>
+              <div class="row response"><span class="rl">The peace effort</span>Israel forcibly uprooted every Israeli citizen and military base from the Gaza Strip, handing it 100% over to Palestinian control to test peace through separation.</div>
+              <div class="row atrocity"><span class="rl">How it was broken</span>Gazans elected Hamas, who immediately turned the territory into a terrorist fortress &mdash; purging political rivals, building underground terror tunnels, and firing tens of thousands of rockets at Israeli homes until October 7th.</div>
+              <div class="q-row"><span class="rl">Challenge question</span><p class="qq">Israel left Gaza completely in 2005, down to the last greenhouse. They got rockets instead of Singapore. What should Israel have done differently?</p></div>
+            </div>
+
           </div>
         </div>
 
