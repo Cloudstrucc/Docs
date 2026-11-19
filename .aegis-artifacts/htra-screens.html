@@ -145,6 +145,21 @@ td.num,th.num{text-align:center;font-family:var(--f-mono);font-variant-numeric:t
 .report{background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:0;margin-top:14px;overflow:hidden}
 .rmark{background:var(--sev5-bg);color:var(--sev5);font:600 10.5px var(--f-mono);letter-spacing:.14em;text-transform:uppercase;text-align:center;padding:6px}
 .rbody{padding:20px 22px;max-width:70ch}
+.rbody.wide{max-width:none}
+.pm{border-collapse:collapse;min-width:1020px;font-size:11.5px;width:100%}
+.pm th{font:600 9.5px var(--f-mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);background:var(--surface-2);border:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:bottom}
+.pm td{border:1px solid var(--line);padding:7px 8px;vertical-align:top}
+.pm td.id{font-family:var(--f-mono);font-weight:500;white-space:nowrap}
+.pm td.dt{font-family:var(--f-mono);white-space:nowrap}
+.pm ul{margin:0;padding-left:14px}
+.pm li{margin-bottom:2px}
+.sigrow{display:grid;grid-template-columns:1fr;gap:18px;margin-top:22px}
+@media(min-width:620px){.sigrow{grid-template-columns:1fr 1fr}}
+.sig{border-top:1px solid var(--ink);padding-top:7px;font-size:12px}
+.sig b{display:block;font-weight:600}
+.sig span{color:var(--muted);font-size:11.5px}
+.sigline{height:34px}
+.rtable{overflow-x:auto;border:1px solid var(--line);border-radius:7px;margin:12px 0}
 .rbody h2{font-size:18px;letter-spacing:-.01em}
 .rbody .meta{font:400 11.5px var(--f-mono);color:var(--muted);margin:6px 0 16px;padding-bottom:12px;border-bottom:1px solid var(--line)}
 .rbody h5{font:600 10.5px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:18px 0 6px}
@@ -162,7 +177,7 @@ td.num,th.num{text-align:center;font-family:var(--f-mono);font-variant-numeric:t
   <div class="intro">
     <div>
       <h1>Aegis SA — HTRA screens</h1>
-      <p>Seven mockups covering each HTRA sub-step and deliverable, shown inside the existing
+      <p>Nine mockups covering each HTRA sub-step and every deliverable, shown inside the existing
          intake → assessment → decision package → close pipeline. Example project with illustrative data;
          no real department or system is depicted.</p>
     </div>
@@ -177,6 +192,8 @@ td.num,th.num{text-align:center;font-family:var(--f-mono);font-variant-numeric:t
     <button class="pbtn" role="tab" data-s="airev"   aria-selected="false"><b>5</b>AI review queue</button>
     <button class="pbtn" role="tab" data-s="pkg"     aria-selected="false"><b>6</b>Decision package</button>
     <button class="pbtn" role="tab" data-s="report"  aria-selected="false"><b>7</b>TRA report</button>
+    <button class="pbtn" role="tab" data-s="poam"    aria-selected="false"><b>8</b>POA&amp;M artifact</button>
+    <button class="pbtn" role="tab" data-s="ato"     aria-selected="false"><b>9</b>IATO letter</button>
   </div>
 
   <div class="app">
@@ -211,7 +228,9 @@ td.num,th.num{text-align:center;font-family:var(--f-mono);font-variant-numeric:t
     <b>Reading these.</b> Screens 2–4 are the three assessment sub-steps the HTRA method
     definition declares; they appear only because the method is scoped, which is what keeps the
     pipeline itself unchanged. Screen 5 is the gate that stops an AI-suggested value reaching a
-    signed artifact unreviewed. Screens 6–7 reuse the decision package you already have.
+    signed artifact unreviewed. Screens 6–9 reuse the decision package you already have: the POA&amp;M
+    and the authorization instrument are where the two method types actually converge, which is why
+    both carry control gaps and residual risks in the same columns rather than in separate sections.
   </div>
 </div>
 <script>
@@ -692,13 +711,192 @@ td.num,th.num{text-align:center;font-family:var(--f-mono);font-variant-numeric:t
     'edition of the tables produced its numbers.</div>'
   };
 
+  /* ── 8. POA&M artifact ─────────────────────────────────────── */
+  S.poam = {
+    stage:'Decision package',
+    substeps:'<em>Decision package</em><span class="sub done">Findings consolidated</span>'+
+      '<span class="sub done">Recommendations &amp; acceptance</span><span class="sub done">POA&amp;M</span>'+
+      '<span class="sub now">Artifacts</span><span class="sub">Authorization</span>',
+    html:
+    '<div class="phead"><div><h3>Artifact preview — Plan of Action and Milestones</h3>'+
+    '<p>One table, both finding kinds. Each row renders from a <span class="mono">poam_item</span> '+
+    'joined to its source finding, so an HTRA recommendation and an ITSG-33 control remediation appear '+
+    'in the same columns without a separate template.</p></div>'+
+    '<div class="row"><button class="btn ghost">Fran&ccedil;ais</button>'+
+    '<button class="btn ghost">Export .xlsx</button>'+
+    '<button class="btn primary">Attach to package</button></div></div>'+
+    '<div class="report">'+
+      '<div class="rmark">Protected B</div>'+
+      '<div class="rbody wide">'+
+        '<h2>Plan of Action and Milestones</h2>'+
+        '<div class="meta">CRM Modernization · PRJ-2026-0184 · Department of Client Services<br>'+
+        'Revision 3 · generated 2026-11-19 · 4 open · 1 completed · next milestone 2026-12-05</div>'+
+        '<div class="tiles" style="margin-top:0;margin-bottom:16px">'+
+          '<div class="tile"><em>Open items</em><strong>4</strong><span>2 risk · 2 control</span></div>'+
+          '<div class="tile"><em>Overdue</em><strong>0</strong><span>&nbsp;</span></div>'+
+          '<div class="tile"><em>Next milestone</em><strong>Dec 5</strong><span>sets IATO expiry</span></div>'+
+          '<div class="tile"><em>Completed</em><strong>1</strong><span>verified 2026-11-07</span></div>'+
+        '</div>'+
+        '<div class="rtable"><table class="pm"><thead><tr>'+
+          '<th>Item</th><th>Weakness</th><th>Source finding</th><th>Controls</th><th>Risk</th>'+
+          '<th>Remediation &amp; milestones</th><th>Resources</th><th>Owner</th>'+
+          '<th>Scheduled</th><th>Status</th></tr></thead><tbody>'+
+        '<tr><td class="id">PM-001</td>'+
+          '<td>Support roles hold standing privileged access to client case files; bulk export is not alerted on.</td>'+
+          '<td class="id">R-014<span class="ecls">residual_risk</span></td>'+
+          '<td><span class="ctrlref">AC-2</span><span class="ctrlref">AC-6</span><span class="ctrlref">AU-6</span></td>'+
+          '<td>'+sevTag(5)+'</td>'+
+          '<td><ul><li>Introduce just-in-time elevation &mdash; 2026-12-19</li>'+
+          '<li>Alerting on bulk export &mdash; 2027-01-16</li>'+
+          '<li>Access recertification &mdash; 2027-01-31</li></ul></td>'+
+          '<td>0.5 FTE platform<br>existing licence</td><td>Dir, Platform</td>'+
+          '<td class="dt">2027-01-31</td><td><span class="sev s3">open</span></td></tr>'+
+        '<tr><td class="id">PM-002</td>'+
+          '<td>Change pipeline lacks separation of duties for production configuration, permitting exposure of payment instructions at release.</td>'+
+          '<td class="id">R-021<span class="ecls">residual_risk</span></td>'+
+          '<td><span class="ctrlref">CM-3</span><span class="ctrlref">CM-5</span><span class="ctrlref">SI-7</span></td>'+
+          '<td>'+sevTag(5)+'</td>'+
+          '<td><ul><li>Split deploy and approve roles &mdash; 2026-12-12</li>'+
+          '<li>Configuration review gate &mdash; 2026-12-19</li></ul></td>'+
+          '<td>0.25 FTE release eng</td><td>Dir, Platform</td>'+
+          '<td class="dt">2026-12-19</td><td><span class="sev s3">open</span></td></tr>'+
+        '<tr><td class="id">PM-003</td>'+
+          '<td>Multifactor authentication is not implemented for client-facing accounts.</td>'+
+          '<td class="id">IA-2<span class="ecls">control_gap · not satisfied</span></td>'+
+          '<td><span class="ctrlref">IA-2</span></td>'+
+          '<td>'+sevTag(4)+'</td>'+
+          '<td><ul><li>Enable MFA in identity provider &mdash; 2026-11-28</li>'+
+          '<li>Client communications and cutover &mdash; 2026-12-05</li></ul></td>'+
+          '<td>Existing IdP capability</td><td>Mgr, Identity</td>'+
+          '<td class="dt">2026-12-05</td><td><span class="sev s4">open · gating</span></td></tr>'+
+        '<tr><td class="id">PM-004</td>'+
+          '<td>Audit records are generated but not reviewed on a defined schedule.</td>'+
+          '<td class="id">AU-6<span class="ecls">control_gap · partially satisfied</span></td>'+
+          '<td><span class="ctrlref">AU-6</span><span class="ctrlref">AU-12</span></td>'+
+          '<td>'+sevTag(3)+'</td>'+
+          '<td><ul><li>Weekly review procedure &mdash; 2027-01-23</li>'+
+          '<li>Privileged-action alerting &mdash; 2027-02-27</li></ul></td>'+
+          '<td>0.2 FTE SecOps</td><td>Mgr, SecOps</td>'+
+          '<td class="dt">2027-02-27</td><td><span class="sev s3">open</span></td></tr>'+
+        '<tr><td class="id">PM-005</td>'+
+          '<td>Backup restoration had not been tested for the client case file store.</td>'+
+          '<td class="id">CP-9<span class="ecls">control_gap · satisfied</span></td>'+
+          '<td><span class="ctrlref">CP-9</span><span class="ctrlref">CP-10</span></td>'+
+          '<td>'+sevTag(2)+'</td>'+
+          '<td><ul><li>Restoration test executed &mdash; 2026-11-07</li></ul></td>'+
+          '<td>&mdash;</td><td>Mgr, SecOps</td>'+
+          '<td class="dt">2026-11-07</td><td><span class="sev s1">completed</span></td></tr>'+
+        '</tbody></table></div>'+
+        '<p style="font-size:12px;color:var(--muted);margin:4px 0 0">Risk column carries the source '+
+        'finding&rsquo;s own method-native level &mdash; HTRA residual risk for R-items, control '+
+        'assessment severity for control items. The two are not averaged or combined into a single '+
+        'score, because an HTRA Very high and a control-gap High are different measurements.</p>'+
+      '</div>'+
+      '<div class="rmark">Protected B</div>'+
+    '</div>'+
+    '<div class="note"><b>Mechanism:</b> a Handlebars template over '+
+    '<span class="mono">poam_item</span> &rarr; <span class="mono">finding</span>. The source column '+
+    'is the <span class="mono">source_finding_id</span> join rendered, which is what makes a single '+
+    'POA&amp;M across both method types honest rather than a merge.</div>'
+  };
+
+  /* ── 9. IATO letter ────────────────────────────────────────── */
+  S.ato = {
+    stage:'Decision package',
+    substeps:'<em>Decision package</em><span class="sub done">Findings consolidated</span>'+
+      '<span class="sub done">Recommendations &amp; acceptance</span><span class="sub done">POA&amp;M</span>'+
+      '<span class="sub done">Artifacts</span><span class="sub now">Authorization</span>',
+    html:
+    '<div class="phead"><div><h3>Artifact preview — Interim Authority to Operate</h3>'+
+    '<p>The authorization decision consumes both method types: control determinations and accepted '+
+    'residual risks. Its conditions are generated from open POA&amp;M items, and the expiry is computed '+
+    'from the earliest open milestone rather than entered by hand.</p></div>'+
+    '<div class="row"><button class="btn ghost">Fran&ccedil;ais</button>'+
+    '<button class="btn ghost">Download .docx</button>'+
+    '<button class="btn primary">Route for signature</button></div></div>'+
+    '<div class="report">'+
+      '<div class="rmark">Protected B</div>'+
+      '<div class="rbody">'+
+        '<h2>Interim Authority to Operate</h2>'+
+        '<div class="meta">CRM Modernization (CRM-M) · PRJ-2026-0184<br>'+
+        'Reference: IATO-2026-0184-01 · Issued 2026-11-19 · Expires 2026-12-05</div>'+
+        '<div class="kv"><span>To</span><b>Director General, Client Services<br>'+
+        '<span class="ecls">Business owner</span></b></div>'+
+        '<div class="kv"><span>From</span><b>Chief Information Security Officer<br>'+
+        '<span class="ecls">Authorizing official</span></b></div>'+
+        '<h5>1 · Decision</h5>'+
+        '<p>An <strong>Interim Authority to Operate</strong> is granted for the CRM Modernization '+
+        'system, effective 19 November 2026 and expiring <strong>5 December 2026</strong>, subject to '+
+        'the conditions in section 4. A full Authority to Operate will be considered on verification '+
+        'of items PM-001 through PM-003.</p>'+
+        '<h5>2 · Scope</h5>'+
+        '<p>This authorization covers the CRM application tier, its client case file and benefit '+
+        'payment instruction stores, the client-facing portal, and the integration to the departmental '+
+        'payments service, at the PROTECTED B / Medium integrity / Medium availability level. It does '+
+        'not extend to the legacy case system or to the reporting data mart.</p>'+
+        '<h5>3 · Basis of decision</h5>'+
+        '<p>The decision rests on a security assessment conducted under two methods, recorded in '+
+        'assessment ASM-2026-0411:</p>'+
+        '<ul><li><strong>ITSG-33</strong> &mdash; 213 controls in the PROTECTED B profile assessed: '+
+        '184 satisfied, 23 partially satisfied, 6 not satisfied.</li>'+
+        '<li><strong>HTRA (TRA-1)</strong> &mdash; 14 assets valued, 6 threats assessed across 38 '+
+        'asset-threat pairs, yielding 9 residual risks above the very-low band: 2 Very high, 5 High, '+
+        '2 Medium.</li></ul>'+
+        '<p>The two Very high residual risks have approved mitigations in progress and are not yet '+
+        'verified, which is the reason this authorization is interim rather than full.</p>'+
+        '<h5>4 · Conditions</h5>'+
+        '<ol><li>Multifactor authentication for client-facing accounts shall be in place before any '+
+        'production client data is loaded (PM-003, due 5 December 2026).</li>'+
+        '<li>Separation of duties in the change pipeline shall be implemented and evidenced '+
+        '(PM-002, due 19 December 2026).</li>'+
+        '<li>Just-in-time privilege elevation and bulk-export alerting shall be implemented '+
+        '(PM-001, due 31 January 2027).</li>'+
+        '<li>Any change to the authorization boundary, the data classification, or the external '+
+        'integrations listed in section 2 voids this authorization and requires reassessment.</li></ol>'+
+        '<h5>5 · Residual risk accepted</h5>'+
+        '<p>One residual risk is accepted on the authority of the business owner: <strong>R-008, '+
+        'single-region availability</strong>, assessed Medium, accepted to 31 March 2027 on the basis '+
+        'that an eight-hour recovery objective is tolerable given the manual counter fallback. The '+
+        'acceptance expires with the fiscal year and will be re-examined at that point. All other '+
+        'residual risks are subject to mitigation under section 4.</p>'+
+        '<h5>6 · Reassessment</h5>'+
+        '<p>This authorization expires on the date of the earliest outstanding condition. On '+
+        'verification of all conditions, the authorizing official will consider a full Authority to '+
+        'Operate with a three-year review cycle. Expiry does not require a new assessment where the '+
+        'boundary is unchanged.</p>'+
+        '<h5>7 · Assessment provenance</h5>'+
+        '<p>Of 47 findings supporting this decision, 31 originated as machine-generated proposals: 28 '+
+        'were reviewed and edited by a named assessor, and 3 were accepted without change. The 3 '+
+        'accepted without change are itemised at Annex A. All 9 residual risk ratings and all 6 '+
+        'not-satisfied control determinations were confirmed by a named assessor.</p>'+
+        '<div class="sigrow">'+
+          '<div><div class="sigline"></div><div class="sig"><b>Chief Information Security Officer</b>'+
+          '<span>Authorizing official &middot; date</span></div></div>'+
+          '<div><div class="sigline"></div><div class="sig"><b>Director General, Client Services</b>'+
+          '<span>Business owner &middot; accepts residual risk &middot; date</span></div></div>'+
+        '</div>'+
+      '</div>'+
+      '<div class="rmark">Protected B</div>'+
+    '</div>'+
+    '<div class="callout"><h4>Three generated parts</h4>'+
+    'Section 3 counts come from the findings, section 4 is generated from open POA&amp;M items in '+
+    'milestone order, and section 7 is the <span class="mono">ai_provenance</span> snapshot taken at '+
+    'the moment of granting. The expiry in the header is '+
+    '<span class="mono">min(poam_item.milestone_date, risk_decision.valid_until)</span> over open '+
+    'items &mdash; which is why it matches condition 1.</div>'+
+    '<div class="note"><b>Why section 7 exists.</b> With guidance, scoping justifications, '+
+    'preliminary determinations and risk ratings all able to originate with the model, an authorizer '+
+    'who cannot see how much of the package was machine-authored cannot defend it. Stating the counts '+
+    'in the instrument itself turns that from an exposure into a control.</div>'
+  };
+
   /* ── wiring ────────────────────────────────────────────────── */
   var panel = document.getElementById('panel'),
       subs  = document.getElementById('substeps'),
       chip  = document.getElementById('stagechip'),
       stAss = document.getElementById('st-assess'),
       btns  = Array.prototype.slice.call(document.querySelectorAll('.pbtn'));
-  var ALLOWED = {scope:1,assets:1,threats:1,risk:1,airev:1,pkg:1,report:1};
+  var ALLOWED = {scope:1,assets:1,threats:1,risk:1,airev:1,pkg:1,report:1,poam:1,ato:1};
 
   function show(key){
     if(!ALLOWED[key]) key = 'scope';
