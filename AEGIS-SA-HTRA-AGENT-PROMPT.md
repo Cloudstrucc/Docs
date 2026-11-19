@@ -359,6 +359,17 @@ CREATE TABLE ai_suggestion (
 
 ## 6. AI integration
 
+> **CORRECTION — read before implementing.** Aegis SA already has this pattern.
+> The app generates control guidance from uploaded project documentation plus the
+> control requirement; it generates a justification for why each control was
+> scoped in; and it can run a preliminary evidence audit that produces a
+> Met / Partially Met / Not Met determination with a written justification.
+> **Do not add a parallel `ai_suggestion` table.** Find the existing record that
+> backs those features and generalise it to carry HTRA targets as well. Two audit
+> trails for machine-derived values is strictly worse than one. Where this brief
+> says `ai_suggestion` below, read it as *that existing structure, extended* —
+> the required fields are listed, not the table name. See §11.
+
 AI is where this gets genuinely good rather than merely compliant, because the
 intake document you already parse for control scoping contains almost everything
 HTRA's first two phases need.
@@ -373,11 +384,11 @@ HTRA's first two phases need.
 
 Three rules for the AI layer:
 
-1. **Suggest, never assert.** Every machine-derived value lands in
-   `ai_suggestion` with `status = 'pending'` and must be accepted, edited or
-   rejected by a human before it reaches `valuation` or `entity`. A TRA is a
-   signed document; an unreviewed injury rating is a liability. The UI should
-   show a clear "AI suggested — review" state (see the mockups).
+1. **Suggest, never assert.** Every machine-derived value is pending until a
+   human accepts, edits or rejects it, and only then reaches `valuation` or
+   `entity`. This is the same gate your preliminary evidence audit already
+   applies to a determination; HTRA must not weaken it. A TRA is a signed
+   document, and an unreviewed injury rating is a liability.
 2. **Cite the source.** Store `source_quote` and surface it on hover. "Why does
    it think this is Protected B?" must be answerable in one click.
 3. **Draft the prose, not the numbers.** AI is well suited to drafting threat
@@ -431,10 +442,14 @@ Handlebars deliverable templates.
 *Done when:* a decision package for a project scoping both ITSG-33 and HTRA
 shows control gaps and residual risks together, and the TRA report renders.
 
-**Phase 6 — AI assist** *(the differentiator)*
-`ai_suggestion` table, extraction prompts, review UI.
+**Phase 6 — AI assist** *(now small — the pattern already exists)*
+Extend the existing AI-assist record to accept HTRA targets (`valuation`,
+`entity`, vulnerability severity). New prompts; reuse the review UI. Because the
+mechanism is already built and trusted, this can be pulled forward ahead of
+phase 5 if asset valuation proves laborious in testing.
 *Done when:* uploading a CRM architecture document produces a reviewable draft
-asset register and injury valuations with cited source passages.
+asset register and injury valuations with cited source passages, through the same
+review flow users already know from the preliminary evidence audit.
 
 **Phase 7 — Method recommendation at intake** *(small)*
 Extend the existing control-scoping engine from "which controls" to "which
@@ -459,6 +474,13 @@ new system of record, SA&A required → propose `ITSG-33 PBMM + HTRA`, with
 - Seeding a second `risk_analysis` method (ISO 27005, as a test) requires a new
   definition row and templates — **no new application code**. This is the real
   test of whether the abstraction worked.
+- A POA&M item can trace to either a control gap or a residual risk through one
+  column, and the list renders both without branching.
+- The authorization decision (ATO / IATO) consumes both control determinations
+  and residual risk acceptances, and its IATO expiry is computed from the
+  earliest expiring acceptance or POA&M milestone rather than typed by hand.
+- The authorization screen states, per finding and in total, whether each
+  determination was human-made, AI-accepted unchanged, or AI-edited.
 
 ## 9. Traps — do not do these
 
@@ -478,6 +500,12 @@ new system of record, SA&A required → propose `ITSG-33 PBMM + HTRA`, with
   accidental and natural hazards against assets, services *and people*.
 - **Do not `eval` method definitions.** See §4.3.
 - **Do not let AI write a severity straight into `valuation`.** See §6.
+- **Do not build a second AI provenance trail.** See §6 and §11.
+- **Do not let an authorization package hide its AI provenance.** With AI
+  guidance, AI scoping justification, AI preliminary determinations and
+  AI-drafted risk ratings chained together, a package can be substantially
+  machine-authored with a human only clicking through. Surface the counts to the
+  authorizer. See §11.4.
 
 ## 10. Context worth carrying
 
@@ -500,6 +528,148 @@ new system of record, SA&A required → propose `ITSG-33 PBMM + HTRA`, with
 - **Classification handling:** a completed TRA is itself typically PROTECTED B.
   Reports need classification markings, and the app should carry a
   classification attribute on the project and stamp rendered artifacts.
+
+## 11. Integration with the existing AI and authorization features
+
+Aegis SA already does more than a generic control-compliance tool, and that
+changes the plan above in four places. Read this section as amending §§6–9.
+
+**What already exists** (confirm the specifics — **VERIFY**):
+
+- AI-generated **control guidance**, from uploaded project documentation plus the
+  control requirement text.
+- AI-generated **scoping justification** — why this control was scoped in, given
+  the framework and the nature of the project.
+- Manual evidence review: the user selects **Met / Not Met / Partially Met** per
+  control.
+- AI **preliminary audit**: the model proposes that determination and writes the
+  justification for it.
+- Those determinations flow into the decision package and produce a **POA&M** and
+  an **IATO** or **ATO**.
+
+### 11.1 Reuse the AI provenance record; do not duplicate it
+
+The pattern this brief calls `ai_suggestion` is already implemented for guidance,
+scoping justification and preliminary determinations. Find that record and extend
+it. Whatever it is called, it must be able to carry these fields for an HTRA
+target, and must already carry most of them:
+
+`target` (table + id + field) · `suggested value` · `rationale` ·
+`confidence` · `model` · `source document` · `source quote` ·
+`status` (pending / accepted / edited / rejected) · `reviewed_by` · `reviewed_at`
+
+New target types to support: `valuation` (C/I/A injury), `entity` (asset and
+threat identification and classification), and vulnerability severity.
+
+If the existing record cannot represent a non-control target, widen it — do not
+branch. One provenance trail, queryable in one place, is the whole point.
+
+### 11.2 Determinations are vulnerability evidence — the bridge, made concrete
+
+This is the highest-value integration in the module, and it runs both ways.
+
+**Forward:** a control assessed **Not Met** or **Partially Met** is direct
+evidence of vulnerability. HTRA's vulnerability step asks the same question your
+evidence audit already answered, in different words: *given the safeguards
+actually in place, how exposed is this asset to this threat?* So when a project
+scopes both methods and the control assessment is done first, pre-populate
+vulnerability severity from the determinations of the linked controls, carrying
+the existing justification prose and its citations forward as the starting
+rationale. The analyst edits rather than authors. This turns HTRA's most
+laborious sub-step into a review task.
+
+**Backward:** if a residual risk computes to High or Very High on a vulnerability
+whose linked controls all read **Met**, one of the two assessments is wrong.
+Flag it. A tool that catches its own contradiction is worth more than one that
+records both quietly.
+
+Implement the forward direction as a proposal through the §11.1 record, not as a
+direct write — the analyst must own the severity.
+
+### 11.3 POA&M and the authorization decision are the real convergence
+
+§2 says both method types converge on `finding`. That is true but incomplete:
+they converge again, and more consequentially, on the POA&M and the
+authorization decision.
+
+```sql
+CREATE TABLE poam_item (
+  id                INTEGER PRIMARY KEY,
+  project_id        INTEGER NOT NULL REFERENCES project(id),
+  source_finding_id INTEGER NOT NULL REFERENCES finding(id),
+  -- one column, either finding kind: control_gap or residual_risk
+  weakness          TEXT NOT NULL,
+  remediation       TEXT NOT NULL,
+  owner             TEXT,
+  milestone_date    TEXT,
+  status            TEXT NOT NULL DEFAULT 'open',
+  created_at        TEXT NOT NULL
+);
+
+CREATE TABLE authorization_decision (
+  id                 INTEGER PRIMARY KEY,
+  project_id         INTEGER NOT NULL REFERENCES project(id),
+  kind               TEXT NOT NULL CHECK (kind IN ('ato','iato','denied')),
+  granted_by         INTEGER REFERENCES user(id),
+  granted_role       TEXT,
+  granted_at         TEXT,
+  expires_at         TEXT,            -- for an IATO
+  conditions         TEXT,
+  ai_provenance      TEXT CHECK (ai_provenance IS NULL OR json_valid(ai_provenance)),
+  created_at         TEXT NOT NULL
+);
+```
+
+Two consequences:
+
+1. **A POA&M item traces to either finding kind through one column.** An HTRA
+   recommendation and a control-gap remediation become POA&M items of the same
+   shape. The POA&M list renders both without branching — which is exactly the
+   benefit of the single `finding` table, realised downstream.
+2. **The IATO expiry should be computed, not typed.** An interim authorization
+   normally exists *because* open POA&M items and time-limited risk acceptances
+   remain. So derive the proposed expiry from `min(risk_decision.valid_until,
+   poam_item.milestone_date)` over open items, and show the analyst which record
+   set it. `risk_decision.valid_until` from §5 is already the right field; this
+   is what it is for.
+
+### 11.4 AI provenance must reach the authorizer
+
+Chain the existing features together — AI guidance, AI scoping justification, AI
+preliminary determination — and add AI-drafted risk ratings, and an authorization
+package can be substantially machine-authored with a human only clicking through.
+For an ATO that is a real exposure, and an assessor will probe it.
+
+Carry provenance through to the authorization screen:
+
+- **Per finding:** whether the determination was human-made, AI-accepted
+  unchanged, or AI-edited.
+- **In total, on the authorization screen itself:** a count, e.g. *"47 findings:
+  31 AI-originated, 28 reviewed and edited, 3 accepted unchanged."* Store that
+  snapshot in `authorization_decision.ai_provenance` at the moment of granting,
+  so the package can be defended later as it stood then.
+
+An authorizer who can see that number can defend the package; one who cannot,
+cannot. Treat this as a feature, not a disclaimer.
+
+### 11.5 Generalise evidence alongside findings
+
+Evidence currently attaches to controls. HTRA vulnerabilities need evidence too —
+what safeguards exist, and how that was verified. Apply the same generalisation
+as for findings: evidence attaches to an entity or a finding, not only to a
+control. This is a join-table change, not a refactor of evidence handling.
+
+### 11.6 The determination scale fits `method_scale`
+
+**Met / Partially Met / Not Met** is an ordinal scale with a required rationale
+and optional AI provenance — structurally identical to an HTRA `valuation`.
+Register it as a `method_scale` on the ITSG-33 method.
+
+You are **not** required to migrate the existing control path onto the scale
+machinery, and should not do so as part of this work. But the fact that it fits
+without distortion is the best available evidence that the abstraction in §4 is
+the right one. If the determination scale does *not* fit, stop and revisit §4
+before building phase 3.
 
 ---
 

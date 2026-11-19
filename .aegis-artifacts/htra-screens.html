@@ -510,8 +510,8 @@ td.num,th.num{text-align:center;font-family:var(--f-mono);font-variant-numeric:t
   S.pkg = {
     stage:'Decision package',
     substeps:'<em>Decision package</em><span class="sub done">Findings consolidated</span>'+
-      '<span class="sub now">Recommendations &amp; acceptance</span><span class="sub">Artifacts</span>'+
-      '<span class="sub">Sign-off</span>',
+      '<span class="sub now">Recommendations &amp; acceptance</span><span class="sub">POA&amp;M</span>'+
+      '<span class="sub">Artifacts</span><span class="sub">Authorization</span>',
     html:
     '<div class="phead"><div><h3>Decision package</h3>'+
     '<p>Control gaps from ITSG-33 and residual risks from HTRA appear together, because both are findings. '+
@@ -575,6 +575,58 @@ td.num,th.num{text-align:center;font-family:var(--f-mono);font-variant-numeric:t
       'same method definition; scale level labels are translated at the definition, not in the template.</div>'+
       '</div>'+
     '</div>'+
+    '<div class="two" style="grid-template-columns:1fr">'+
+      '<div class="box" style="padding:0;border:0">'+
+      '<h4 style="font-family:var(--f-display);font-size:13px;margin:0 0 8px">POA&amp;M — both finding kinds, one list</h4>'+
+      '<div class="tscroll" style="margin-top:0"><table><thead><tr><th>Weakness</th><th>Source</th>'+
+      '<th>Remediation</th><th>Owner</th><th>Milestone</th></tr></thead><tbody>'+
+      '<tr><td><span class="ename">Standing privileged access to case files</span></td>'+
+        '<td><span class="ecls">R-014 · residual_risk</span></td>'+
+        '<td>Just-in-time elevation; alert on bulk export</td><td>Dir, Platform</td>'+
+        '<td class="mono">2027-01-31</td></tr>'+
+      '<tr><td><span class="ename">No separation of duties in release pipeline</span></td>'+
+        '<td><span class="ecls">R-021 · residual_risk</span></td>'+
+        '<td>Split deploy and approve roles; config review gate</td><td>Dir, Platform</td>'+
+        '<td class="mono">2026-12-19</td></tr>'+
+      '<tr><td><span class="ename">Client-facing MFA not implemented</span></td>'+
+        '<td><span class="ecls">IA-2 · control_gap</span></td>'+
+        '<td>Enable MFA for client accounts before go-live</td><td>Mgr, Identity</td>'+
+        '<td class="mono">2026-12-05</td></tr>'+
+      '<tr><td><span class="ename">Audit records not reviewed on a schedule</span></td>'+
+        '<td><span class="ecls">AU-6 · control_gap</span></td>'+
+        '<td>Weekly review procedure; alerting on privileged actions</td><td>Mgr, SecOps</td>'+
+        '<td class="mono">2027-02-27</td></tr>'+
+      '</tbody></table></div>'+
+      '<div class="note"><b>One column does this.</b> Each row carries '+
+      '<span class="mono">source_finding_id</span>, so an HTRA recommendation and an ITSG-33 control '+
+      'remediation are the same shape and render without branching.</div></div>'+
+    '</div>'+
+    '<div class="two">'+
+      '<div class="box"><h4>Authorization decision</h4>'+
+      '<div class="kv"><span>Recommended</span><b><span class="sev s3">IATO</span></b></div>'+
+      '<div class="kv"><span>Proposed expiry</span><b class="mono">2026-12-05</b></div>'+
+      '<div class="kv"><span>Set by</span><b>earliest POA&amp;M milestone<br><span class="ecls">IA-2 · client-facing MFA</span></b></div>'+
+      '<div class="kv"><span>Open POA&amp;M items</span><b>4</b></div>'+
+      '<div class="kv"><span>Time-limited acceptances</span><b>1 <span class="ecls">R-008 · to 2027-03-31</span></b></div>'+
+      '<p style="font-size:12.5px;margin:12px 0 0"><b>Why interim.</b> Two Very high residual risks '+
+      'are mitigated but unverified, and client-facing MFA is outstanding. Expiry is computed from the '+
+      'earliest open milestone rather than entered by hand, so it moves when the POA&amp;M moves.</p>'+
+      '<div class="row" style="margin-top:12px"><button class="btn primary">Grant IATO</button>'+
+      '<button class="btn ghost">Override expiry</button></div></div>'+
+      '<div class="box"><h4>AI provenance — this package</h4>'+
+      '<div class="kv"><span>Findings</span><b>47</b></div>'+
+      '<div class="kv"><span>AI-originated</span><b>31</b></div>'+
+      '<div class="kv"><span>Reviewed and edited</span><b>28</b></div>'+
+      '<div class="kv"><span>Accepted unchanged</span><b><span class="sev s3">3</span></b></div>'+
+      '<div class="kv"><span>Human-authored</span><b>16</b></div>'+
+      '<p style="font-size:12.5px;margin:12px 0 0">Snapshotted onto the decision when authorization '+
+      'is granted, so the package can be defended later as it stood. The three accepted unchanged are '+
+      'listed for the authorizer to confirm before granting.</p>'+
+      '<div class="note" style="margin-top:12px"><b>Why surface this.</b> Guidance, scoping '+
+      'justifications, preliminary determinations and risk ratings can all originate with the model. '+
+      'An authorizer who can see how much did can defend the package; one who cannot, cannot.</div>'+
+      '</div>'+
+    '</div>'+
     '<div class="note"><b>Mechanism:</b> no new decision-package code paths. The package lists '+
     '<span class="mono">finding</span> rows for the assessment regardless of method, joins '+
     '<span class="mono">recommendation</span> and <span class="mono">risk_decision</span>, and blocks submission '+
@@ -585,8 +637,8 @@ td.num,th.num{text-align:center;font-family:var(--f-mono);font-variant-numeric:t
   S.report = {
     stage:'Decision package',
     substeps:'<em>Decision package</em><span class="sub done">Findings consolidated</span>'+
-      '<span class="sub done">Recommendations &amp; acceptance</span><span class="sub now">Artifacts</span>'+
-      '<span class="sub">Sign-off</span>',
+      '<span class="sub done">Recommendations &amp; acceptance</span><span class="sub done">POA&amp;M</span>'+
+      '<span class="sub now">Artifacts</span><span class="sub">Authorization</span>',
     html:
     '<div class="phead"><div><h3>Artifact preview — TRA Report</h3>'+
     '<p>Rendered from the method&rsquo;s deliverable template against the stored findings. The structure follows '+

@@ -365,6 +365,13 @@ control scoping contains most of what HTRA's first two phases need: data types a
 components and stores, exposure and trust boundaries, stated controls. The constraint is that a TRA
 is a signed document, so no machine-derived value may reach it unreviewed.</p>
 
+<div class="callout"><h4>This pattern already exists in Aegis SA — extend it, don't duplicate it</h4>
+Control guidance generated from uploaded documentation, scoping justifications, and the preliminary
+evidence audit that proposes a Met / Partially Met / Not Met determination with its written rationale
+are all the same suggest-then-confirm shape. HTRA reuses that record with new target types
+(<code>valuation</code>, <code>entity</code>, vulnerability severity). Two audit trails for
+machine-derived values is strictly worse than one.</div>
+
 <figure>
   <div class="fscroll">
   <svg viewBox="0 0 860 230" role="img" aria-label="The architecture document is parsed by an extractor which writes pending suggestions with cited sources. A human review step either accepts them into real records or rejects them with an audit trail. There is no direct path from the extractor to a real record.">
@@ -402,6 +409,92 @@ is a signed document, so no machine-derived value may reach it unreviewed.</p>
   on <code>valuation</code> or <code>entity</code>; accepting a suggestion is what creates the real
   record and stamps who decided it. Draft the prose with the model; make the human own the number.</figcaption>
 </figure>
+
+<h2><em>Authorization</em>Where the two methods actually converge</h2>
+
+<p>One <code>finding</code> table is the structural convergence, but the consequential one is
+downstream: a control gap and a residual risk terminate in the same POA&amp;M and the same
+authorization decision. And because the control assessment already records a determination with a
+written justification, the two methods can feed each other — which is what makes scoping both worth
+more than running either alone.</p>
+
+<figure>
+  <div class="fscroll">
+  <svg viewBox="0 0 900 330" role="img" aria-label="A control determination pre-populates HTRA vulnerability severity and carries its justification forward; a contradictory residual risk flags the determination for re-review. Both kinds of finding become POA and M items through one column, which informs the ATO or IATO decision, whose interim expiry is computed from the earliest expiring risk acceptance.">
+    <defs>
+      <marker id="a6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+      <marker id="a6c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker>
+      <marker id="a6b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="var(--warn)"/></marker>
+    </defs>
+
+    <text class="dg" x="24" y="34">The two-way bridge</text>
+    <rect class="dbox" x="24" y="48" width="184" height="56" rx="7"/>
+    <text class="dl" x="116" y="72">Control determination</text>
+    <text class="ds" x="116" y="90">Met · Partially Met · Not Met</text>
+    <rect class="dbox-a" x="24" y="186" width="184" height="56" rx="7"/>
+    <text class="dl-a" x="116" y="210">Vulnerability severity</text>
+    <text class="ds" x="116" y="228">HTRA · per asset × threat</text>
+
+    <path class="darr-a" d="M74,104 V182" marker-end="url(#a6c)"/>
+    <text class="de" x="66" y="131" text-anchor="end" style="text-anchor:end">pre-populates</text>
+    <text class="de" x="66" y="145" text-anchor="end" style="text-anchor:end">+ justification</text>
+    <path class="darr" d="M158,182 V108" marker-end="url(#a6b)" style="stroke:var(--warn);stroke-dasharray:4 3"/>
+    <text class="de" x="168" y="131" style="text-anchor:start;fill:var(--warn)">flags</text>
+    <text class="de" x="168" y="145" style="text-anchor:start;fill:var(--warn)">contradiction</text>
+
+    <rect class="dbox-a" x="268" y="84" width="120" height="122" rx="7"/>
+    <text class="dl-a" x="328" y="132">finding</text>
+    <text class="ds" x="328" y="152">control_gap</text>
+    <text class="ds" x="328" y="168">residual_risk</text>
+    <path class="darr" d="M208,76 H240 V116 H264" marker-end="url(#a6)"/>
+    <path class="darr" d="M208,214 H240 V174 H264" marker-end="url(#a6)"/>
+
+    <rect class="dbox" x="438" y="114" width="164" height="62" rx="7"/>
+    <text class="dl" x="520" y="140">POA&amp;M item</text>
+    <text class="ds" x="520" y="159">source_finding_id</text>
+    <path class="darr-a" d="M388,145 H434" marker-end="url(#a6c)"/>
+    <text class="de" x="411" y="107">one column,</text><text class="de" x="411" y="120">either kind</text>
+
+    <rect class="dbox" x="652" y="114" width="172" height="62" rx="7"/>
+    <text class="dl" x="738" y="140">ATO / IATO</text>
+    <text class="ds" x="738" y="159">authorization_decision</text>
+    <path class="darr" d="M602,145 H648" marker-end="url(#a6)"/>
+    <text class="de" x="625" y="107">conditions</text>
+
+    <rect class="dbox" x="438" y="232" width="164" height="56" rx="7"/>
+    <text class="dl" x="520" y="256">risk_decision</text>
+    <text class="ds" x="520" y="274">valid_until</text>
+    <path class="darr" d="M520,206 V228" marker-end="url(#a6)" opacity=".6"/>
+    <path class="darr" d="M602,260 H628 V180" marker-end="url(#a6)"/>
+    <text class="de" x="680" y="214">computes IATO expiry from</text>
+    <text class="de" x="680" y="227">the earliest expiring item</text>
+  </svg>
+  </div>
+  <figcaption><b>The left pair is the integration worth building.</b> Run the control assessment
+  first and HTRA's most laborious step arrives pre-filled, with justification prose already written
+  and cited — the analyst edits rather than authors. The amber edge runs the other way: a Very High
+  residual risk on a vulnerability whose controls all read <em>Met</em> means one of the two
+  assessments is wrong, and the app should say so rather than record both quietly.</figcaption>
+</figure>
+
+<div class="callout"><h4>Compute the IATO expiry, don't type it</h4>
+An interim authorization normally exists <em>because</em> open POA&amp;M items and time-limited risk
+acceptances remain. Derive the proposed expiry from the earliest of
+<code>risk_decision.valid_until</code> and <code>poam_item.milestone_date</code> across open items,
+and show the analyst which record set it. That <code>valid_until</code> field is already in the
+schema for HTRA acceptances — this is what it is for.</div>
+
+<div class="callout bad"><h4>And carry AI provenance to the authorizer</h4>
+Chain AI guidance, AI scoping justification, AI preliminary determination and AI-drafted risk
+ratings together and a package can be substantially machine-authored with a human only clicking
+through. Show, per finding, whether the determination was human-made, AI-accepted unchanged or
+AI-edited — and put a count on the authorization screen itself: <em>&ldquo;47 findings: 31
+AI-originated, 28 reviewed and edited, 3 accepted unchanged.&rdquo;</em> Snapshot it onto the
+decision at the moment of granting. An authorizer who can see that number can defend the package.
+Treat it as a feature, not a disclaimer.</div>
 
 <h2><em>Sequencing</em>Seven phases, each shipping something usable</h2>
 
@@ -460,6 +553,9 @@ is a signed document, so no machine-derived value may reach it unreviewed.</p>
   <div class="card"><h4>Definitions get evaluated</h4>
     <p>Method definitions are admin-editable data. A single <code>new Function</code> on a derivation
     expression turns the admin screen into remote code execution.</p></div>
+  <div class="card"><h4>A second AI trail appears</h4>
+    <p>Guidance, scoping justification and preliminary determinations already have a provenance
+    record. Extend it; a parallel one for HTRA splits the audit trail in half.</p></div>
   <div class="card"><h4>i18n is retrofitted</h4>
     <p>GC deliverables need EN and FR. Translating scale labels through a method definition after the
     fact is painful; make the definition bilingual from phase 1.</p></div>
