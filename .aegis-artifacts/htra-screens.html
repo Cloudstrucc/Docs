@@ -1,0 +1,678 @@
+<title>Aegis SA HTRA Screens</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: fixed navy app rail + stage stepper, one swappable work panel per HTRA sub-step */
+:root{
+  --bg:#f4f7fa; --surface:#ffffff; --surface-2:#eaf0f6; --surface-3:#dde6ef;
+  --ink:#0d1b2a; --muted:#5a6b7d; --line:#d3dde8;
+  --accent:#07808f; --accent-soft:#e0f4f7; --accent-ink:#ffffff;
+  --rail:#0b1826; --rail-ink:#dce7f0; --rail-muted:#7b93a8; --rail-line:#1b2e42;
+  --sev1:#2c7a59; --sev2:#5c8f3c; --sev3:#b0841c; --sev4:#c4661d; --sev5:#b53428;
+  --sev1-bg:#e3f2ea; --sev2-bg:#eaf2e0; --sev3-bg:#f8f0d8; --sev4-bg:#fbe8d8; --sev5-bg:#f9e0dd;
+  --ai:#5b58c4; --ai-bg:#ebeaf9;
+  --f-display:"Space Grotesk",ui-sans-serif,system-ui,sans-serif;
+  --f-body:"Inter",ui-sans-serif,system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#08121d; --surface:#0f1f2e; --surface-2:#152838; --surface-3:#1d3447;
+  --ink:#e4edf5; --muted:#8ba2b7; --line:#213a51;
+  --accent:#2ad0e4; --accent-soft:#10333c; --accent-ink:#04222a;
+  --rail:#060f19; --rail-ink:#d6e4ef; --rail-muted:#6f879c; --rail-line:#162738;
+  --sev1:#44b184; --sev2:#80c062; --sev3:#e0b045; --sev4:#ed8a4d; --sev5:#e46257;
+  --sev1-bg:#0e2a20; --sev2-bg:#1b2a14; --sev3-bg:#2e2512; --sev4-bg:#32200f; --sev5-bg:#331614;
+  --ai:#9b98f0; --ai-bg:#1b1a3a;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#08121d; --surface:#0f1f2e; --surface-2:#152838; --surface-3:#1d3447;
+  --ink:#e4edf5; --muted:#8ba2b7; --line:#213a51;
+  --accent:#2ad0e4; --accent-soft:#10333c; --accent-ink:#04222a;
+  --rail:#060f19; --rail-ink:#d6e4ef; --rail-muted:#6f879c; --rail-line:#162738;
+  --sev1:#44b184; --sev2:#80c062; --sev3:#e0b045; --sev4:#ed8a4d; --sev5:#e46257;
+  --sev1-bg:#0e2a20; --sev2-bg:#1b2a14; --sev3-bg:#2e2512; --sev4-bg:#32200f; --sev5-bg:#331614;
+  --ai:#9b98f0; --ai-bg:#1b1a3a;
+  color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:14px;line-height:1.5;margin:0}
+h1,h2,h3,h4{font-family:var(--f-display);text-wrap:balance;margin:0}
+.wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px;max-width:1180px;margin:0 auto}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+
+/* page intro */
+.intro{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;justify-content:space-between;margin-bottom:6px}
+.intro h1{font-size:clamp(21px,3.4vw,27px);letter-spacing:-.015em}
+.intro p{color:var(--muted);margin:6px 0 0;max-width:62ch}
+.themebtn{font:500 12px var(--f-body);color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:7px 11px;cursor:pointer}
+.themebtn:hover{color:var(--ink)}
+
+/* screen picker */
+.picker{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 14px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.pbtn{font:500 12.5px var(--f-body);color:var(--muted);background:transparent;border:1px solid var(--line);border-radius:999px;padding:6px 13px;cursor:pointer;white-space:nowrap}
+.pbtn:hover{color:var(--ink);border-color:var(--muted)}
+.pbtn[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.pbtn b{font-family:var(--f-mono);font-weight:500;opacity:.65;margin-right:5px}
+
+/* app chrome */
+.app{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface);box-shadow:0 1px 2px rgba(8,18,29,.06)}
+.appbar{display:flex;align-items:center;gap:12px;background:var(--rail);color:var(--rail-ink);padding:11px 14px;flex-wrap:wrap}
+.mark{display:flex;align-items:center;gap:8px;font-family:var(--f-display);font-weight:700;font-size:14px;letter-spacing:-.01em}
+.mark svg{display:block}
+.mark span{color:var(--rail-muted);font-weight:500}
+.appbar .proj{color:var(--rail-ink);font-size:12.5px;border-left:1px solid var(--rail-line);padding-left:12px}
+.appbar .proj i{display:block;color:var(--rail-muted);font-style:normal;font-size:11px}
+.spacer{flex:1 1 auto}
+.chip{font:500 10.5px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;padding:4px 8px;border-radius:5px;white-space:nowrap}
+.chip.cls{background:#3a1f22;color:#ffb3a7;border:1px solid #6d3a35}
+.chip.live{background:var(--rail-line);color:var(--rail-muted)}
+
+/* stage stepper */
+.stages{display:flex;gap:0;background:var(--surface-2);border-bottom:1px solid var(--line);overflow-x:auto}
+.stage{flex:1 0 auto;min-width:0;padding:10px 16px;border-right:1px solid var(--line);font-size:12px;color:var(--muted);white-space:nowrap}
+.stage:last-child{border-right:0}
+.stage b{display:block;font:600 12.5px var(--f-body);color:var(--ink)}
+.stage.done b::before{content:"✓ ";color:var(--sev1)}
+.stage.now{background:var(--surface);box-shadow:inset 0 -2px 0 var(--accent)}
+.stage.now b{color:var(--accent)}
+.stage.todo b{color:var(--muted)}
+.substeps{display:flex;gap:6px;flex-wrap:wrap;padding:9px 14px;border-bottom:1px solid var(--line);background:var(--surface);align-items:center}
+.substeps em{font-style:normal;font:500 10.5px var(--f-mono);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-right:4px}
+.sub{font:500 11.5px var(--f-body);padding:4px 10px;border-radius:999px;border:1px solid var(--line);color:var(--muted);background:var(--surface-2)}
+.sub.now{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.sub.done{color:var(--sev1);border-color:color-mix(in srgb,var(--sev1) 40%,transparent);background:var(--sev1-bg)}
+.sub .mth{font-family:var(--f-mono);opacity:.6;font-size:10px}
+
+/* panel */
+.panel{padding:16px 14px 20px}
+.phead{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-start;justify-content:space-between;margin-bottom:4px}
+.phead h3{font-size:16.5px;letter-spacing:-.01em}
+.phead p{color:var(--muted);font-size:12.5px;margin:4px 0 0;max-width:68ch}
+.btn{font:600 12px var(--f-body);border-radius:7px;padding:7px 12px;cursor:pointer;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);white-space:nowrap}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.ghost{background:transparent}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+
+/* tables */
+.tscroll{overflow-x:auto;border:1px solid var(--line);border-radius:9px;margin-top:14px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:620px;font-size:12.5px}
+th{text-align:left;font:600 10.5px var(--f-mono);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);padding:9px 11px;border-bottom:1px solid var(--line);background:var(--surface-2);white-space:nowrap}
+td{padding:9px 11px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:center;font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.ename{font-weight:600}
+.ecls{display:block;font:400 11px var(--f-mono);color:var(--muted)}
+.sev{display:inline-flex;align-items:center;gap:5px;font:600 11px var(--f-body);padding:3px 8px;border-radius:5px;white-space:nowrap}
+.sev i{font-style:normal;font-family:var(--f-mono);opacity:.7}
+.s1{background:var(--sev1-bg);color:var(--sev1)} .s2{background:var(--sev2-bg);color:var(--sev2)}
+.s3{background:var(--sev3-bg);color:var(--sev3)} .s4{background:var(--sev4-bg);color:var(--sev4)}
+.s5{background:var(--sev5-bg);color:var(--sev5)}
+.aiflag{display:inline-flex;align-items:center;gap:4px;font:600 10px var(--f-mono);letter-spacing:.05em;color:var(--ai);background:var(--ai-bg);border:1px solid color-mix(in srgb,var(--ai) 35%,transparent);padding:2px 6px;border-radius:4px;white-space:nowrap}
+.ctrlref{display:inline-block;font:500 10.5px var(--f-mono);background:var(--surface-3);color:var(--ink);border-radius:4px;padding:2px 6px;margin:1px 3px 1px 0}
+.note{font-size:11.5px;color:var(--muted);margin-top:10px}
+.note b{color:var(--ink);font-weight:600}
+
+/* cards / tiles */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:14px}
+.tile{border:1px solid var(--line);border-radius:9px;padding:11px 12px;background:var(--surface-2)}
+.tile em{font-style:normal;display:block;font:500 10.5px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.tile strong{display:block;font-family:var(--f-display);font-size:21px;margin-top:3px;font-variant-numeric:tabular-nums}
+.tile span{font-size:11.5px;color:var(--muted)}
+.callout{border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;background:var(--surface-2);padding:12px 14px;margin-top:14px;font-size:12.5px}
+.callout h4{font-size:12.5px;margin-bottom:5px}
+.callout.ai{border-left-color:var(--ai)}
+.trace{font-family:var(--f-mono);font-size:11.5px;background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:11px 12px;margin-top:12px;overflow-x:auto;white-space:pre;color:var(--ink)}
+.two{display:grid;grid-template-columns:1fr;gap:14px;margin-top:14px}
+@media(min-width:760px){.two{grid-template-columns:1.25fr .85fr}}
+.box{border:1px solid var(--line);border-radius:9px;padding:13px 14px;background:var(--surface);min-width:0}
+.box h4{font-size:13px;margin-bottom:8px}
+.kv{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px dashed var(--line);font-size:12.5px}
+.kv:last-child{border-bottom:0}
+.kv span{color:var(--muted)}
+.kv b{font-weight:600;text-align:right}
+
+/* matrix */
+.mx{border-collapse:collapse;min-width:380px;font-size:11.5px}
+.mx th,.mx td{border:1px solid var(--line);padding:0;text-align:center}
+.mx th{background:var(--surface-2);font:600 10px var(--f-mono);letter-spacing:.04em;padding:6px 7px;text-transform:none}
+.mx td{height:34px;width:48px;font:600 11.5px var(--f-mono)}
+.mx td.c1{background:var(--sev1-bg);color:var(--sev1)} .mx td.c2{background:var(--sev2-bg);color:var(--sev2)}
+.mx td.c3{background:var(--sev3-bg);color:var(--sev3)} .mx td.c4{background:var(--sev4-bg);color:var(--sev4)}
+.mx td.c5{background:var(--sev5-bg);color:var(--sev5)}
+.mx td.hit{outline:2px solid var(--accent);outline-offset:-2px}
+
+/* report */
+.report{background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:0;margin-top:14px;overflow:hidden}
+.rmark{background:var(--sev5-bg);color:var(--sev5);font:600 10.5px var(--f-mono);letter-spacing:.14em;text-transform:uppercase;text-align:center;padding:6px}
+.rbody{padding:20px 22px;max-width:70ch}
+.rbody h2{font-size:18px;letter-spacing:-.01em}
+.rbody .meta{font:400 11.5px var(--f-mono);color:var(--muted);margin:6px 0 16px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.rbody h5{font:600 10.5px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:18px 0 6px}
+.rbody p{margin:0 0 10px;font-size:13px}
+.rbody ol,.rbody ul{margin:0 0 10px;padding-left:20px;font-size:13px}
+.rbody li{margin-bottom:5px}
+.toc{font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:7px;padding:10px 12px;background:var(--surface-2);margin-bottom:14px}
+.toc b{color:var(--ink);display:block;font:600 10.5px var(--f-mono);letter-spacing:.07em;text-transform:uppercase;margin-bottom:5px}
+.toc ol{margin:0;padding-left:18px}
+.foot{margin-top:22px;padding-top:14px;border-top:1px solid var(--line);font-size:11.5px;color:var(--muted)}
+.foot b{color:var(--ink)}
+</style>
+
+<div class="wrap">
+  <div class="intro">
+    <div>
+      <h1>Aegis SA — HTRA screens</h1>
+      <p>Seven mockups covering each HTRA sub-step and deliverable, shown inside the existing
+         intake → assessment → decision package → close pipeline. Example project with illustrative data;
+         no real department or system is depicted.</p>
+    </div>
+    <button class="themebtn" id="tt" type="button">Switch theme</button>
+  </div>
+
+  <div class="picker" role="tablist" aria-label="Screens">
+    <button class="pbtn" role="tab" data-s="scope"   aria-selected="true"><b>1</b>Method scoping</button>
+    <button class="pbtn" role="tab" data-s="assets"  aria-selected="false"><b>2</b>Assets &amp; SoS</button>
+    <button class="pbtn" role="tab" data-s="threats" aria-selected="false"><b>3</b>Threat assessment</button>
+    <button class="pbtn" role="tab" data-s="risk"    aria-selected="false"><b>4</b>Residual risk</button>
+    <button class="pbtn" role="tab" data-s="airev"   aria-selected="false"><b>5</b>AI review queue</button>
+    <button class="pbtn" role="tab" data-s="pkg"     aria-selected="false"><b>6</b>Decision package</button>
+    <button class="pbtn" role="tab" data-s="report"  aria-selected="false"><b>7</b>TRA report</button>
+  </div>
+
+  <div class="app">
+    <div class="appbar">
+      <div class="mark">
+        <svg width="18" height="20" viewBox="0 0 18 20" aria-hidden="true">
+          <path d="M9 1 L16.5 3.6 V10.2 C16.5 14.6 13.3 17.6 9 19 C4.7 17.6 1.5 14.6 1.5 10.2 V3.6 Z"
+                fill="none" stroke="#2ad0e4" stroke-width="1.5"/>
+          <path d="M5.6 10 L8 12.6 L12.4 7.2" fill="none" stroke="#2ad0e4" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+        Aegis&nbsp;SA <span>/ Assessments</span>
+      </div>
+      <div class="proj">CRM Modernization — Department of Client Services
+        <i>PRJ-2026-0184 · new system of record</i></div>
+      <div class="spacer"></div>
+      <span class="chip cls">Protected B</span>
+      <span class="chip live" id="stagechip">Assessment</span>
+    </div>
+
+    <div class="stages">
+      <div class="stage done"><b>Intake</b>Scope &amp; documents</div>
+      <div class="stage now" id="st-assess"><b>Assessment</b>3 sub-steps · 2 methods</div>
+      <div class="stage todo"><b>Decision package</b>Recommendations &amp; sign-off</div>
+      <div class="stage todo"><b>Close</b>Archive &amp; review date</div>
+    </div>
+
+    <div class="substeps" id="substeps"></div>
+    <div class="panel" id="panel"></div>
+  </div>
+
+  <div class="foot">
+    <b>Reading these.</b> Screens 2–4 are the three assessment sub-steps the HTRA method
+    definition declares; they appear only because the method is scoped, which is what keeps the
+    pipeline itself unchanged. Screen 5 is the gate that stops an AI-suggested value reaching a
+    signed artifact unreviewed. Screens 6–7 reuse the decision package you already have.
+  </div>
+</div>
+<script>
+(function(){
+  var sub = function(items){
+    return '<em>Assessment sub-steps</em>' + items.map(function(i){
+      return '<span class="sub '+i[1]+'">'+i[0]+(i[2]?' <span class="mth">'+i[2]+'</span>':'')+'</span>';
+    }).join('');
+  };
+  var HTRA_SUBS = function(active){
+    var s = [['Assets & statement of sensitivity','','HTRA 2'],
+             ['Threat assessment','','HTRA 3'],
+             ['Vulnerabilities & residual risk','','HTRA 4'],
+             ['Control assessment','','ITSG-33']];
+    var order = {assets:0, threats:1, risk:2};
+    var idx = order[active];
+    s.forEach(function(x,i){ x[1] = i<idx ? 'done' : (i===idx ? 'now' : ''); });
+    return sub(s);
+  };
+
+  var S = {};
+
+  /* ── 1. Method scoping ─────────────────────────────────────── */
+  S.scope = {
+    stage:'Intake', substeps:'<em>Intake</em><span class="sub done">Project description</span>'+
+      '<span class="sub done">Architecture document</span><span class="sub now">Method &amp; control scoping</span>',
+    html:
+    '<div class="phead"><div><h3>Scoping — which methods apply</h3>'+
+    '<p>The scoping engine read the intake answers and the uploaded solution architecture, then proposed the '+
+    'methods below. Each proposal carries its reason, which is stored on the assessment and reproduced in the '+
+    'decision package.</p></div><div class="row"><button class="btn ghost">Add method</button>'+
+    '<button class="btn primary">Create assessment</button></div></div>'+
+    '<div class="tiles">'+
+      '<div class="tile"><em>Methods proposed</em><strong>2</strong><span>1 control, 1 risk</span></div>'+
+      '<div class="tile"><em>Controls in scope</em><strong>213</strong><span>ITSG-33 PBMM profile</span></div>'+
+      '<div class="tile"><em>Assets detected</em><strong>14</strong><span>from architecture doc</span></div>'+
+      '<div class="tile"><em>Classification</em><strong>PB</strong><span>personal information present</span></div>'+
+    '</div>'+
+    '<div class="tscroll"><table><thead><tr><th>Method</th><th>Type</th><th>Why it was proposed</th>'+
+    '<th class="num">Scope</th><th>&nbsp;</th></tr></thead><tbody>'+
+    '<tr><td><span class="ename">ITSG-33</span><span class="ecls">IT Security Risk Management · CSE 2012</span></td>'+
+      '<td><span class="sev s1">control_compliance</span></td>'+
+      '<td>GC department; PROTECTED B / Medium integrity / Medium availability indicated by personal and '+
+      'financial data in the architecture document. Annex 4 profile 1 applies.</td>'+
+      '<td class="num">213 controls</td><td><button class="btn ghost">Tailor</button></td></tr>'+
+    '<tr><td><span class="ename">HTRA (TRA-1)</span><span class="ecls">Harmonized TRA · CSE + RCMP 2007</span>'+
+      '<span class="aiflag">draft scales</span></td>'+
+      '<td><span class="sev s3">risk_analysis</span></td>'+
+      '<td>New system of record requiring SA&amp;A authorization. A TRA is the expected input to the '+
+      'authorization decision and justifies the selected control profile.</td>'+
+      '<td class="num">3 sub-steps</td><td><button class="btn ghost">Configure</button></td></tr>'+
+    '<tr><td><span class="ename">ISO/IEC 27001</span><span class="ecls">Annex A · 2022</span></td>'+
+      '<td><span class="sev s1">control_compliance</span></td>'+
+      '<td>Not proposed — no certification requirement in intake. Available to add manually.</td>'+
+      '<td class="num">—</td><td><button class="btn ghost">Add</button></td></tr>'+
+    '</tbody></table></div>'+
+    '<div class="callout"><h4>Why both</h4>HTRA answers <em>what could go wrong here and how badly</em>. '+
+    'ITSG-33 answers <em>what must we implement and can we authorize it</em>. Scoping both lets one assessment '+
+    'produce a TRA that justifies the control profile, with traceability from asset through to acceptance.</div>'+
+    '<div class="note"><b>Mechanism:</b> this screen writes <span class="mono">assessment_method</span> rows, '+
+    'one per proposed method, each with its <span class="mono">scoped_reason</span>. No stage was added — the '+
+    'assessment that follows simply renders whichever sub-steps its scoped methods declare.</div>'
+  };
+
+  /* ── 2. Assets & statement of sensitivity ──────────────────── */
+  var sevTag = function(v){
+    var L = {1:'Very low',2:'Low',3:'Medium',4:'High',5:'Very high'};
+    return '<span class="sev s'+v+'"><i>'+v+'</i>'+L[v]+'</span>';
+  };
+  S.assets = {
+    stage:'Assessment', substeps:HTRA_SUBS('assets'),
+    html:
+    '<div class="phead"><div><h3>Assets &amp; statement of sensitivity</h3>'+
+    '<p>Each asset is valued by the injury its compromise would cause, separately for confidentiality, '+
+    'integrity and availability. A rationale is required on every value — it is what gets defended in review.</p></div>'+
+    '<div class="row"><button class="btn ghost">Add asset</button><button class="btn primary">Review 5 suggestions</button></div></div>'+
+    '<div class="tiles">'+
+      '<div class="tile"><em>Assets</em><strong>14</strong><span>5 classes</span></div>'+
+      '<div class="tile"><em>Fully valued</em><strong>9</strong><span>C, I and A recorded</span></div>'+
+      '<div class="tile"><em>Awaiting review</em><strong>5</strong><span>AI suggested</span></div>'+
+      '<div class="tile"><em>Highest injury</em><strong>5</strong><span>Very high — confidentiality</span></div>'+
+    '</div>'+
+    '<div class="tscroll"><table><thead><tr><th>Asset</th><th>Injury category</th>'+
+    '<th class="num">C</th><th class="num">I</th><th class="num">A</th><th>Asset value</th><th>Source</th>'+
+    '</tr></thead><tbody>'+
+    '<tr><td><span class="ename">Client case file records</span><span class="ecls">information</span></td>'+
+      '<td>Privacy of individuals; loss of public confidence</td>'+
+      '<td class="num">'+sevTag(5)+'</td><td class="num">'+sevTag(4)+'</td><td class="num">'+sevTag(3)+'</td>'+
+      '<td>'+sevTag(5)+'</td><td><span class="ecls">confirmed · J. Okonkwo</span></td></tr>'+
+    '<tr><td><span class="ename">Benefit payment instructions</span><span class="ecls">information</span></td>'+
+      '<td>Financial loss to the Crown; fraud exposure</td>'+
+      '<td class="num">'+sevTag(4)+'</td><td class="num">'+sevTag(5)+'</td><td class="num">'+sevTag(4)+'</td>'+
+      '<td>'+sevTag(5)+'</td><td><span class="ecls">confirmed · J. Okonkwo</span></td></tr>'+
+    '<tr><td><span class="ename">CRM application tier</span><span class="ecls">it_component</span></td>'+
+      '<td>Service interruption to client-facing operations</td>'+
+      '<td class="num">'+sevTag(3)+'</td><td class="num">'+sevTag(4)+'</td><td class="num">'+sevTag(4)+'</td>'+
+      '<td>'+sevTag(4)+'</td><td><span class="ecls">confirmed · R. Beaulieu</span></td></tr>'+
+    '<tr><td><span class="ename">Payments gateway integration</span><span class="ecls">service</span>'+
+      '<span class="aiflag">AI suggested</span></td>'+
+      '<td>Financial loss; downstream departmental impact</td>'+
+      '<td class="num">'+sevTag(4)+'</td><td class="num">'+sevTag(5)+'</td><td class="num">'+sevTag(4)+'</td>'+
+      '<td>'+sevTag(5)+'</td><td><span class="ecls">pending review</span></td></tr>'+
+    '<tr><td><span class="ename">Contact centre staff</span><span class="ecls">personnel</span>'+
+      '<span class="aiflag">AI suggested</span></td>'+
+      '<td>Health and safety; coercion risk at public counters</td>'+
+      '<td class="num">'+sevTag(2)+'</td><td class="num">'+sevTag(2)+'</td><td class="num">'+sevTag(3)+'</td>'+
+      '<td>'+sevTag(3)+'</td><td><span class="ecls">pending review</span></td></tr>'+
+    '<tr><td><span class="ename">Regional service centre — Floor 3</span><span class="ecls">facility</span></td>'+
+      '<td>Service interruption; asset loss</td>'+
+      '<td class="num">'+sevTag(1)+'</td><td class="num">'+sevTag(2)+'</td><td class="num">'+sevTag(3)+'</td>'+
+      '<td>'+sevTag(3)+'</td><td><span class="ecls">confirmed · R. Beaulieu</span></td></tr>'+
+    '</tbody></table></div>'+
+    '<div class="callout ai"><h4>Facility and personnel assets are not an accident</h4>'+
+    'HTRA is all-hazards: it covers employees, assets and services, against deliberate, accidental and natural '+
+    'threats. A threat catalogue and asset register restricted to IT components would fail review, which is why '+
+    'the asset classes include <span class="mono">facility</span> and <span class="mono">personnel</span>.</div>'+
+    '<div class="note"><b>Mechanism:</b> rows are <span class="mono">entity</span> (type '+
+    '<span class="mono">asset</span>); each C/I/A cell is a <span class="mono">valuation</span> row carrying its '+
+    'own scale reference and mandatory rationale. Asset value derives from the dimension values through the '+
+    'method&rsquo;s own rule, not a hard-coded max.</div>'
+  };
+
+  /* ── 3. Threat assessment ──────────────────────────────────── */
+  var mxCell = function(a,b,v,hit){
+    return '<td class="c'+v+(hit?' hit':'')+'">'+v+'</td>';
+  };
+  var mxRows = [[5,[3,4,4,5,5]],[4,[2,3,4,4,5]],[3,[2,3,3,4,4]],[2,[1,2,3,3,4]],[1,[1,1,2,2,3]]];
+  var matrix =
+    '<div class="tscroll" style="border:0;background:transparent"><table class="mx"><thead><tr>'+
+    '<th>Likelihood ↓ / Gravity →</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr></thead><tbody>'+
+    mxRows.map(function(r){
+      return '<tr><th>'+r[0]+'</th>'+r[1].map(function(v,i){
+        return mxCell(r[0],i+1,v, r[0]===4 && i===3);
+      }).join('')+'</tr>';
+    }).join('')+'</tbody></table></div>';
+
+  S.threats = {
+    stage:'Assessment', substeps:HTRA_SUBS('threats'),
+    html:
+    '<div class="phead"><div><h3>Threat assessment</h3>'+
+    '<p>Each threat is rated for likelihood and gravity. The threat level is a lookup in the method&rsquo;s '+
+    'published matrix — not a product — so the result can be checked against the source table.</p></div>'+
+    '<div class="row"><button class="btn ghost">Import from catalogue</button><button class="btn primary">Add threat</button></div></div>'+
+    '<div class="two"><div class="box" style="padding:0;border:0">'+
+      '<div class="tscroll" style="margin-top:0"><table><thead><tr><th>Threat</th><th>Class</th>'+
+      '<th class="num">Lhd</th><th class="num">Grv</th><th>Threat level</th></tr></thead><tbody>'+
+      '<tr><td><span class="ename">Privileged insider exfiltrates client records</span>'+
+        '<span class="ecls">targets 4 assets</span></td><td><span class="ecls">deliberate</span></td>'+
+        '<td class="num">4</td><td class="num">4</td><td>'+sevTag(4)+'</td></tr>'+
+      '<tr><td><span class="ename">Credential stuffing against client portal</span>'+
+        '<span class="ecls">targets 3 assets</span></td><td><span class="ecls">deliberate</span></td>'+
+        '<td class="num">5</td><td class="num">3</td><td>'+sevTag(4)+'</td></tr>'+
+      '<tr><td><span class="ename">Misconfiguration during release introduces exposure</span>'+
+        '<span class="ecls">targets 5 assets</span></td><td><span class="ecls">accidental</span></td>'+
+        '<td class="num">4</td><td class="num">3</td><td>'+sevTag(4)+'</td></tr>'+
+      '<tr><td><span class="ename">Integration partner outage halts payment flow</span>'+
+        '<span class="ecls">targets 2 assets</span></td><td><span class="ecls">accidental</span></td>'+
+        '<td class="num">3</td><td class="num">4</td><td>'+sevTag(4)+'</td></tr>'+
+      '<tr><td><span class="ename">Regional power and network loss</span>'+
+        '<span class="ecls">targets 3 assets</span></td><td><span class="ecls">natural</span></td>'+
+        '<td class="num">2</td><td class="num">4</td><td>'+sevTag(3)+'</td></tr>'+
+      '<tr><td><span class="ename">Coercion of counter staff</span>'+
+        '<span class="ecls">targets 2 assets</span></td><td><span class="ecls">deliberate</span></td>'+
+        '<td class="num">2</td><td class="num">3</td><td>'+sevTag(3)+'</td></tr>'+
+      '</tbody></table></div></div>'+
+      '<div class="box"><h4>Threat level matrix</h4>'+
+      '<p style="font-size:12px;color:var(--muted);margin:0 0 10px">Selected row: likelihood 4 × gravity 4 → '+
+      'threat level 4. Every cell is a <span class="mono">method_matrix_cell</span> row.</p>'+
+      matrix+
+      '<div class="note" style="margin-top:10px"><b>Editable without a deploy.</b> A department that tailors '+
+      'its tables changes cells here; everything computed afterwards follows.</div></div>'+
+    '</div>'+
+    '<div class="callout"><h4>Scales shown are placeholders pending the published tables</h4>'+
+    'The method is seeded <span class="mono">is_draft = 1</span> until the level labels and matrix cells are '+
+    'loaded from the TRA-1 publication and stamped with a <span class="mono">source_ref</span>. The UI surfaces '+
+    'that draft state so no one mistakes a placeholder for a published rating.</div>'
+  };
+
+  /* ── 4. Residual risk ──────────────────────────────────────── */
+  S.risk = {
+    stage:'Assessment', substeps:HTRA_SUBS('risk'),
+    html:
+    '<div class="phead"><div><h3>Vulnerabilities &amp; residual risk</h3>'+
+    '<p>Each asset–threat pair is assessed against existing and planned safeguards. Residual risk is derived '+
+    'through the method&rsquo;s matrices, and every rating can show its own arithmetic.</p></div>'+
+    '<div class="row"><button class="btn ghost">Exclusions (6)</button><button class="btn primary">Generate recommendations</button></div></div>'+
+    '<div class="tiles">'+
+      '<div class="tile"><em>Pairs assessed</em><strong>38</strong><span>6 excluded with reason</span></div>'+
+      '<div class="tile"><em>Very high</em><strong>2</strong><span>require acceptance</span></div>'+
+      '<div class="tile"><em>High</em><strong>5</strong><span>mitigation proposed</span></div>'+
+      '<div class="tile"><em>Controls linked</em><strong>31</strong><span>ITSG-33 Annex 3</span></div>'+
+    '</div>'+
+    '<div class="tscroll"><table><thead><tr><th>Asset × Threat</th><th>Vulnerability</th>'+
+    '<th class="num">TL</th><th class="num">VS</th><th>Residual risk</th><th>Mitigating controls</th>'+
+    '</tr></thead><tbody>'+
+    '<tr><td><span class="ename">Client case file records</span><span class="ecls">× privileged insider exfiltration</span></td>'+
+      '<td>Broad standing access for support roles; no just-in-time elevation; export not alerted on</td>'+
+      '<td class="num">4</td><td class="num">4</td><td>'+sevTag(5)+'</td>'+
+      '<td><span class="ctrlref">AC-2</span><span class="ctrlref">AC-6</span><span class="ctrlref">AU-6</span></td></tr>'+
+    '<tr><td><span class="ename">Benefit payment instructions</span><span class="ecls">× misconfiguration at release</span></td>'+
+      '<td>Change pipeline lacks separation of duties for production configuration</td>'+
+      '<td class="num">4</td><td class="num">4</td><td>'+sevTag(5)+'</td>'+
+      '<td><span class="ctrlref">CM-3</span><span class="ctrlref">CM-5</span><span class="ctrlref">SI-7</span></td></tr>'+
+    '<tr><td><span class="ename">Client portal credentials</span><span class="ecls">× credential stuffing</span></td>'+
+      '<td>Single-factor authentication for client accounts; no rate limiting at the edge</td>'+
+      '<td class="num">4</td><td class="num">3</td><td>'+sevTag(4)+'</td>'+
+      '<td><span class="ctrlref">IA-2</span><span class="ctrlref">SC-5</span></td></tr>'+
+    '<tr><td><span class="ename">Payments gateway integration</span><span class="ecls">× partner outage</span></td>'+
+      '<td>No queue-and-retry; manual reconciliation path undocumented</td>'+
+      '<td class="num">4</td><td class="num">3</td><td>'+sevTag(4)+'</td>'+
+      '<td><span class="ctrlref">CP-10</span><span class="ctrlref">SC-24</span></td></tr>'+
+    '<tr><td><span class="ename">CRM application tier</span><span class="ecls">× regional power and network loss</span></td>'+
+      '<td>Single-region deployment; recovery objective unvalidated</td>'+
+      '<td class="num">3</td><td class="num">3</td><td>'+sevTag(3)+'</td>'+
+      '<td><span class="ctrlref">CP-7</span><span class="ctrlref">CP-9</span></td></tr>'+
+    '<tr><td><span class="ename">Contact centre staff</span><span class="ecls">× coercion at public counter</span></td>'+
+      '<td>No duress procedure; transaction limits not enforced at counter terminals</td>'+
+      '<td class="num">3</td><td class="num">2</td><td>'+sevTag(2)+'</td>'+
+      '<td><span class="ctrlref">PE-3</span><span class="ctrlref">AC-3</span></td></tr>'+
+    '</tbody></table></div>'+
+    '<div class="trace">'+
+'risk  R-014   Client case file records × privileged insider exfiltration\n'+
+'─────────────────────────────────────────────────────────────────────────\n'+
+'asset_value              5   Very high    valuation(C)=5 · rationale recorded\n'+
+'threat_level             4   High         matrix threat_level [ lhd 4 × grv 4 ]\n'+
+'vulnerability_severity   4   High         3 safeguards assessed, 2 absent\n'+
+'  → exposure             4   High         matrix exposure [ tl 4 × vs 4 ]\n'+
+'  → residual_risk        5   Very high    matrix risk_level [ av 5 × exp 4 ]\n'+
+'method  htra-tra1 @ 2007-10   source_ref  pending publication load\n'+
+'decision required: business owner acceptance or mitigation'+
+    '</div>'+
+    '<div class="note"><b>Mechanism:</b> each row is a <span class="mono">finding</span> of kind '+
+    '<span class="mono">residual_risk</span>, joined to its asset, threat and vulnerability through '+
+    '<span class="mono">finding_entity</span>. The trace above is the stored '+
+    '<span class="mono">finding.computed</span> JSON rendered — which is what makes a rating defensible '+
+    'months later.</div>'
+  };
+
+  /* ── 5. AI review queue ────────────────────────────────────── */
+  S.airev = {
+    stage:'Assessment', substeps:HTRA_SUBS('assets'),
+    html:
+    '<div class="phead"><div><h3>AI suggestions — review queue</h3>'+
+    '<p>Values extracted from the solution architecture document land here first. Nothing reaches a valuation, '+
+    'a risk rating or a signed artifact until a person accepts, edits or rejects it.</p></div>'+
+    '<div class="row"><button class="btn ghost">Reject all</button><button class="btn primary">Accept selected</button></div></div>'+
+    '<div class="tiles">'+
+      '<div class="tile"><em>Pending</em><strong>5</strong><span>of 23 extracted</span></div>'+
+      '<div class="tile"><em>Accepted</em><strong>14</strong><span>unchanged</span></div>'+
+      '<div class="tile"><em>Edited</em><strong>3</strong><span>value changed on review</span></div>'+
+      '<div class="tile"><em>Rejected</em><strong>1</strong><span>not an asset</span></div>'+
+    '</div>'+
+    '<div class="two" style="grid-template-columns:1fr">'+
+      '<div class="box"><div class="row" style="justify-content:space-between;align-items:flex-start">'+
+        '<div><h4>Payments gateway integration — integrity injury</h4>'+
+        '<p style="font-size:12px;color:var(--muted);margin:3px 0 0">Suggests '+
+        '<span class="mono">valuation(I) = 5 · Very high</span> &nbsp;·&nbsp; confidence 0.78</p></div>'+
+        '<span class="aiflag">pending</span></div>'+
+        '<div class="callout ai" style="margin-top:12px"><h4>Cited source — solution-architecture-v4.pdf, §5.2</h4>'+
+        '&ldquo;Payment instruction records are transmitted to the departmental payments service. There is no '+
+        'downstream reconciliation of instruction totals; the receiving service treats CRM as authoritative.&rdquo;</div>'+
+        '<p style="font-size:12.5px;margin:12px 0 0"><b>Model rationale.</b> The receiving service accepts CRM '+
+        'output as authoritative with no reconciliation, so undetected alteration of payment instructions would '+
+        'produce direct financial loss without a compensating detection path. Integrity injury is therefore rated '+
+        'above confidentiality for this asset.</p>'+
+        '<div class="row" style="margin-top:12px"><button class="btn primary">Accept</button>'+
+        '<button class="btn">Edit value</button><button class="btn ghost">Reject</button>'+
+        '<button class="btn ghost">Open source document</button></div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="tscroll"><table><thead><tr><th>Target</th><th>Field</th><th>Suggested</th>'+
+    '<th class="num">Conf.</th><th>Source</th><th>Status</th></tr></thead><tbody>'+
+    '<tr><td>Contact centre staff</td><td class="mono">valuation(A)</td><td>'+sevTag(3)+'</td>'+
+      '<td class="num">0.61</td><td><span class="ecls">architecture §7.1</span></td>'+
+      '<td><span class="aiflag">pending</span></td></tr>'+
+    '<tr><td>Regional service centre — Floor 3</td><td class="mono">entity.class</td>'+
+      '<td><span class="mono">facility</span></td><td class="num">0.93</td>'+
+      '<td><span class="ecls">architecture §2.4</span></td><td><span class="aiflag">pending</span></td></tr>'+
+    '<tr><td>Client case file records</td><td class="mono">injury_category</td>'+
+      '<td>Privacy of individuals</td><td class="num">0.88</td>'+
+      '<td><span class="ecls">intake · PIA flag</span></td><td><span class="sev s1">accepted</span></td></tr>'+
+    '<tr><td>Nightly extract job</td><td class="mono">entity.type</td>'+
+      '<td><span class="mono">asset</span></td><td class="num">0.44</td>'+
+      '<td><span class="ecls">architecture §6.3</span></td><td><span class="sev s5">rejected</span></td></tr>'+
+    '<tr><td>Benefit payment instructions</td><td class="mono">valuation(C)</td>'+
+      '<td>'+sevTag(4)+' <span class="ecls">was suggested 5</span></td><td class="num">0.72</td>'+
+      '<td><span class="ecls">architecture §5.2</span></td><td><span class="sev s3">edited</span></td></tr>'+
+    '</tbody></table></div>'+
+    '<div class="note"><b>Mechanism:</b> every row is an <span class="mono">ai_suggestion</span> with its model, '+
+    'confidence, source document and the quoted passage. Accepting writes the real record and stamps '+
+    '<span class="mono">reviewed_by</span>. The audit question &mdash; <em>who decided this injury was Very '+
+    'high?</em> &mdash; always has a human answer.</div>'
+  };
+
+  /* ── 6. Decision package ───────────────────────────────────── */
+  S.pkg = {
+    stage:'Decision package',
+    substeps:'<em>Decision package</em><span class="sub done">Findings consolidated</span>'+
+      '<span class="sub now">Recommendations &amp; acceptance</span><span class="sub">Artifacts</span>'+
+      '<span class="sub">Sign-off</span>',
+    html:
+    '<div class="phead"><div><h3>Decision package</h3>'+
+    '<p>Control gaps from ITSG-33 and residual risks from HTRA appear together, because both are findings. '+
+    'Each needs a disposition before the package can be signed.</p></div>'+
+    '<div class="row"><button class="btn ghost">Export artifacts</button><button class="btn primary">Submit for sign-off</button></div></div>'+
+    '<div class="tiles">'+
+      '<div class="tile"><em>Findings</em><strong>47</strong><span>9 risk · 38 control</span></div>'+
+      '<div class="tile"><em>Awaiting disposition</em><strong>7</strong><span>blocks sign-off</span></div>'+
+      '<div class="tile"><em>To accept</em><strong>2</strong><span>business owner</span></div>'+
+      '<div class="tile"><em>Artifacts ready</em><strong>3</strong><span>of 4</span></div>'+
+    '</div>'+
+    '<div class="tscroll"><table><thead><tr><th>Finding</th><th>Method</th><th>Level</th>'+
+    '<th>Recommendation</th><th>Projected</th><th>Disposition</th></tr></thead><tbody>'+
+    '<tr><td><span class="ename">R-014 Insider exfiltration of case files</span>'+
+      '<span class="ecls">residual_risk</span></td><td><span class="ecls">HTRA</span></td>'+
+      '<td>'+sevTag(5)+'</td>'+
+      '<td>Just-in-time elevation for support roles; alert on bulk export '+
+      '<span class="ctrlref">AC-2</span><span class="ctrlref">AC-6</span></td>'+
+      '<td>'+sevTag(3)+'</td><td><span class="sev s1">mitigate</span></td></tr>'+
+    '<tr><td><span class="ename">R-021 Release misconfiguration exposes payment data</span>'+
+      '<span class="ecls">residual_risk</span></td><td><span class="ecls">HTRA</span></td>'+
+      '<td>'+sevTag(5)+'</td>'+
+      '<td>Separation of duties in the change pipeline '+
+      '<span class="ctrlref">CM-3</span><span class="ctrlref">CM-5</span></td>'+
+      '<td>'+sevTag(2)+'</td><td><span class="sev s1">mitigate</span></td></tr>'+
+    '<tr><td><span class="ename">R-008 Single-region availability</span>'+
+      '<span class="ecls">residual_risk</span></td><td><span class="ecls">HTRA</span></td>'+
+      '<td>'+sevTag(3)+'</td>'+
+      '<td>Accept for initial release; multi-region in FY+1 '+
+      '<span class="ctrlref">CP-7</span></td>'+
+      '<td>'+sevTag(3)+'</td><td><span class="sev s3">accept</span></td></tr>'+
+    '<tr><td><span class="ename">IA-2 Multifactor authentication</span>'+
+      '<span class="ecls">control_gap · partially satisfied</span></td><td><span class="ecls">ITSG-33</span></td>'+
+      '<td>'+sevTag(4)+'</td>'+
+      '<td>Client-facing MFA before go-live</td><td>'+sevTag(1)+'</td>'+
+      '<td><span class="sev s1">mitigate</span></td></tr>'+
+    '<tr><td><span class="ename">AU-6 Audit review and reporting</span>'+
+      '<span class="ecls">control_gap · not satisfied</span></td><td><span class="ecls">ITSG-33</span></td>'+
+      '<td>'+sevTag(4)+'</td>'+
+      '<td>&mdash;</td><td>&mdash;</td>'+
+      '<td><span class="aiflag">needs disposition</span></td></tr>'+
+    '</tbody></table></div>'+
+    '<div class="two">'+
+      '<div class="box"><h4>Risk acceptance — R-008 Single-region availability</h4>'+
+      '<div class="kv"><span>Residual risk</span><b>'+sevTag(3)+'</b></div>'+
+      '<div class="kv"><span>Disposition</span><b>Accept</b></div>'+
+      '<div class="kv"><span>Accepted by</span><b>Director General, Client Services</b></div>'+
+      '<div class="kv"><span>Role</span><b>business_owner</b></div>'+
+      '<div class="kv"><span>Valid until</span><b class="mono">2027-03-31</b></div>'+
+      '<p style="font-size:12.5px;margin:12px 0 0"><b>Rationale.</b> Recovery objective of 8 hours is '+
+      'acceptable for the initial release given the manual counter fallback. Multi-region deployment is funded '+
+      'in the following fiscal year and the acceptance expires with the fiscal year, forcing re-examination.</p>'+
+      '<div class="row" style="margin-top:12px"><button class="btn primary">Record acceptance</button>'+
+      '<button class="btn ghost">Return to assessment</button></div></div>'+
+      '<div class="box"><h4>Artifacts</h4>'+
+      '<div class="kv"><span>TRA Report</span><b>'+'<span class="sev s1">ready</span>'+'</b></div>'+
+      '<div class="kv"><span>Statement of Sensitivity</span><b><span class="sev s1">ready</span></b></div>'+
+      '<div class="kv"><span>Risk Register</span><b><span class="sev s1">ready</span></b></div>'+
+      '<div class="kv"><span>Control profile report</span><b><span class="sev s3">1 gap open</span></b></div>'+
+      '<div class="note" style="margin-top:12px"><b>Bilingual.</b> Each artifact renders EN and FR from the '+
+      'same method definition; scale level labels are translated at the definition, not in the template.</div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="note"><b>Mechanism:</b> no new decision-package code paths. The package lists '+
+    '<span class="mono">finding</span> rows for the assessment regardless of method, joins '+
+    '<span class="mono">recommendation</span> and <span class="mono">risk_decision</span>, and blocks submission '+
+    'while any finding lacks a disposition.</div>'
+  };
+
+  /* ── 7. TRA report ─────────────────────────────────────────── */
+  S.report = {
+    stage:'Decision package',
+    substeps:'<em>Decision package</em><span class="sub done">Findings consolidated</span>'+
+      '<span class="sub done">Recommendations &amp; acceptance</span><span class="sub now">Artifacts</span>'+
+      '<span class="sub">Sign-off</span>',
+    html:
+    '<div class="phead"><div><h3>Artifact preview — TRA Report</h3>'+
+    '<p>Rendered from the method&rsquo;s deliverable template against the stored findings. The structure follows '+
+    'what a reviewer expects, and the document carries its own classification marking.</p></div>'+
+    '<div class="row"><button class="btn ghost">Français</button><button class="btn ghost">Download .docx</button>'+
+    '<button class="btn primary">Attach to package</button></div></div>'+
+    '<div class="report">'+
+      '<div class="rmark">Protected B</div>'+
+      '<div class="rbody">'+
+        '<h2>Threat and Risk Assessment</h2>'+
+        '<div class="meta">CRM Modernization · PRJ-2026-0184 · Department of Client Services<br>'+
+        'Method: HTRA (TRA-1) · Prepared 2026-11-19 · Draft 0.4 · Review date 2027-03-31</div>'+
+        '<div class="toc"><b>Contents</b><ol>'+
+          '<li>Executive summary</li><li>Scope and approach</li>'+
+          '<li>Statement of sensitivity</li><li>Threat assessment</li>'+
+          '<li>Vulnerability and risk assessment</li><li>Recommendations</li>'+
+          '<li>Residual risk and acceptance</li><li>Annex A — Risk register</li>'+
+          '<li>Annex B — Scales and matrices applied</li>'+
+        '</ol></div>'+
+        '<h5>1 · Executive summary</h5>'+
+        '<p>This assessment covers the CRM Modernization initiative, a new system of record holding client '+
+        'case files and benefit payment instructions. Fourteen assets were identified across five classes and '+
+        'valued for confidentiality, integrity and availability; six threats were assessed against them, '+
+        'producing thirty-eight asset–threat pairs and nine residual risks above the very-low band.</p>'+
+        '<p>Two residual risks are rated Very high: unauthorized disclosure of client case files by a '+
+        'privileged insider, and exposure of payment instructions through misconfiguration at release. Both are '+
+        'recommended for mitigation before authorization to operate, with projected residual risk of Medium and '+
+        'Low respectively. One Medium risk — single-region availability — is recommended for acceptance by the '+
+        'business owner, expiring at fiscal year end.</p>'+
+        '<h5>3 · Statement of sensitivity</h5>'+
+        '<p>Client case file records carry a Very high confidentiality injury: unauthorized disclosure would '+
+        'affect the privacy of identifiable individuals and could reasonably be expected to cause a loss of '+
+        'public confidence in the Department. Benefit payment instructions carry a Very high integrity injury, '+
+        'as the receiving payments service treats this system as authoritative and performs no downstream '+
+        'reconciliation of instruction totals.</p>'+
+        '<h5>5 · Vulnerability and risk assessment</h5>'+
+        '<p>Risk R-014 combines an asset value of 5 with a threat level of 4 and a vulnerability severity of 4, '+
+        'yielding a residual risk of Very high. The vulnerability arises from broad standing access held by '+
+        'support roles, the absence of just-in-time elevation, and the lack of alerting on bulk export. '+
+        'Derivation for every rating in this assessment is recorded and reproducible against the matrices '+
+        'listed in Annex B.</p>'+
+        '<h5>7 · Residual risk and acceptance</h5>'+
+        '<p>Subject to implementation of the recommendations in section 6, residual risk is assessed as '+
+        'acceptable for authorization. The acceptance of R-008 is time-limited and expires 31 March 2027.</p>'+
+      '</div>'+
+      '<div class="rmark">Protected B</div>'+
+    '</div>'+
+    '<div class="note"><b>Mechanism:</b> a Handlebars template registered by the method as deliverable '+
+    '<span class="mono">tra_report</span>. Annex B is generated from the <span class="mono">method_matrix</span> '+
+    'rows actually used, with their <span class="mono">source_ref</span> values — so the document states which '+
+    'edition of the tables produced its numbers.</div>'
+  };
+
+  /* ── wiring ────────────────────────────────────────────────── */
+  var panel = document.getElementById('panel'),
+      subs  = document.getElementById('substeps'),
+      chip  = document.getElementById('stagechip'),
+      stAss = document.getElementById('st-assess'),
+      btns  = Array.prototype.slice.call(document.querySelectorAll('.pbtn'));
+  var ALLOWED = {scope:1,assets:1,threats:1,risk:1,airev:1,pkg:1,report:1};
+
+  function show(key){
+    if(!ALLOWED[key]) key = 'scope';
+    var s = S[key];
+    panel.innerHTML = s.html;
+    subs.innerHTML = s.substeps;
+    chip.textContent = s.stage;
+    btns.forEach(function(b){ b.setAttribute('aria-selected', b.dataset.s===key ? 'true':'false'); });
+    var stages = document.querySelectorAll('.stages .stage');
+    var order = {Intake:0, Assessment:1, 'Decision package':2, Close:3};
+    var at = order[s.stage];
+    stages.forEach(function(el,i){
+      el.className = 'stage ' + (i<at ? 'done' : (i===at ? 'now' : 'todo'));
+    });
+    try{ if(location.hash.slice(1)!==key) history.replaceState(null,'','#'+key); }catch(e){}
+  }
+  btns.forEach(function(b){ b.addEventListener('click', function(){ show(b.dataset.s); }); });
+  window.addEventListener('hashchange', function(){ show(location.hash.slice(1)); });
+
+  document.getElementById('tt').addEventListener('click', function(){
+    var r = document.documentElement;
+    var dark = r.getAttribute('data-theme')==='dark' ||
+      (!r.getAttribute('data-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    r.setAttribute('data-theme', dark ? 'light' : 'dark');
+  });
+
+  show(location.hash.slice(1) || 'scope');
+})();
+</script>

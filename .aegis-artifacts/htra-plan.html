@@ -1,0 +1,500 @@
+<title>Aegis SA HTRA Module Plan</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: single measured column; diagrams break out to full width in scroll containers */
+:root{
+  --bg:#f4f7fa; --surface:#ffffff; --surface-2:#eaf0f6; --surface-3:#dde6ef;
+  --ink:#0d1b2a; --muted:#5a6b7d; --line:#d3dde8;
+  --accent:#07808f; --accent-soft:#e0f4f7;
+  --rail:#0b1826; --rail-ink:#dce7f0; --rail-muted:#7b93a8;
+  --ok:#2c7a59; --warn:#b0841c; --bad:#b53428;
+  --f-display:"Space Grotesk",ui-sans-serif,system-ui,sans-serif;
+  --f-body:"Inter",ui-sans-serif,system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#08121d; --surface:#0f1f2e; --surface-2:#152838; --surface-3:#1d3447;
+  --ink:#e4edf5; --muted:#8ba2b7; --line:#213a51;
+  --accent:#2ad0e4; --accent-soft:#10333c;
+  --rail:#060f19; --rail-ink:#d6e4ef; --rail-muted:#6f879c;
+  --ok:#44b184; --warn:#e0b045; --bad:#e46257;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#08121d; --surface:#0f1f2e; --surface-2:#152838; --surface-3:#1d3447;
+  --ink:#e4edf5; --muted:#8ba2b7; --line:#213a51;
+  --accent:#2ad0e4; --accent-soft:#10333c;
+  --rail:#060f19; --rail-ink:#d6e4ef; --rail-muted:#6f879c;
+  --ok:#44b184; --warn:#e0b045; --bad:#e46257;
+  color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:14.5px;line-height:1.62;margin:0}
+.wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 56px;max-width:860px;margin:0 auto}
+h1,h2,h3,h4{font-family:var(--f-display);text-wrap:balance;margin:0;letter-spacing:-.015em}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-size:.93em}
+
+/* masthead */
+.top{background:var(--rail);color:var(--rail-ink);margin-bottom:34px}
+.topin{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:26px 30px;max-width:860px;margin:0 auto}
+.mark{display:flex;align-items:center;gap:9px;font-family:var(--f-display);font-weight:700;font-size:14px}
+.mark span{color:var(--rail-muted);font-weight:500}
+.top h1{font-size:clamp(25px,5vw,38px);margin:16px 0 0;color:#fff}
+.top p{color:var(--rail-muted);margin:10px 0 0;max-width:58ch;font-size:15px}
+.badges{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px}
+.badge{font:500 11px var(--f-mono);letter-spacing:.05em;color:var(--rail-ink);border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:4px 10px}
+.badge.on{border-color:var(--accent);color:var(--accent)}
+
+h2{font-size:21px;margin:40px 0 0;padding-top:20px;border-top:1px solid var(--line)}
+h2 em{font-style:normal;font-family:var(--f-mono);font-size:12px;color:var(--accent);display:block;letter-spacing:.09em;text-transform:uppercase;margin-bottom:7px;font-weight:500}
+h3{font-size:15.5px;margin:26px 0 6px}
+p{margin:12px 0}
+.lede{font-size:16px;color:var(--muted)}
+strong{font-weight:600}
+code{font-family:var(--f-mono);font-size:.88em;background:var(--surface-2);border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+ul,ol{padding-left:22px;margin:12px 0}
+li{margin-bottom:7px}
+
+/* figures */
+figure{margin:24px 0 0}
+.fscroll{overflow-x:auto;border:1px solid var(--line);border-radius:11px;background:var(--surface);padding:18px 16px}
+.fscroll svg{display:block;min-width:660px;max-width:100%;height:auto;color:var(--ink)}
+figcaption{font-size:12.5px;color:var(--muted);margin-top:10px;max-width:72ch}
+figcaption b{color:var(--ink);font-weight:600}
+.dbox{fill:var(--surface-2);stroke:currentColor;stroke-width:1.2}
+.dbox-a{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.9}
+.dgroup{fill:none;stroke:currentColor;stroke-width:1;stroke-dasharray:4 4;opacity:.5}
+.dl{font:600 12.5px var(--f-body);fill:currentColor;text-anchor:middle}
+.dl-a{font:600 12.5px var(--f-body);fill:var(--accent);text-anchor:middle}
+.ds{font:400 10.5px var(--f-mono);fill:var(--muted);text-anchor:middle}
+.dg{font:500 10.5px var(--f-mono);fill:var(--muted);letter-spacing:.07em;text-transform:uppercase}
+.de{font:400 10px var(--f-mono);fill:var(--muted);text-anchor:middle}
+.darr{fill:none;stroke:currentColor;stroke-width:1.2}
+.darr-a{fill:none;stroke:var(--accent);stroke-width:1.6}
+.dno{fill:none;stroke:var(--bad);stroke-width:1.2;stroke-dasharray:5 4}
+
+/* tables */
+.tscroll{overflow-x:auto;border:1px solid var(--line);border-radius:10px;margin-top:18px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:13px}
+th{text-align:left;font:600 10.5px var(--f-mono);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);padding:10px 12px;border-bottom:1px solid var(--line);background:var(--surface-2)}
+td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.ph{white-space:nowrap;font-weight:600}
+.sz{display:inline-block;font:500 10px var(--f-mono);border-radius:4px;padding:2px 6px;letter-spacing:.04em}
+.sz.s{background:var(--surface-3);color:var(--muted)}
+.sz.m{background:var(--accent-soft);color:var(--accent)}
+.callout{border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:0 9px 9px 0;background:var(--surface-2);padding:14px 16px;margin:20px 0 0}
+.callout h4{font-size:13.5px;margin-bottom:6px}
+.callout.bad{border-left-color:var(--bad)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-top:18px}
+.card{border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:14px 15px}
+.card h4{font-size:13.5px;margin-bottom:5px}
+.card p{font-size:12.5px;color:var(--muted);margin:0}
+.linkrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.lk{display:inline-flex;align-items:center;gap:7px;font:600 13px var(--f-body);text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:11px 14px}
+.lk:hover{border-color:var(--accent);color:var(--accent)}
+.lk span{font:400 11.5px var(--f-mono);color:var(--muted)}
+.themebtn{font:500 11.5px var(--f-body);color:var(--rail-muted);background:transparent;border:1px solid rgba(255,255,255,.18);border-radius:7px;padding:6px 11px;cursor:pointer;margin-top:18px}
+.themebtn:hover{color:var(--rail-ink)}
+.end{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+</style>
+
+<div class="top"><div class="topin">
+  <div class="mark">
+    <svg width="18" height="20" viewBox="0 0 18 20" aria-hidden="true">
+      <path d="M9 1 L16.5 3.6 V10.2 C16.5 14.6 13.3 17.6 9 19 C4.7 17.6 1.5 14.6 1.5 10.2 V3.6 Z" fill="none" stroke="#2ad0e4" stroke-width="1.5"/>
+      <path d="M5.6 10 L8 12.6 L12.4 7.2" fill="none" stroke="#2ad0e4" stroke-width="1.6" stroke-linecap="round"/>
+    </svg>
+    Aegis&nbsp;SA <span>/ Engineering plan</span>
+  </div>
+  <h1>Adding HTRA without refactoring Aegis SA</h1>
+  <p>One conceptual change — method types — plus additive tables. The project pipeline, the stage
+     machine and the existing control-compliance path stay exactly as they are.</p>
+  <div class="badges">
+    <span class="badge on">7 phases</span>
+    <span class="badge">Express · Handlebars · Svelte</span>
+    <span class="badge">SQLite on Azure App Service</span>
+    <span class="badge">no new project stages</span>
+  </div>
+  <button class="themebtn" id="tt" type="button">Switch theme</button>
+</div></div>
+
+<div class="wrap">
+
+<p class="lede">HTRA is not another control catalogue, so it cannot be added as another row in the
+framework list. It is an analytic methodology that values assets by injury, assesses threats, and
+derives a residual risk a business owner signs for. The whole trick is to generalise <em>what an
+assessment can contain</em> rather than to change how a project moves.</p>
+
+<h2><em>The change</em>One new indirection, one convergence point</h2>
+
+<p>Today a framework <em>is</em> a control list: an assessment scopes controls and records compliance
+state. HTRA has no controls at all. Rather than special-case it, give the framework registry a
+<code>method_type</code> and let the assessment stage ask each scoped method what it needs. Both
+method types then converge on a single <code>finding</code> table, which is what lets the decision
+package stay untouched.</p>
+
+<figure>
+  <div class="fscroll">
+  <svg viewBox="0 0 900 400" role="img" aria-label="Today an assessment scopes a control catalogue and produces control gaps. With method types, the assessment scopes a method interpreter which drives either a control catalogue or asset, threat and vulnerability entities, and both converge on one findings table before the decision package.">
+    <defs>
+      <marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+      <marker id="a1c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker>
+    </defs>
+
+    <text class="dg" x="24" y="30">Today</text>
+    <line class="darr" x1="24" y1="40" x2="876" y2="40" opacity=".25"/>
+    <rect class="dbox" x="24"  y="62" width="140" height="52" rx="7"/>
+    <text class="dl" x="94"  y="86">Assessment</text><text class="ds" x="94" y="102">stage</text>
+    <rect class="dbox" x="222" y="62" width="150" height="52" rx="7"/>
+    <text class="dl" x="297" y="86">Control catalogue</text><text class="ds" x="297" y="102">800-53 · ISO · ITSG-33</text>
+    <rect class="dbox" x="420" y="62" width="150" height="52" rx="7"/>
+    <text class="dl" x="495" y="86">Control gaps</text><text class="ds" x="495" y="102">compliance state</text>
+    <rect class="dbox" x="618" y="62" width="160" height="52" rx="7"/>
+    <text class="dl" x="698" y="86">Decision package</text><text class="ds" x="698" y="102">sign-off</text>
+    <path class="darr" d="M164,88 H218" marker-end="url(#a1)"/><text class="de" x="191" y="80">scopes</text>
+    <path class="darr" d="M372,88 H416" marker-end="url(#a1)"/><text class="de" x="394" y="80">assesses</text>
+    <path class="darr" d="M570,88 H614" marker-end="url(#a1)"/><text class="de" x="592" y="80">feeds</text>
+
+    <text class="dg" x="24" y="186">With method types</text>
+    <line class="darr" x1="24" y1="196" x2="876" y2="196" opacity=".25"/>
+    <rect class="dbox" x="24"  y="248" width="140" height="52" rx="7"/>
+    <text class="dl" x="94"  y="272">Assessment</text><text class="ds" x="94" y="288">unchanged stage</text>
+    <rect class="dbox-a" x="222" y="248" width="150" height="52" rx="7"/>
+    <text class="dl-a" x="297" y="270">Method interpreter</text><text class="ds" x="297" y="287">scales · matrices · steps</text>
+    <rect class="dbox" x="420" y="216" width="150" height="46" rx="7"/>
+    <text class="dl" x="495" y="236">Control catalogue</text><text class="ds" x="495" y="251">control_compliance</text>
+    <rect class="dbox" x="420" y="290" width="150" height="50" rx="7"/>
+    <text class="dl" x="495" y="310">Asset × Threat × Vuln</text><text class="ds" x="495" y="326">risk_analysis</text>
+    <rect class="dbox-a" x="618" y="248" width="110" height="52" rx="7"/>
+    <text class="dl-a" x="673" y="270">finding</text><text class="ds" x="673" y="287">one table</text>
+    <rect class="dbox" x="768" y="248" width="110" height="52" rx="7"/>
+    <text class="dl" x="823" y="270">Decision</text><text class="dl" x="823" y="288">package</text>
+
+    <path class="darr" d="M164,274 H218" marker-end="url(#a1)"/><text class="de" x="191" y="266">scopes</text>
+    <path class="darr-a" d="M372,274 H396 V239 H416" marker-end="url(#a1c)"/>
+    <path class="darr-a" d="M372,274 H396 V315 H416" marker-end="url(#a1c)"/>
+    <text class="de" x="394" y="207">interprets definition</text>
+    <path class="darr" d="M570,239 H594 V274"/>
+    <path class="darr" d="M570,315 H594 V274"/>
+    <path class="darr" d="M594,274 H614" marker-end="url(#a1)"/>
+    <text class="de" x="592" y="360">both emit findings</text>
+    <path class="darr" d="M728,274 H764" marker-end="url(#a1)"/>
+  </svg>
+  </div>
+  <figcaption><b>The difference is the two accented edges.</b> The interpreter is the only new hop,
+  and <code>finding</code> is the only new convergence point. Everything to the left of the
+  interpreter and to the right of <code>finding</code> is code you already have — which is why
+  existing assessments keep producing identical output.</figcaption>
+</figure>
+
+<h2><em>Process</em>HTRA's phases are sub-steps, not stages</h2>
+
+<p>The strongest temptation here is to add stages for the TRA phases. Don't. A method
+<em>declares</em> sub-steps, and the assessment stage renders whichever sub-steps its scoped methods
+declare. That one rule is what makes the platform configurable for any future methodology —
+ISO 27005, NIST 800-30, FAIR, or ITSG-33's successor.</p>
+
+<figure>
+  <div class="fscroll">
+  <svg viewBox="0 0 900 330" role="img" aria-label="The four project stages run left to right unchanged. The assessment stage expands into four sub-steps declared by the scoped methods, and the decision package expands into recommendations and acceptance.">
+    <defs>
+      <marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+    </defs>
+    <text class="dg" x="24" y="26">Fixed project flow</text>
+    <rect class="dbox" x="24"  y="44" width="170" height="50" rx="7"/>
+    <text class="dl" x="109" y="66">Intake</text><text class="ds" x="109" y="82">describe · upload · scope</text>
+    <rect class="dbox-a" x="240" y="44" width="250" height="50" rx="7"/>
+    <text class="dl-a" x="365" y="66">Assessment</text><text class="ds" x="365" y="82">renders the scoped methods' sub-steps</text>
+    <rect class="dbox" x="536" y="44" width="200" height="50" rx="7"/>
+    <text class="dl" x="636" y="66">Decision package</text><text class="ds" x="636" y="82">dispositions · artifacts</text>
+    <rect class="dbox" x="782" y="44" width="96" height="50" rx="7"/>
+    <text class="dl" x="830" y="66">Close</text><text class="ds" x="830" y="82">review date</text>
+    <path class="darr" d="M194,69 H236" marker-end="url(#a2)"/>
+    <path class="darr" d="M490,69 H532" marker-end="url(#a2)"/>
+    <path class="darr" d="M736,69 H778" marker-end="url(#a2)"/>
+
+    <path class="dgroup" d="M365,94 V118"/>
+    <path class="dgroup" d="M636,94 V118"/>
+    <text class="dg" x="240" y="134">declared sub-steps</text>
+
+    <rect class="dbox" x="240" y="146" width="250" height="32" rx="6"/>
+    <text class="dl" x="365" y="167">Assets &amp; statement of sensitivity</text>
+    <rect class="dbox" x="240" y="186" width="250" height="32" rx="6"/>
+    <text class="dl" x="365" y="207">Threat assessment</text>
+    <rect class="dbox" x="240" y="226" width="250" height="32" rx="6"/>
+    <text class="dl" x="365" y="247">Vulnerabilities &amp; residual risk</text>
+    <rect class="dbox" x="240" y="266" width="250" height="32" rx="6"/>
+    <text class="dl" x="365" y="287">Control assessment</text>
+    <text class="ds" x="365" y="310">three from HTRA · one from ITSG-33</text>
+
+    <rect class="dbox" x="536" y="146" width="200" height="32" rx="6"/>
+    <text class="dl" x="636" y="167">Recommendations</text>
+    <rect class="dbox" x="536" y="186" width="200" height="32" rx="6"/>
+    <text class="dl" x="636" y="207">Risk acceptance</text>
+    <rect class="dbox" x="536" y="226" width="200" height="32" rx="6"/>
+    <text class="dl" x="636" y="247">TRA report · SoS · register</text>
+    <text class="ds" x="636" y="280">existing sign-off, new templates</text>
+  </svg>
+  </div>
+  <figcaption><b>Nothing crosses the top row.</b> The four stages and their transitions are untouched;
+  all HTRA-specific work hangs below the assessment and decision-package boxes. A project that
+  scopes only ITSG-33 simply renders one sub-step instead of four.</figcaption>
+</figure>
+
+<h2><em>Architecture</em>Where the pieces live at runtime</h2>
+
+<p>The derivation engine is the one component worth isolating: pure functions over scales and
+matrices, no database coupling, exhaustively testable. Everything configurable lives in SQLite as
+data, so a department tailoring its tables changes rows rather than code.</p>
+
+<figure>
+  <div class="fscroll">
+  <svg viewBox="0 0 900 400" role="img" aria-label="Handlebars pages and Svelte islands call the Express app, whose router hands off to a method service, a pure derivation engine, and an AI extraction worker. All three read and write SQLite. The extraction worker is the only component that calls the Claude API.">
+    <defs>
+      <marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+      <marker id="a3c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker>
+    </defs>
+
+    <rect class="dgroup" x="16"  y="52" width="176" height="166" rx="9"/>
+    <text class="dg" x="24" y="44">Browser</text>
+    <rect class="dbox" x="30" y="74" width="148" height="48" rx="6"/>
+    <text class="dl" x="104" y="94">Handlebars</text><text class="ds" x="104" y="110">stage pages, tables</text>
+    <rect class="dbox" x="30" y="140" width="148" height="60" rx="6"/>
+    <text class="dl" x="104" y="162">Svelte islands</text><text class="ds" x="104" y="177">SoS grid · matrix</text>
+    <text class="ds" x="104" y="191">editor · review queue</text>
+
+    <rect class="dgroup" x="228" y="52" width="244" height="268" rx="9"/>
+    <text class="dg" x="236" y="44">Express — Azure App Service</text>
+    <rect class="dbox" x="242" y="74" width="216" height="44" rx="6"/>
+    <text class="dl" x="350" y="94">Router + stage controller</text><text class="ds" x="350" y="109">/assessment/:id/step/:key</text>
+    <rect class="dbox" x="242" y="134" width="216" height="44" rx="6"/>
+    <text class="dl" x="350" y="154">Method service</text><text class="ds" x="350" y="169">loads + validates definitions</text>
+    <rect class="dbox-a" x="242" y="194" width="216" height="52" rx="6"/>
+    <text class="dl-a" x="350" y="214">Derivation engine</text><text class="ds" x="350" y="229">matrix lookup + whitelisted</text>
+    <text class="ds" x="350" y="241">expressions · never eval</text>
+    <rect class="dbox" x="242" y="262" width="216" height="44" rx="6"/>
+    <text class="dl" x="350" y="282">AI extraction worker</text><text class="ds" x="350" y="297">writes suggestions only</text>
+
+    <rect class="dbox" x="516" y="74" width="180" height="172" rx="7"/>
+    <text class="dl" x="606" y="98">SQLite</text><text class="ds" x="606" y="114">/home · WAL</text>
+    <line class="darr" x1="530" y1="128" x2="682" y2="128" opacity=".3"/>
+    <text class="ds" x="606" y="148">method_scale · matrix_cell</text>
+    <text class="ds" x="606" y="170">entity · valuation</text>
+    <text class="ds" x="606" y="192">finding · finding_entity</text>
+    <text class="ds" x="606" y="214">recommendation</text>
+    <text class="ds" x="606" y="236">risk_decision · ai_suggestion</text>
+
+    <rect class="dgroup" x="742" y="268" width="142" height="54" rx="9"/>
+    <text class="dl" x="813" y="290">Claude API</text><text class="ds" x="813" y="306">document → draft</text>
+
+    <path class="darr" d="M178,96 H224" marker-end="url(#a3)"/><text class="de" x="201" y="88">GET</text>
+    <path class="darr" d="M178,168 H210 V96" marker-end="url(#a3)" opacity=".7"/>
+    <path class="darr" d="M350,118 V130" marker-end="url(#a3)"/>
+    <path class="darr-a" d="M350,178 V190" marker-end="url(#a3c)"/>
+    <path class="darr" d="M458,150 H512" marker-end="url(#a3)"/><text class="de" x="485" y="142">scales</text>
+    <path class="darr-a" d="M458,218 H486 V190 H512" marker-end="url(#a3c)"/><text class="de" x="487" y="182">findings</text>
+    <path class="darr" d="M458,284 H486 V238 H512" marker-end="url(#a3)"/><text class="de" x="490" y="258">suggestions</text>
+    <path class="darr" d="M458,296 H500 V346 H813 V326" marker-end="url(#a3)"/>
+    <text class="de" x="650" y="340">extract from uploaded architecture document</text>
+  </svg>
+  </div>
+  <figcaption><b>One component talks to the model, and it can only write suggestions.</b> The
+  extraction worker has no write path to <code>valuation</code>, <code>entity</code> or
+  <code>finding</code>; it writes <code>ai_suggestion</code> rows and stops. The derivation engine
+  reads configuration and writes the derivation trace it used.</figcaption>
+</figure>
+
+<h2><em>Data</em>The chain that makes a rating defensible</h2>
+
+<p>This is the query that an assessor's question reduces to, and the reason to link vulnerabilities
+to controls rather than keeping HTRA and ITSG-33 in parallel silos. One assessment then produces a
+TRA that justifies the control profile it selected.</p>
+
+<figure>
+  <div class="fscroll">
+  <svg viewBox="0 0 900 200" role="img" aria-label="Asset threatens threat, which exposes a vulnerability, which is mitigated by a control; the combination derives a residual risk, which is decided by a recorded acceptance. The first four are entity rows, then finding, then risk decision.">
+    <defs>
+      <marker id="a4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+      <marker id="a4c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker>
+    </defs>
+    <rect class="dbox" x="14"  y="62" width="122" height="48" rx="7"/>
+    <text class="dl" x="75"  y="91">Asset</text>
+    <rect class="dbox" x="160" y="62" width="122" height="48" rx="7"/>
+    <text class="dl" x="221" y="91">Threat</text>
+    <rect class="dbox" x="306" y="62" width="122" height="48" rx="7"/>
+    <text class="dl" x="367" y="86">Vulner-</text><text class="dl" x="367" y="101">ability</text>
+    <rect class="dbox" x="452" y="62" width="122" height="48" rx="7"/>
+    <text class="dl" x="513" y="91">Control</text>
+    <rect class="dbox-a" x="598" y="62" width="130" height="48" rx="7"/>
+    <text class="dl-a" x="663" y="86">Residual</text><text class="dl-a" x="663" y="101">risk</text>
+    <rect class="dbox" x="752" y="62" width="134" height="48" rx="7"/>
+    <text class="dl" x="819" y="91">Acceptance</text>
+
+    <path class="darr" d="M136,86 H156" marker-end="url(#a4)"/><text class="de" x="146" y="54">threatens</text>
+    <path class="darr" d="M282,86 H302" marker-end="url(#a4)"/><text class="de" x="292" y="54">exposes</text>
+    <path class="darr" d="M428,86 H448" marker-end="url(#a4)"/><text class="de" x="438" y="54">mitigated_by</text>
+    <path class="darr-a" d="M574,86 H594" marker-end="url(#a4c)"/><text class="de" x="586" y="54">derives</text>
+    <path class="darr" d="M728,86 H748" marker-end="url(#a4)"/><text class="de" x="740" y="54">decided_by</text>
+
+    <path class="dgroup" d="M14,126 V140 H574 V126"/>
+    <text class="ds" x="294" y="158">entity + entity_link + finding_entity</text>
+    <path class="dgroup" d="M598,126 V140 H728 V126"/>
+    <text class="ds" x="663" y="158">finding</text>
+    <path class="dgroup" d="M752,126 V140 H886 V126"/>
+    <text class="ds" x="819" y="158">risk_decision</text>
+    <text class="ds" x="450" y="186">every residual risk stores the full derivation trace in finding.computed</text>
+  </svg>
+  </div>
+  <figcaption><b>The accented edge is the one that needs the derivation trace.</b> Store the inputs,
+  the matrices hit and the intermediate values, and the question &ldquo;why is this Very high?&rdquo;
+  stays answerable long after the assessor who asked it has left.</figcaption>
+</figure>
+
+<h2><em>Safety</em>The AI gate</h2>
+
+<p>AI makes this module genuinely good, because the architecture document you already parse for
+control scoping contains most of what HTRA's first two phases need: data types and classification,
+components and stores, exposure and trust boundaries, stated controls. The constraint is that a TRA
+is a signed document, so no machine-derived value may reach it unreviewed.</p>
+
+<figure>
+  <div class="fscroll">
+  <svg viewBox="0 0 860 230" role="img" aria-label="The architecture document is parsed by an extractor which writes pending suggestions with cited sources. A human review step either accepts them into real records or rejects them with an audit trail. There is no direct path from the extractor to a real record.">
+    <defs>
+      <marker id="a5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+      <marker id="a5c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker>
+    </defs>
+    <rect class="dbox" x="14"  y="96" width="128" height="50" rx="7"/>
+    <text class="dl" x="78"  y="118">Architecture</text><text class="dl" x="78" y="134">document</text>
+    <rect class="dbox" x="174" y="96" width="132" height="50" rx="7"/>
+    <text class="dl" x="240" y="118">Extractor</text><text class="ds" x="240" y="134">cites passages</text>
+    <rect class="dbox-a" x="338" y="96" width="152" height="50" rx="7"/>
+    <text class="dl-a" x="414" y="115">ai_suggestion</text><text class="ds" x="414" y="132">status = pending</text>
+    <rect class="dbox" x="522" y="96" width="120" height="50" rx="7"/>
+    <text class="dl" x="582" y="115">Human</text><text class="dl" x="582" y="131">review</text>
+    <rect class="dbox" x="676" y="60" width="170" height="46" rx="7"/>
+    <text class="dl" x="761" y="80">valuation · entity</text><text class="ds" x="761" y="96">reviewed_by stamped</text>
+    <rect class="dbox" x="676" y="140" width="170" height="46" rx="7"/>
+    <text class="dl" x="761" y="160">Rejected</text><text class="ds" x="761" y="176">kept for audit</text>
+
+    <path class="darr" d="M142,121 H170" marker-end="url(#a5)"/><text class="de" x="156" y="88">parse</text>
+    <path class="darr" d="M306,121 H334" marker-end="url(#a5)"/><text class="de" x="320" y="88">suggest</text>
+    <path class="darr-a" d="M490,121 H518" marker-end="url(#a5c)"/><text class="de" x="504" y="88">queue</text>
+    <path class="darr" d="M642,114 H660 V83 H672" marker-end="url(#a5)"/><text class="de" x="658" y="58">accept / edit</text>
+    <path class="darr" d="M642,128 H660 V163 H672" marker-end="url(#a5)"/><text class="de" x="658" y="200">reject</text>
+
+    <path class="dno" d="M240,96 V36 H761 V56" marker-end="url(#a5)"/>
+    <text class="de" x="500" y="28" style="fill:var(--bad)">no direct path — enforced in the data layer</text>
+    <path class="dno" d="M492,28 L512,44 M512,28 L492,44"/>
+  </svg>
+  </div>
+  <figcaption><b>The missing edge is the design.</b> The extraction worker holds no write permission
+  on <code>valuation</code> or <code>entity</code>; accepting a suggestion is what creates the real
+  record and stamps who decided it. Draft the prose with the model; make the human own the number.</figcaption>
+</figure>
+
+<h2><em>Sequencing</em>Seven phases, each shipping something usable</h2>
+
+<div class="tscroll">
+<table>
+  <thead><tr><th>Phase</th><th>Size</th><th>What ships</th><th>Done when</th></tr></thead>
+  <tbody>
+    <tr><td class="ph">1 · Method registry</td><td><span class="sz s">small</span></td>
+      <td><code>method_type</code> on the framework table, definition + scale + matrix tables, JSON schema validator. No UI.</td>
+      <td>HTRA seeds as a draft method and reads back; every existing assessment behaves identically.</td></tr>
+    <tr><td class="ph">2 · Derivation engine</td><td><span class="sz m">small, high value</span></td>
+      <td>Matrix lookup and the whitelisted expression interpreter as pure functions.</td>
+      <td>Every input combination returns the published output; hostile expressions are rejected without executing.</td></tr>
+    <tr><td class="ph">3 · Assets &amp; SoS</td><td><span class="sz m">the real new surface</span></td>
+      <td><code>entity</code>, <code>entity_link</code>, <code>valuation</code>; asset register and the SoS grid as a Svelte island.</td>
+      <td>A user builds an asset register and values every asset across C/I/A with a required rationale.</td></tr>
+    <tr><td class="ph">4 · Threats &amp; residual risk</td><td><span class="sz m">core</span></td>
+      <td>Seeded all-hazards threat catalogue, threat assessment, vulnerability capture with control linkage, residual risk.</td>
+      <td>Every asset–threat pair is assessed or excluded with a reason, and each rating shows its own arithmetic.</td></tr>
+    <tr><td class="ph">5 · Decision package</td><td><span class="sz s">small</span></td>
+      <td><code>recommendation</code>, <code>risk_decision</code>; TRA report, SoS and register as Handlebars templates.</td>
+      <td>A package scoping both methods shows control gaps and residual risks together; the TRA report renders.</td></tr>
+    <tr><td class="ph">6 · AI assist</td><td><span class="sz m">differentiator</span></td>
+      <td><code>ai_suggestion</code>, extraction prompts, review queue.</td>
+      <td>A CRM architecture document yields a reviewable draft asset register with cited source passages.</td></tr>
+    <tr><td class="ph">7 · Method recommendation</td><td><span class="sz s">small</span></td>
+      <td>Scoping engine extended from &ldquo;which controls&rdquo; to &ldquo;which methods and controls&rdquo;.</td>
+      <td>An ERP intake proposes ITSG-33 PBMM + HTRA and records why.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout">
+  <h4>The real test of the abstraction</h4>
+  Seeding a second risk-analysis method — ISO 27005, as an experiment — should require a new
+  definition row and templates, and <strong>no new application code</strong>. If it needs code, the
+  method interpreter leaked something that belonged in data. Build that test into phase 4 rather
+  than discovering it later.
+</div>
+
+<h2><em>Risks</em>Five ways this goes wrong</h2>
+
+<div class="cards">
+  <div class="card"><h4>Phases become stages</h4>
+    <p>The most likely refactor, and the one that breaks universality. Sub-steps are declared by the
+    method; the stage machine never learns HTRA exists.</p></div>
+  <div class="card"><h4>Risk bands get normalised</h4>
+    <p>An HTRA Medium and an ISO 27005 Medium are different objects. Keep method-native scoring; any
+    portfolio rollup is a separate view labelled approximate.</p></div>
+  <div class="card"><h4>The arithmetic gets &ldquo;fixed&rdquo;</h4>
+    <p>Multiplying ordinal scales is shaky and the urge to improve it is strong. Assessors compare
+    against the published tables — report the official band, not a raw product.</p></div>
+  <div class="card"><h4>The threat catalogue goes cyber-only</h4>
+    <p>HTRA is all-hazards: deliberate, accidental and natural, against assets, services and people.
+    An IT-only catalogue fails review.</p></div>
+  <div class="card"><h4>Definitions get evaluated</h4>
+    <p>Method definitions are admin-editable data. A single <code>new Function</code> on a derivation
+    expression turns the admin screen into remote code execution.</p></div>
+  <div class="card"><h4>i18n is retrofitted</h4>
+    <p>GC deliverables need EN and FR. Translating scale labels through a method definition after the
+    fact is painful; make the definition bilingual from phase 1.</p></div>
+</div>
+
+<h2><em>Open</em>What to confirm before coding phase 1</h2>
+
+<ul>
+  <li><strong>The published scales.</strong> Level counts, level labels and every matrix cell must come
+  from the TRA-1 publication, stamped with a <code>source_ref</code> naming the table. Until then the
+  seeded method stays <code>is_draft = 1</code> and the UI says so. The scales shown in the mockups are
+  structurally right and numerically provisional.</li>
+  <li><strong>ITSG-33's successor.</strong> The ITSP.10.035 / .036 / .037 series replaces ITSG-33 and
+  broadens scope to OT and privacy. Departments are mid-transition, so both need to be supportable —
+  which the method registry gives you for free.</li>
+  <li><strong>Where the framework table really is</strong>, and whether a <code>method</code> view over
+  it beats a rename. Prefer the view: renames touch every existing query.</li>
+</ul>
+
+<div class="linkrow">
+  <a class="lk" href="https://claude.ai/artifact/JXnFcE3yfgrS2EZJ8cRRzU">Companion UI mockups <span>7 screens</span></a>
+</div>
+
+<div class="end">
+  Written against Aegis SA as described: Node and Express with Handlebars pages and Svelte islands,
+  SQLite on Azure App Service, AI integration throughout. The schema deltas and the full HTRA method
+  definition are in the engineering brief that accompanies this plan.
+</div>
+</div>
+
+<script>
+document.getElementById('tt').addEventListener('click', function(){
+  var r = document.documentElement;
+  var dark = r.getAttribute('data-theme')==='dark' ||
+    (!r.getAttribute('data-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  r.setAttribute('data-theme', dark ? 'light':'dark');
+});
+</script>
