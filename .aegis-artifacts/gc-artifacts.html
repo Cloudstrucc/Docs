@@ -1,0 +1,414 @@
+<title>Aegis SA GC Artifact Coverage</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: measured column; diagrams and the inventory break out into scroll containers */
+:root{
+  --bg:#f4f7fa; --surface:#ffffff; --surface-2:#eaf0f6; --surface-3:#dde6ef;
+  --ink:#0d1b2a; --muted:#5a6b7d; --line:#d3dde8;
+  --accent:#07808f; --accent-soft:#e0f4f7;
+  --rail:#0b1826; --rail-ink:#dce7f0; --rail-muted:#7b93a8;
+  --ok:#2c7a59; --ok-bg:#e3f2ea; --warn:#b0841c; --warn-bg:#f8f0d8;
+  --bad:#b53428; --bad-bg:#f9e0dd;
+  --f-display:"Space Grotesk",ui-sans-serif,system-ui,sans-serif;
+  --f-body:"Inter",ui-sans-serif,system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#08121d; --surface:#0f1f2e; --surface-2:#152838; --surface-3:#1d3447;
+  --ink:#e4edf5; --muted:#8ba2b7; --line:#213a51;
+  --accent:#2ad0e4; --accent-soft:#10333c;
+  --rail:#060f19; --rail-ink:#d6e4ef; --rail-muted:#6f879c;
+  --ok:#44b184; --ok-bg:#0e2a20; --warn:#e0b045; --warn-bg:#2e2512;
+  --bad:#e46257; --bad-bg:#331614;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#08121d; --surface:#0f1f2e; --surface-2:#152838; --surface-3:#1d3447;
+  --ink:#e4edf5; --muted:#8ba2b7; --line:#213a51;
+  --accent:#2ad0e4; --accent-soft:#10333c;
+  --rail:#060f19; --rail-ink:#d6e4ef; --rail-muted:#6f879c;
+  --ok:#44b184; --ok-bg:#0e2a20; --warn:#e0b045; --warn-bg:#2e2512;
+  --bad:#e46257; --bad-bg:#331614;
+  color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:14.5px;line-height:1.62;margin:0}
+.wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 56px;max-width:880px;margin:0 auto}
+h1,h2,h3,h4{font-family:var(--f-display);text-wrap:balance;margin:0;letter-spacing:-.015em}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-size:.93em}
+
+.top{background:var(--rail);color:var(--rail-ink);margin-bottom:34px}
+.topin{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:26px 30px;max-width:880px;margin:0 auto}
+.mark{display:flex;align-items:center;gap:9px;font-family:var(--f-display);font-weight:700;font-size:14px}
+.mark span{color:var(--rail-muted);font-weight:500}
+.top h1{font-size:clamp(25px,5vw,38px);margin:16px 0 0;color:#fff}
+.top p{color:var(--rail-muted);margin:10px 0 0;max-width:60ch;font-size:15px}
+.badges{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px}
+.badge{font:500 11px var(--f-mono);letter-spacing:.05em;color:var(--rail-ink);border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:4px 10px}
+.badge.on{border-color:var(--accent);color:var(--accent)}
+.themebtn{font:500 11.5px var(--f-body);color:var(--rail-muted);background:transparent;border:1px solid rgba(255,255,255,.18);border-radius:7px;padding:6px 11px;cursor:pointer;margin-top:18px}
+.themebtn:hover{color:var(--rail-ink)}
+
+h2{font-size:21px;margin:40px 0 0;padding-top:20px;border-top:1px solid var(--line)}
+h2 em{font-style:normal;font-family:var(--f-mono);font-size:12px;color:var(--accent);display:block;letter-spacing:.09em;text-transform:uppercase;margin-bottom:7px;font-weight:500}
+h3{font-size:15.5px;margin:26px 0 6px}
+p{margin:12px 0}
+.lede{font-size:16px;color:var(--muted)}
+code{font-family:var(--f-mono);font-size:.88em;background:var(--surface-2);border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+ul,ol{padding-left:22px;margin:12px 0}
+li{margin-bottom:7px}
+
+figure{margin:24px 0 0}
+.fscroll{overflow-x:auto;border:1px solid var(--line);border-radius:11px;background:var(--surface);padding:18px 16px}
+.fscroll svg{display:block;min-width:660px;max-width:100%;height:auto;color:var(--ink)}
+figcaption{font-size:12.5px;color:var(--muted);margin-top:10px;max-width:74ch}
+figcaption b{color:var(--ink);font-weight:600}
+.dbox{fill:var(--surface-2);stroke:currentColor;stroke-width:1.2}
+.dbox-a{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.9}
+.dbox-bad{fill:var(--bad-bg);stroke:var(--bad);stroke-width:1.7}
+.dbox-warn{fill:var(--warn-bg);stroke:var(--warn);stroke-width:1.4}
+.dbox-ok{fill:var(--ok-bg);stroke:var(--ok);stroke-width:1.3}
+.dgroup{fill:none;stroke:currentColor;stroke-width:1;stroke-dasharray:4 4;opacity:.5}
+.dl{font:600 12.5px var(--f-body);fill:currentColor;text-anchor:middle}
+.dl-a{font:600 12.5px var(--f-body);fill:var(--accent);text-anchor:middle}
+.dl-bad{font:600 12.5px var(--f-body);fill:var(--bad);text-anchor:middle}
+.ds{font:400 10.5px var(--f-mono);fill:var(--muted);text-anchor:middle}
+.dg{font:500 10.5px var(--f-mono);fill:var(--muted);letter-spacing:.07em;text-transform:uppercase}
+.de{font:400 10px var(--f-mono);fill:var(--muted);text-anchor:middle}
+.darr{fill:none;stroke:currentColor;stroke-width:1.2}
+.darr-a{fill:none;stroke:var(--accent);stroke-width:1.6}
+
+.tscroll{overflow-x:auto;border:1px solid var(--line);border-radius:10px;margin-top:18px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:680px;font-size:13px}
+th{text-align:left;font:600 10.5px var(--f-mono);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);padding:10px 12px;border-bottom:1px solid var(--line);background:var(--surface-2);white-space:nowrap}
+td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.n{font-family:var(--f-mono);color:var(--muted);text-align:right;white-space:nowrap}
+td.a{font-weight:600}
+.tag{display:inline-block;font:600 10px var(--f-mono);border-radius:4px;padding:2px 6px;letter-spacing:.04em;white-space:nowrap}
+.t-r{background:var(--accent-soft);color:var(--accent)}
+.t-c{background:var(--surface-3);color:var(--ink)}
+.t-rc{background:var(--warn-bg);color:var(--warn)}
+.st{display:inline-block;font:600 10px var(--f-mono);border-radius:4px;padding:2px 6px;white-space:nowrap}
+.s-have{background:var(--ok-bg);color:var(--ok)}
+.s-thin{background:var(--warn-bg);color:var(--warn)}
+.s-miss{background:var(--bad-bg);color:var(--bad)}
+.callout{border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:0 9px 9px 0;background:var(--surface-2);padding:14px 16px;margin:20px 0 0}
+.callout h4{font-size:13.5px;margin-bottom:6px}
+.callout.bad{border-left-color:var(--bad)}
+.callout.warn{border-left-color:var(--warn)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:12px;margin-top:18px}
+.card{border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:14px 15px}
+.card h4{font-size:13.5px;margin-bottom:5px}
+.card h4 i{font-style:normal;font-family:var(--f-mono);font-size:11px;color:var(--accent);display:block;letter-spacing:.06em;margin-bottom:3px}
+.card p{font-size:12.5px;color:var(--muted);margin:0}
+.linkrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.lk{display:inline-flex;align-items:center;gap:7px;font:600 13px var(--f-body);text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:11px 14px}
+.lk:hover{border-color:var(--accent);color:var(--accent)}
+.lk span{font:400 11.5px var(--f-mono);color:var(--muted)}
+.end{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px;font-size:11.5px;color:var(--muted)}
+.legend i{font-style:normal}
+</style>
+
+<div class="top"><div class="topin">
+  <div class="mark">
+    <svg width="18" height="20" viewBox="0 0 18 20" aria-hidden="true">
+      <path d="M9 1 L16.5 3.6 V10.2 C16.5 14.6 13.3 17.6 9 19 C4.7 17.6 1.5 14.6 1.5 10.2 V3.6 Z" fill="none" stroke="#2ad0e4" stroke-width="1.5"/>
+      <path d="M5.6 10 L8 12.6 L12.4 7.2" fill="none" stroke="#2ad0e4" stroke-width="1.6" stroke-linecap="round"/>
+    </svg>
+    Aegis&nbsp;SA <span>/ Coverage analysis</span>
+  </div>
+  <h1>What GC expects, and what Aegis SA is missing</h1>
+  <p>Eighteen Government of Canada security assessment artifacts measured against the app as it
+     stands. Two are nearly free to render, three whole process steps are absent, and none of it
+     needs a new project stage.</p>
+  <div class="badges">
+    <span class="badge on">8 phases</span>
+    <span class="badge">SRTM · SAR · SCP</span>
+    <span class="badge">categorize · plan · monitor</span>
+    <span class="badge">no new stages</span>
+  </div>
+  <button class="themebtn" id="tt" type="button">Switch theme</button>
+</div></div>
+
+<div class="wrap">
+
+<p class="lede">First, a naming correction worth making before it reaches the UI: the artifact is the
+<strong>SRTM</strong> — Security Requirements Traceability Matrix. <strong>SRCL</strong> is a
+different thing altogether, the Security Requirements Check List for a <em>contract</em>, and it
+sits outside a system's SA&amp;A package.</p>
+
+<h2><em>The finding</em>The front and the back of the process are missing</h2>
+
+<p>Aegis SA runs intake → scope controls → gather evidence → determine → package → POA&amp;M →
+authorize. The GC process runs categorize → select and tailor a profile → plan the assessment →
+assess → report → authorize → monitor. Laid against each other, the app is strong exactly where the
+work is hardest and absent at both ends.</p>
+
+<figure>
+  <div class="fscroll">
+  <svg viewBox="0 0 900 310" role="img" aria-label="The seven GC SA and A steps run left to right. Aegis SA has no categorize step, thin profile tailoring, no assessment plan, strong assessment, thin reporting, strong authorization, and no monitoring step.">
+    <defs>
+      <marker id="g1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+    </defs>
+    <text class="dg" x="16" y="26">GC SA&amp;A process</text>
+    <rect class="dbox-bad" x="14"  y="42" width="112" height="46" rx="7"/>
+    <text class="dl-bad" x="70"  y="70">Categorize</text>
+    <rect class="dbox-warn" x="140" y="42" width="112" height="46" rx="7"/>
+    <text class="dl" x="196" y="64">Tailor</text><text class="dl" x="196" y="79">profile</text>
+    <rect class="dbox-bad" x="266" y="42" width="112" height="46" rx="7"/>
+    <text class="dl-bad" x="322" y="64">Plan the</text><text class="dl-bad" x="322" y="79">assessment</text>
+    <rect class="dbox-ok" x="392" y="42" width="112" height="46" rx="7"/>
+    <text class="dl" x="448" y="70">Assess</text>
+    <rect class="dbox-warn" x="518" y="42" width="112" height="46" rx="7"/>
+    <text class="dl" x="574" y="70">Report</text>
+    <rect class="dbox-ok" x="644" y="42" width="112" height="46" rx="7"/>
+    <text class="dl" x="700" y="70">Authorize</text>
+    <rect class="dbox-bad" x="770" y="42" width="112" height="46" rx="7"/>
+    <text class="dl-bad" x="826" y="70">Monitor</text>
+    <path class="darr" d="M126,65 H136" marker-end="url(#g1)"/>
+    <path class="darr" d="M252,65 H262" marker-end="url(#g1)"/>
+    <path class="darr" d="M378,65 H388" marker-end="url(#g1)"/>
+    <path class="darr" d="M504,65 H514" marker-end="url(#g1)"/>
+    <path class="darr" d="M630,65 H640" marker-end="url(#g1)"/>
+    <path class="darr" d="M756,65 H766" marker-end="url(#g1)"/>
+    <path class="darr" d="M826,88 V108 H70 V92" marker-end="url(#g1)" opacity=".45"/>
+    <text class="de" x="440" y="122">reassessment — authorization is maintained, not granted once</text>
+
+    <text class="dg" x="16" y="166">Aegis SA today</text>
+    <text class="ds" x="70"  y="186">none</text>
+    <text class="ds" x="196" y="186">scoping only</text>
+    <text class="ds" x="322" y="186">none</text>
+    <text class="ds" x="448" y="186">evidence +</text><text class="ds" x="448" y="199">determination</text>
+    <text class="ds" x="574" y="186">decision</text><text class="ds" x="574" y="199">package</text>
+    <text class="ds" x="700" y="186">ATO / IATO</text>
+    <text class="ds" x="826" y="186">none</text>
+
+    <text class="dg" x="16" y="232">Artifacts owed at each step</text>
+    <text class="ds" x="70"  y="252">Categorization</text>
+    <text class="ds" x="196" y="252">SCP</text>
+    <text class="ds" x="322" y="252">SA&amp;A Plan</text>
+    <text class="ds" x="448" y="252">evidence</text>
+    <text class="ds" x="574" y="252">SRTM</text><text class="ds" x="574" y="265">SAR · TRA</text>
+    <text class="ds" x="700" y="252">ATO letter</text><text class="ds" x="700" y="265">POA&amp;M</text>
+    <text class="ds" x="826" y="252">Monitoring</text><text class="ds" x="826" y="265">plan</text>
+    <text class="ds" x="196" y="265">SoS</text>
+  </svg>
+  </div>
+  <figcaption><b>Three red boxes, one loop.</b> Categorize, plan and monitor are absent, and
+  the loop at the bottom is the one GC describes when it calls authorization a decision to accept
+  residual risk <em>and maintain the security posture on an ongoing basis</em>. All three attach as
+  sub-steps under existing stages, so the stage machine still does not change.</figcaption>
+</figure>
+
+<h2><em>Phase 1</em>Two reports you can almost already render</h2>
+
+<p>The SRTM and the SAR are the artifacts GC assessors ask for by name, and you hold most of what
+they need. Five per-control fields close the gap — and the most important of them,
+<code>implementation_statement</code>, is what your AI guidance feature is already most of the way
+to drafting.</p>
+
+<figure>
+  <div class="fscroll">
+  <svg viewBox="0 0 900 220" role="img" aria-label="The SRTM chain runs from requirement through control, implementation statement, evidence, assessment method, determination, finding and POA and M item. The implementation statement and assessment method are the two new fields; everything else already exists in the app.">
+    <defs>
+      <marker id="g2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+      <marker id="g2c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker>
+    </defs>
+    <text class="dg" x="16" y="30">One SRTM row, end to end</text>
+    <rect class="dbox" x="12"  y="58" width="96" height="48" rx="6"/>
+    <text class="dl" x="60"  y="87">Requirement</text>
+    <rect class="dbox" x="122" y="58" width="86" height="48" rx="6"/>
+    <text class="dl" x="165" y="87">Control</text>
+    <rect class="dbox-a" x="222" y="58" width="116" height="48" rx="6"/>
+    <text class="dl-a" x="280" y="80">Implementation</text><text class="dl-a" x="280" y="95">statement</text>
+    <rect class="dbox" x="352" y="58" width="86" height="48" rx="6"/>
+    <text class="dl" x="395" y="87">Evidence</text>
+    <rect class="dbox-a" x="452" y="58" width="104" height="48" rx="6"/>
+    <text class="dl-a" x="504" y="80">Assessment</text><text class="dl-a" x="504" y="95">method</text>
+    <rect class="dbox" x="570" y="58" width="104" height="48" rx="6"/>
+    <text class="dl" x="622" y="80">Determin-</text><text class="dl" x="622" y="95">ation</text>
+    <rect class="dbox" x="688" y="58" width="86" height="48" rx="6"/>
+    <text class="dl" x="731" y="87">Finding</text>
+    <rect class="dbox" x="788" y="58" width="100" height="48" rx="6"/>
+    <text class="dl" x="838" y="80">POA&amp;M</text><text class="dl" x="838" y="95">item</text>
+    <path class="darr" d="M108,82 H118" marker-end="url(#g2)"/>
+    <path class="darr-a" d="M208,82 H218" marker-end="url(#g2c)"/>
+    <path class="darr-a" d="M338,82 H348" marker-end="url(#g2c)"/>
+    <path class="darr-a" d="M438,82 H448" marker-end="url(#g2c)"/>
+    <path class="darr-a" d="M556,82 H566" marker-end="url(#g2c)"/>
+    <path class="darr" d="M674,82 H684" marker-end="url(#g2)"/>
+    <path class="darr" d="M774,82 H784" marker-end="url(#g2)"/>
+    <path class="dgroup" d="M222,112 V126 H556 V112"/>
+    <text class="ds" x="389" y="144" style="fill:var(--accent)">the two new fields</text>
+    <text class="ds" x="389" y="158">everything else is already in the app</text>
+    <path class="dgroup" d="M688,112 V126 H888 V112"/>
+    <text class="ds" x="788" y="144">built</text>
+    <path class="dgroup" d="M12,112 V126 H438 V112" opacity=".25"/>
+    <text class="ds" x="120" y="180">A blank cell here is read by an assessor as either</text>
+    <text class="ds" x="120" y="193">&ldquo;not applicable&rdquo; or &ldquo;not done&rdquo; — so mark it, never leave it empty.</text>
+  </svg>
+  </div>
+  <figcaption><b>The chain is the artifact.</b> An SRTM is not a report format so much as proof that
+  nothing fell between the requirement and the remediation. Which is why the rule about blanks
+  matters: an omitted row reads as a gap in the assessment rather than a gap in the system.</figcaption>
+</figure>
+
+<h2><em>Phase 5</em>Cloud: the controls you do not own</h2>
+
+<p>The Cyber Centre assesses commercial cloud providers and publishes reusable reports precisely so
+departments can focus on their own internal SA&amp;A. An app that cannot say &ldquo;this control is
+the provider's, and here is the assessment it is inherited from&rdquo; forces a department to
+self-assess controls it has no visibility into — which is both wrong and unsellable for any SaaS
+system.</p>
+
+<figure>
+  <div class="fscroll">
+  <svg viewBox="0 0 880 250" role="img" aria-label="Controls in scope split three ways: customer responsible and self assessed, shared, and provider responsible and inherited from a Cyber Centre CSP assessment. The security assessment report must count self assessed and inherited controls separately.">
+    <defs>
+      <marker id="g3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+      <marker id="g3c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker>
+    </defs>
+    <rect class="dbox" x="14" y="92" width="130" height="56" rx="7"/>
+    <text class="dl" x="79" y="114">Controls in</text><text class="dl" x="79" y="130">scope · 213</text>
+
+    <rect class="dbox-ok" x="226" y="22" width="178" height="52" rx="7"/>
+    <text class="dl" x="315" y="43">Customer · 148</text><text class="ds" x="315" y="60">self-assessed, evidence held</text>
+    <rect class="dbox-warn" x="226" y="94" width="178" height="52" rx="7"/>
+    <text class="dl" x="315" y="115">Shared · 31</text><text class="ds" x="315" y="132">both sides evidenced</text>
+    <rect class="dbox-a" x="226" y="166" width="178" height="52" rx="7"/>
+    <text class="dl-a" x="315" y="187">Provider · 34</text><text class="ds" x="315" y="204">inherited, not self-assessed</text>
+
+    <path class="darr" d="M144,118 H186 V48 H222" marker-end="url(#g3)"/>
+    <path class="darr" d="M144,120 H222" marker-end="url(#g3)"/>
+    <path class="darr-a" d="M144,122 H186 V192 H222" marker-end="url(#g3c)"/>
+
+    <rect class="dgroup" x="446" y="158" width="200" height="60" rx="9"/>
+    <text class="dl" x="546" y="182">CSP assessment</text><text class="ds" x="546" y="200">Cyber Centre · reusable</text>
+    <path class="darr-a" d="M442,192 H404" marker-end="url(#g3c)"/>
+    <text class="de" x="423" y="180">cited</text>
+
+    <rect class="dbox" x="688" y="92" width="178" height="56" rx="7"/>
+    <text class="dl" x="777" y="114">Security Assessment</text><text class="dl" x="777" y="130">Report</text>
+    <path class="darr" d="M404,48 H540 V118 H684" marker-end="url(#g3)"/>
+    <path class="darr" d="M404,120 H684" marker-end="url(#g3)" opacity=".7"/>
+    <text class="de" x="610" y="108">counts the three</text>
+    <text class="de" x="610" y="138">separately, never merged</text>
+  </svg>
+  </div>
+  <figcaption><b>Example counts, illustrative.</b> The point is the shape: three responsibility
+  classes, a citation to the assessment an inherited control rests on, and a report that keeps the
+  counts apart. A department that self-assesses 148 controls and inherits 34 is making a defensible
+  claim; one that reports 182 assessed controls is not.</figcaption>
+</figure>
+
+<h2><em>Inventory</em>Eighteen artifacts, scored</h2>
+
+<div class="legend">
+  <i><span class="tag t-r">R</span> renderable from data you would hold</i>
+  <i><span class="tag t-c">C</span> needs new CRUD data</i>
+  <i><span class="tag t-rc">R+C</span> both</i>
+  <i><span class="st s-have">have</span></i>
+  <i><span class="st s-thin">thin</span></i>
+  <i><span class="st s-miss">missing</span></i>
+</div>
+
+<div class="tscroll">
+<table>
+  <thead><tr><th class="n">#</th><th>Artifact</th><th>Type</th><th>Today</th><th>Effort</th><th>Phase</th></tr></thead>
+  <tbody>
+    <tr><td class="n">5</td><td class="a">SRTM — requirements traceability matrix</td><td><span class="tag t-r">R</span></td><td><span class="st s-miss">missing</span></td><td>S</td><td class="n">1</td></tr>
+    <tr><td class="n">6</td><td class="a">SAR — security assessment report</td><td><span class="tag t-r">R</span></td><td><span class="st s-miss">missing</span></td><td>S</td><td class="n">1</td></tr>
+    <tr><td class="n">—</td><td class="a">Artifact registry — versioning, status, staleness</td><td><span class="tag t-c">C</span></td><td><span class="st s-miss">missing</span></td><td>S</td><td class="n">1</td></tr>
+    <tr><td class="n">1</td><td class="a">Security categorization</td><td><span class="tag t-rc">R+C</span></td><td><span class="st s-miss">missing</span></td><td>M</td><td class="n">2</td></tr>
+    <tr><td class="n">3</td><td class="a">SCP — tailored security control profile</td><td><span class="tag t-rc">R+C</span></td><td><span class="st s-thin">thin</span></td><td>M</td><td class="n">3</td></tr>
+    <tr><td class="n">4</td><td class="a">SA&amp;A Plan — assessment method per control</td><td><span class="tag t-c">C</span></td><td><span class="st s-miss">missing</span></td><td>M</td><td class="n">4</td></tr>
+    <tr><td class="n">10</td><td class="a">System description &amp; authorization boundary</td><td><span class="tag t-c">C</span></td><td><span class="st s-miss">missing</span></td><td>M</td><td class="n">5</td></tr>
+    <tr><td class="n">11</td><td class="a">Control responsibility &amp; inheritance</td><td><span class="tag t-c">C</span></td><td><span class="st s-miss">missing</span></td><td>M</td><td class="n">5</td></tr>
+    <tr><td class="n">16</td><td class="a">Cloud guardrails validation record</td><td><span class="tag t-rc">R+C</span></td><td><span class="st s-miss">missing</span></td><td>S</td><td class="n">5</td></tr>
+    <tr><td class="n">12</td><td class="a">Continuous monitoring plan</td><td><span class="tag t-c">C</span></td><td><span class="st s-miss">missing</span></td><td>M</td><td class="n">6</td></tr>
+    <tr><td class="n">13</td><td class="a">Interconnection agreement (ISA / MOU)</td><td><span class="tag t-c">C</span></td><td><span class="st s-miss">missing</span></td><td>S</td><td class="n">6</td></tr>
+    <tr><td class="n">17</td><td class="a">VA / penetration test findings ingest</td><td><span class="tag t-c">C</span></td><td><span class="st s-miss">missing</span></td><td>S</td><td class="n">6</td></tr>
+    <tr><td class="n">18</td><td class="a">Portfolio rollup — expiries, aging, posture</td><td><span class="tag t-r">R</span></td><td><span class="st s-miss">missing</span></td><td>M</td><td class="n">7</td></tr>
+    <tr><td class="n">15</td><td class="a">PIA — mandatory TBS template</td><td><span class="tag t-rc">R+C</span></td><td><span class="st s-miss">missing</span></td><td>L</td><td class="n">8</td></tr>
+    <tr><td class="n">14</td><td class="a">SRCL — contract security requirements</td><td><span class="tag t-rc">R+C</span></td><td><span class="st s-miss">missing</span></td><td>S</td><td class="n">8</td></tr>
+    <tr><td class="n">2</td><td class="a">Statement of sensitivity</td><td><span class="tag t-r">R</span></td><td><span class="st s-have">HTRA work</span></td><td>—</td><td class="n">—</td></tr>
+    <tr><td class="n">7</td><td class="a">TRA</td><td><span class="tag t-r">R</span></td><td><span class="st s-have">HTRA work</span></td><td>—</td><td class="n">—</td></tr>
+    <tr><td class="n">8</td><td class="a">POA&amp;M</td><td><span class="tag t-r">R</span></td><td><span class="st s-have">built</span></td><td>—</td><td class="n">—</td></tr>
+    <tr><td class="n">9</td><td class="a">Authorization instrument (ATO / IATO)</td><td><span class="tag t-r">R</span></td><td><span class="st s-have">built</span></td><td>—</td><td class="n">—</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout warn"><h4>The one commonly listed artifact that is not really a GC artifact</h4>
+The <strong>System Security Plan (SSP)</strong> is NIST-native. In GC practice its content is spread
+across the security control profile, the system description and the SRTM, and it surfaces mainly in
+cloud and CSP contexts. Build rows 3, 5 and 10 and you can render an SSP if a user asks by name —
+but do not start there.</div>
+
+<h2><em>Structure</em>What this means for the model</h2>
+
+<div class="cards">
+  <div class="card"><h4><i>Backbone</i>Artifacts become first-class</h4>
+    <p>Eighteen types is past the point where per-method templates suffice. One registry with version,
+    status, classification, language and a content hash over the source data.</p></div>
+  <div class="card"><h4><i>Payoff</i>Staleness becomes detectable</h4>
+    <p>The content hash lets the app say <em>this SAR is stale, findings changed after it was
+    rendered</em>. In an audit that is the difference between a tool and a folder of documents.</p></div>
+  <div class="card"><h4><i>Change</i>Close stops being terminal</h4>
+    <p>Monitoring means authorized systems come back. Model it as re-entering assessment with a
+    reassessment flag, so the same sub-steps and templates apply on the second pass.</p></div>
+  <div class="card"><h4><i>Reuse</i>Categorization feeds the SoS</h4>
+    <p>Categorization is upstream of HTRA and answers to its own TBS standard. Let the statement of
+    sensitivity reuse its injury values rather than replacing them — don't merge the two.</p></div>
+  <div class="card"><h4><i>Derivation</i>Profile selection stops being asserted</h4>
+    <p>Once categorization is a recorded step, the PBMM proposal can cite it as its reason instead of
+    being a scoping guess the user has to trust.</p></div>
+  <div class="card"><h4><i>Test</i>The nineteenth artifact</h4>
+    <p>Adding one more artifact type should need a template and a registry row, no application code.
+    Same test as the ISO 27005 one in the HTRA brief.</p></div>
+</div>
+
+<h2><em>Honesty</em>What is verified and what is not</h2>
+
+<p>Confirmed against GC sources: SRTM, SA&amp;A Plan and Security Assessment Report are named SA&amp;A
+artifacts in a Shared Services Canada audit, which usefully distinguishes <em>project artifacts</em>
+from <em>SA&amp;A artifacts</em>; control profiles live in ITSG-33 Annex 4/4A with a separate profile
+for cloud-based GC services; security categorization has its own TBS standard; the CA family includes
+CA-7 Continuous Monitoring, CA-8 Penetration Testing and CA-9 Internal System Connections; the PIA
+Directive was rescinded in October 2024 and replaced by a Standard with a mandatory template; and
+SRCL is TBS/SCT form 350-103.</p>
+
+<div class="callout bad"><h4>Read the primary sources before seeding anything</h4>
+I could not open ITSG-33 Annex 2 or the TBS appendices from this environment, so these remain
+unverified: the exact ISSIP activity names and their outputs, the injury scale labels in the Standard
+on Security Categorization, whether Appendix B is still current, the cloud guardrails validation
+deadline, the PIA template's field list, and whether any reauthorization interval is mandated at all.
+Apply the same discipline as the HTRA scales — seed as draft, stamp a <code>source_ref</code>, and
+show the draft state in the UI.</div>
+
+<div class="linkrow">
+  <a class="lk" href="https://claude.ai/artifact/66hE3T1AvNqYHWwNRBRPEd">HTRA implementation plan <span>6 diagrams</span></a>
+  <a class="lk" href="https://claude.ai/artifact/JXnFcE3yfgrS2EZJ8cRRzU">HTRA UI mockups <span>9 screens</span></a>
+</div>
+
+<div class="end">
+  Companion to the HTRA brief. The schema deltas, phase detail and acceptance criteria are in
+  <code>AEGIS-SA-GC-ARTIFACTS-PLAN.md</code>, written to be handed to a coding agent.
+</div>
+</div>
+
+<script>
+document.getElementById('tt').addEventListener('click', function(){
+  var r = document.documentElement;
+  var dark = r.getAttribute('data-theme')==='dark' ||
+    (!r.getAttribute('data-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  r.setAttribute('data-theme', dark ? 'light':'dark');
+});
+</script>
