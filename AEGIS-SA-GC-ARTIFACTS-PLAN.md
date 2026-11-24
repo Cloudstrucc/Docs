@@ -1,5 +1,13 @@
 # Aegis SA — GC Security Artifact Coverage and Implementation Plan
 
+> **SEQUENCING SUPERSEDED.** `AEGIS-SA-MAKER-PLAN.md` is now the master plan.
+> The control fields and reports in §5 and the SRTM/SAR work in §7 Phase 1 are to be
+> delivered as a *blueprint* on the Maker configuration engine (Maker plan, Chapter B
+> and Phase 3), with existing reports extended by artifact fragments rather than
+> forked. This document remains the authoritative source for the GC **artifact
+> inventory**, the process-gap analysis and the verification notes in §10. The
+> remaining artifacts in §3 become Phase 9 blueprint content.
+
 > **How to use this document:** paste it as the opening prompt for a Claude Code
 > session in the Aegis SA repository, or save it as
 > `docs/gc-artifacts-plan.md`. It is a companion to

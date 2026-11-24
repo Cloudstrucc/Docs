@@ -1,0 +1,564 @@
+<title>Aegis SA Maker Architecture</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: measured column; six diagrams break out into scroll containers */
+:root{
+  --bg:#f4f7fa; --surface:#ffffff; --surface-2:#eaf0f6; --surface-3:#dde6ef;
+  --ink:#0d1b2a; --muted:#5a6b7d; --line:#d3dde8;
+  --accent:#07808f; --accent-soft:#e0f4f7;
+  --rail:#0b1826; --rail-ink:#dce7f0; --rail-muted:#7b93a8;
+  --ok:#2c7a59; --ok-bg:#e3f2ea; --warn:#b0841c; --warn-bg:#f8f0d8;
+  --bad:#b53428; --bad-bg:#f9e0dd;
+  --f-display:"Space Grotesk",ui-sans-serif,system-ui,sans-serif;
+  --f-body:"Inter",ui-sans-serif,system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#08121d; --surface:#0f1f2e; --surface-2:#152838; --surface-3:#1d3447;
+  --ink:#e4edf5; --muted:#8ba2b7; --line:#213a51;
+  --accent:#2ad0e4; --accent-soft:#10333c;
+  --rail:#060f19; --rail-ink:#d6e4ef; --rail-muted:#6f879c;
+  --ok:#44b184; --ok-bg:#0e2a20; --warn:#e0b045; --warn-bg:#2e2512;
+  --bad:#e46257; --bad-bg:#331614;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#08121d; --surface:#0f1f2e; --surface-2:#152838; --surface-3:#1d3447;
+  --ink:#e4edf5; --muted:#8ba2b7; --line:#213a51;
+  --accent:#2ad0e4; --accent-soft:#10333c;
+  --rail:#060f19; --rail-ink:#d6e4ef; --rail-muted:#6f879c;
+  --ok:#44b184; --ok-bg:#0e2a20; --warn:#e0b045; --warn-bg:#2e2512;
+  --bad:#e46257; --bad-bg:#331614;
+  color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:14.5px;line-height:1.62;margin:0}
+.wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 56px;max-width:880px;margin:0 auto}
+h1,h2,h3,h4{font-family:var(--f-display);text-wrap:balance;margin:0;letter-spacing:-.015em}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-size:.93em}
+
+.top{background:var(--rail);color:var(--rail-ink);margin-bottom:34px}
+.topin{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:26px 30px;max-width:880px;margin:0 auto}
+.mark{display:flex;align-items:center;gap:9px;font-family:var(--f-display);font-weight:700;font-size:14px}
+.mark span{color:var(--rail-muted);font-weight:500}
+.top h1{font-size:clamp(25px,5vw,38px);margin:16px 0 0;color:#fff}
+.top p{color:var(--rail-muted);margin:10px 0 0;max-width:60ch;font-size:15px}
+.badges{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px}
+.badge{font:500 11px var(--f-mono);letter-spacing:.05em;color:var(--rail-ink);border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:4px 10px}
+.badge.on{border-color:var(--accent);color:var(--accent)}
+.themebtn{font:500 11.5px var(--f-body);color:var(--rail-muted);background:transparent;border:1px solid rgba(255,255,255,.18);border-radius:7px;padding:6px 11px;cursor:pointer;margin-top:18px}
+.themebtn:hover{color:var(--rail-ink)}
+
+h2{font-size:21px;margin:40px 0 0;padding-top:20px;border-top:1px solid var(--line)}
+h2 em{font-style:normal;font-family:var(--f-mono);font-size:12px;color:var(--accent);display:block;letter-spacing:.09em;text-transform:uppercase;margin-bottom:7px;font-weight:500}
+h3{font-size:15.5px;margin:26px 0 6px}
+p{margin:12px 0}
+.lede{font-size:16px;color:var(--muted)}
+code{font-family:var(--f-mono);font-size:.88em;background:var(--surface-2);border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+ul,ol{padding-left:22px;margin:12px 0}
+li{margin-bottom:7px}
+.rule{border:1px solid var(--accent);background:var(--accent-soft);border-radius:10px;padding:16px 18px;margin:22px 0 0}
+.rule strong{font-family:var(--f-display);font-size:15.5px;display:block;margin-bottom:6px;color:var(--accent)}
+.rule p{margin:0;font-size:14px}
+
+figure{margin:24px 0 0}
+.fscroll{overflow-x:auto;border:1px solid var(--line);border-radius:11px;background:var(--surface);padding:18px 16px}
+.fscroll svg{display:block;min-width:660px;max-width:100%;height:auto;color:var(--ink)}
+figcaption{font-size:12.5px;color:var(--muted);margin-top:10px;max-width:74ch}
+figcaption b{color:var(--ink);font-weight:600}
+.dbox{fill:var(--surface-2);stroke:currentColor;stroke-width:1.2}
+.dbox-a{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.8}
+.dbox-fix{fill:var(--surface-3);stroke:currentColor;stroke-width:1.6}
+.dbox-ok{fill:var(--ok-bg);stroke:var(--ok);stroke-width:1.3}
+.dbox-warn{fill:var(--warn-bg);stroke:var(--warn);stroke-width:1.4}
+.dbox-bad{fill:var(--bad-bg);stroke:var(--bad);stroke-width:1.5}
+.dgroup{fill:none;stroke:currentColor;stroke-width:1;stroke-dasharray:4 4;opacity:.5}
+.dl{font:600 12.5px var(--f-body);fill:currentColor;text-anchor:middle}
+.dl-a{font:600 12.5px var(--f-body);fill:var(--accent);text-anchor:middle}
+.dl-s{font:600 11.5px var(--f-body);fill:currentColor;text-anchor:middle}
+.ds{font:400 10.5px var(--f-mono);fill:var(--muted);text-anchor:middle}
+.dg{font:500 10.5px var(--f-mono);fill:var(--muted);letter-spacing:.07em;text-transform:uppercase}
+.de{font:400 10px var(--f-mono);fill:var(--muted);text-anchor:middle}
+.darr{fill:none;stroke:currentColor;stroke-width:1.2}
+.darr-a{fill:none;stroke:var(--accent);stroke-width:1.6}
+.dno{fill:none;stroke:var(--bad);stroke-width:1.3;stroke-dasharray:5 4}
+
+.tscroll{overflow-x:auto;border:1px solid var(--line);border-radius:10px;margin-top:18px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:660px;font-size:13px}
+th{text-align:left;font:600 10.5px var(--f-mono);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);padding:10px 12px;border-bottom:1px solid var(--line);background:var(--surface-2);white-space:nowrap}
+td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.ph{white-space:nowrap;font-weight:600;font-family:var(--f-mono)}
+.sz{display:inline-block;font:500 10px var(--f-mono);border-radius:4px;padding:2px 6px}
+.sz.s{background:var(--surface-3);color:var(--muted)}
+.sz.m{background:var(--accent-soft);color:var(--accent)}
+.sz.l{background:var(--warn-bg);color:var(--warn)}
+.callout{border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:0 9px 9px 0;background:var(--surface-2);padding:14px 16px;margin:20px 0 0}
+.callout h4{font-size:13.5px;margin-bottom:6px}
+.callout.bad{border-left-color:var(--bad)}
+.callout.warn{border-left-color:var(--warn)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:12px;margin-top:18px}
+.card{border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:14px 15px}
+.card h4{font-size:13.5px;margin-bottom:5px}
+.card p{font-size:12.5px;color:var(--muted);margin:0}
+.ol-q{counter-reset:q;list-style:none;padding-left:0}
+.ol-q li{counter-increment:q;position:relative;padding-left:34px;margin-bottom:11px;font-size:13.5px}
+.ol-q li::before{content:counter(q);position:absolute;left:0;top:1px;font:600 11px var(--f-mono);color:var(--accent);background:var(--accent-soft);border:1px solid var(--accent);border-radius:5px;width:23px;height:21px;display:flex;align-items:center;justify-content:center}
+.ol-q b{font-weight:600}
+.linkrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.lk{display:inline-flex;align-items:center;gap:7px;font:600 13px var(--f-body);text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:11px 14px}
+.lk:hover{border-color:var(--accent);color:var(--accent)}
+.lk span{font:400 11.5px var(--f-mono);color:var(--muted)}
+.end{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+pre{background:var(--surface-2);border:1px solid var(--line);border-radius:9px;padding:13px 14px;overflow-x:auto;font-family:var(--f-mono);font-size:11.5px;line-height:1.55;margin:14px 0 0}
+</style>
+
+<div class="top"><div class="topin">
+  <div class="mark">
+    <svg width="18" height="20" viewBox="0 0 18 20" aria-hidden="true">
+      <path d="M9 1 L16.5 3.6 V10.2 C16.5 14.6 13.3 17.6 9 19 C4.7 17.6 1.5 14.6 1.5 10.2 V3.6 Z" fill="none" stroke="#2ad0e4" stroke-width="1.5"/>
+      <path d="M5.6 10 L8 12.6 L12.4 7.2" fill="none" stroke="#2ad0e4" stroke-width="1.6" stroke-linecap="round"/>
+    </svg>
+    Aegis&nbsp;SA <span>/ Maker architecture</span>
+  </div>
+  <h1>A configuration platform, without becoming a programming platform</h1>
+  <p>Twelve definition types, four fixed enumerations, and one rule that keeps the
+     whole thing testable. Design only — nothing to be built until the open decisions are answered.</p>
+  <div class="badges">
+    <span class="badge on">10 phases</span>
+    <span class="badge">blueprints · scopes · rules</span>
+    <span class="badge">REST + Node/.NET SDK</span>
+    <span class="badge">HTRA becomes blueprint #1</span>
+  </div>
+  <button class="themebtn" id="tt" type="button">Switch theme</button>
+</div></div>
+
+<div class="wrap">
+
+<p class="lede">The HTRA work already proved this pattern once: control frameworks and risk
+methodologies are different method types over a shared metamodel, and their phases are
+method-declared sub-steps rather than new stages. Maker is that same idea applied to fields,
+artifacts, rules and views.</p>
+
+<div class="rule">
+  <strong>The governing rule</strong>
+  <p>A fixed metamodel with configurable instances. Configuration selects and parameterizes from a
+  vocabulary the platform defines; it never invents new kinds of things, and it never executes code.
+  A blueprint may declare a new <em>field</em>, but not a new <em>field type</em>. A new
+  <em>step</em>, but not a new <em>stage</em>. A new <em>rule</em>, but only from a closed set of
+  action verbs.</p>
+</div>
+
+<h2><em>Metamodel</em>Twelve definition types over four fixed enumerations</h2>
+
+<figure>
+  <div class="fscroll">
+  <svg viewBox="0 0 900 400" role="img" aria-label="Four platform-owned enumerations sit above twelve configurable definition types. The enumerations are stages, the base entity vocabulary, field types and rule action verbs; changing any of them is a platform release rather than a configuration change.">
+    <defs>
+      <marker id="m1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+    </defs>
+    <text class="dg" x="20" y="24">Platform owns — changing any of these is a release</text>
+    <rect class="dbox-fix" x="20"  y="36" width="200" height="46" rx="7"/>
+    <text class="dl-s" x="120" y="57">Stages</text><text class="ds" x="120" y="73">4, fixed</text>
+    <rect class="dbox-fix" x="240" y="36" width="200" height="46" rx="7"/>
+    <text class="dl-s" x="340" y="57">Base entity vocabulary</text><text class="ds" x="340" y="73">11 types</text>
+    <rect class="dbox-fix" x="460" y="36" width="200" height="46" rx="7"/>
+    <text class="dl-s" x="560" y="57">Field types</text><text class="ds" x="560" y="73">18</text>
+    <rect class="dbox-fix" x="680" y="36" width="200" height="46" rx="7"/>
+    <text class="dl-s" x="780" y="57">Rule action verbs</text><text class="ds" x="780" y="73">15</text>
+
+    <path class="darr" d="M450,86 V112" marker-end="url(#m1)"/>
+    <text class="de" x="450" y="106">configuration selects from these, never extends them</text>
+
+    <text class="dg" x="20" y="140">Configuration — twelve definition types</text>
+    <rect class="dbox" x="20"  y="152" width="200" height="44" rx="6"/>
+    <text class="dl-s" x="120" y="172">field</text><text class="ds" x="120" y="188">on an entity type</text>
+    <rect class="dbox" x="240" y="152" width="200" height="44" rx="6"/>
+    <text class="dl-s" x="340" y="172">field_group</text><text class="ds" x="340" y="188">on an entity type</text>
+    <rect class="dbox" x="460" y="152" width="200" height="44" rx="6"/>
+    <text class="dl-s" x="560" y="172">view</text><text class="ds" x="560" y="188">list · grid · form</text>
+    <rect class="dbox" x="680" y="152" width="200" height="44" rx="6"/>
+    <text class="dl-s" x="780" y="172">prompt</text><text class="ds" x="780" y="188">AI, bound to a field</text>
+
+    <rect class="dbox" x="20"  y="206" width="200" height="44" rx="6"/>
+    <text class="dl-s" x="120" y="226">seed</text><text class="ds" x="120" y="242">reference data</text>
+    <rect class="dbox-a" x="240" y="206" width="200" height="44" rx="6"/>
+    <text class="dl-a" x="340" y="226">step</text><text class="ds" x="340" y="242">sub-step inside a stage</text>
+    <rect class="dbox" x="460" y="206" width="200" height="44" rx="6"/>
+    <text class="dl-s" x="560" y="226">scale</text><text class="ds" x="560" y="242">ordinal levels</text>
+    <rect class="dbox" x="680" y="206" width="200" height="44" rx="6"/>
+    <text class="dl-s" x="780" y="226">matrix</text><text class="ds" x="780" y="242">two inputs → a level</text>
+
+    <rect class="dbox" x="20"  y="260" width="200" height="44" rx="6"/>
+    <text class="dl-s" x="120" y="280">derivation</text><text class="ds" x="120" y="296">matrix or expression</text>
+    <rect class="dbox-a" x="240" y="260" width="200" height="44" rx="6"/>
+    <text class="dl-a" x="340" y="280">rule</text><text class="ds" x="340" y="296">event → condition → actions</text>
+    <rect class="dbox" x="460" y="260" width="200" height="44" rx="6"/>
+    <text class="dl-s" x="560" y="280">artifact_template</text><text class="ds" x="560" y="296">a document</text>
+    <rect class="dbox-a" x="680" y="260" width="200" height="44" rx="6"/>
+    <text class="dl-a" x="780" y="280">artifact_fragment</text><text class="ds" x="780" y="296">patches a template</text>
+
+    <rect class="dbox" x="240" y="314" width="200" height="44" rx="6"/>
+    <text class="dl-s" x="340" y="334">entity_type</text><text class="ds" x="340" y="350">labels + classes only</text>
+    <text class="ds" x="620" y="340">the three accented types are what make this plan</text>
+    <text class="ds" x="620" y="354">more than a custom-fields feature</text>
+  </svg>
+  </div>
+  <figcaption><b>The boundary is the design.</b> Everything above the arrow is an enumeration the
+  platform owns; everything below picks from it. <code>entity_type</code> is deliberately weak — it
+  relabels and constrains a base type, it cannot create one. Adding a thirteenth definition type is a
+  platform release, which is what keeps the testing surface finite.</figcaption>
+</figure>
+
+<h2><em>Resolution</em>Four scopes, one resolved configuration, one hash</h2>
+
+<p>A blueprint installs at any scope. Resolution is most-specific-wins for whole objects like scales
+and templates, but a union for fields, steps, rules and fragments — a scale merged field-by-field is
+incoherent, whereas fields must accumulate.</p>
+
+<figure>
+  <div class="fscroll">
+  <svg viewBox="0 0 900 330" role="img" aria-label="Blueprints and local definitions installed at workspace, program, project and assessment scopes feed a resolver, which produces an effective configuration and a config hash. Forms, the rule engine and the artifact renderer all read that resolved configuration, and each rendered artifact stores the hash that produced it.">
+    <defs>
+      <marker id="m2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+      <marker id="m2c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker>
+    </defs>
+    <text class="dg" x="16" y="24">Scope ladder</text>
+    <rect class="dbox" x="14" y="36"  width="158" height="42" rx="6"/>
+    <text class="dl-s" x="93" y="62">workspace</text>
+    <rect class="dbox" x="14" y="88"  width="158" height="42" rx="6"/>
+    <text class="dl-s" x="93" y="114">program</text>
+    <rect class="dbox" x="14" y="140" width="158" height="42" rx="6"/>
+    <text class="dl-s" x="93" y="166">project</text>
+    <rect class="dbox" x="14" y="192" width="158" height="42" rx="6"/>
+    <text class="dl-s" x="93" y="218">assessment</text>
+    <text class="ds" x="93" y="256">blueprints +</text><text class="ds" x="93" y="270">local definitions</text>
+
+    <rect class="dbox" x="240" y="78" width="168" height="112" rx="8"/>
+    <text class="dl" x="324" y="118">Resolver</text>
+    <text class="ds" x="324" y="138">union · most-specific</text>
+    <text class="ds" x="324" y="153">per definition type</text>
+    <path class="darr" d="M172,57  H214 V124 H236" marker-end="url(#m2)"/>
+    <path class="darr" d="M172,109 H214 V128 H236" marker-end="url(#m2)"/>
+    <path class="darr" d="M172,161 H214 V136 H236" marker-end="url(#m2)"/>
+    <path class="darr" d="M172,213 H214 V140 H236" marker-end="url(#m2)"/>
+
+    <rect class="dbox-a" x="454" y="78" width="178" height="112" rx="8"/>
+    <text class="dl-a" x="543" y="116">effective_config</text>
+    <text class="ds" x="543" y="136">+ config_hash</text>
+    <text class="ds" x="543" y="152">materialized, cached</text>
+    <path class="darr-a" d="M408,134 H450" marker-end="url(#m2c)"/>
+
+    <rect class="dbox" x="700" y="36"  width="182" height="46" rx="6"/>
+    <text class="dl-s" x="791" y="57">Forms &amp; views</text><text class="ds" x="791" y="73">rendered from schema</text>
+    <rect class="dbox" x="700" y="94"  width="182" height="46" rx="6"/>
+    <text class="dl-s" x="791" y="115">Rule engine</text><text class="ds" x="791" y="131">gates and actions</text>
+    <rect class="dbox" x="700" y="152" width="182" height="46" rx="6"/>
+    <text class="dl-s" x="791" y="173">Artifact renderer</text><text class="ds" x="791" y="189">templates + fragments</text>
+    <path class="darr" d="M632,120 H668 V59 H696" marker-end="url(#m2)"/>
+    <path class="darr" d="M632,130 H668 V117 H696" marker-end="url(#m2)"/>
+    <path class="darr" d="M632,140 H668 V175 H696" marker-end="url(#m2)"/>
+
+    <rect class="dbox-ok" x="700" y="226" width="182" height="52" rx="6"/>
+    <text class="dl-s" x="791" y="247">artifact.config_hash</text><text class="ds" x="791" y="264">+ content_hash</text>
+    <path class="darr" d="M791,198 V222" marker-end="url(#m2)"/>
+    <text class="de" x="430" y="252">the hash answers three questions: which configuration produced this document,</text>
+    <text class="de" x="430" y="266">is it stale because data moved or because configuration moved, and is the cache valid</text>
+  </svg>
+  </div>
+  <figcaption><b><code>config_hash</code> is the keystone.</b> Without it, resolution is an
+  expensive recomputation on every read, a rendered artifact cannot say what produced it, and
+  "stale because the data changed" is indistinguishable from "stale because someone retuned a
+  matrix". Those are very different conversations in an audit.</figcaption>
+</figure>
+
+<h2><em>The hard part</em>Shipping v2 of a blueprint the customer has edited</h2>
+
+<p>This is the feature that kills platforms like this one. You ship a GC blueprint, customers tailor
+it, then you publish an update. Without a real merge you either clobber their tailoring or you can
+never ship again.</p>
+
+<figure>
+  <div class="fscroll">
+  <svg viewBox="0 0 860 300" role="img" aria-label="Base version one and the customer's overrides both feed a three-way merge against base version two. Clean overrides re-apply into a merged state; conflicting ones produce a conflict list that blocks activation until resolved.">
+    <defs>
+      <marker id="m3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+      <marker id="m3b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="var(--bad)"/></marker>
+      <marker id="m3c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker>
+    </defs>
+    <rect class="dbox" x="14" y="44" width="146" height="46" rx="6"/>
+    <text class="dl-s" x="87" y="64">base v1</text><text class="ds" x="87" y="80">what you shipped</text>
+    <rect class="dbox" x="216" y="44" width="146" height="46" rx="6"/>
+    <text class="dl-s" x="289" y="64">base v2</text><text class="ds" x="289" y="80">what you publish</text>
+    <path class="darr" d="M160,67 H212" marker-end="url(#m3)"/>
+    <text class="de" x="186" y="36">publish</text>
+
+    <rect class="dbox-a" x="14" y="186" width="146" height="46" rx="6"/>
+    <text class="dl-a" x="87" y="206">overrides</text><text class="ds" x="87" y="222">patches, not copies</text>
+
+    <rect class="dbox-warn" x="420" y="106" width="150" height="70" rx="8"/>
+    <text class="dl-s" x="495" y="134">Three-way merge</text>
+    <text class="ds" x="495" y="152">dry run first,</text><text class="ds" x="495" y="166">always</text>
+    <path class="darr" d="M362,67 H392 V132 H416" marker-end="url(#m3)"/>
+    <path class="darr-a" d="M160,209 H392 V150 H416" marker-end="url(#m3c)"/>
+
+    <rect class="dbox-ok" x="650" y="60" width="180" height="60" rx="7"/>
+    <text class="dl-s" x="740" y="84">Merged state</text><text class="ds" x="740" y="102">overrides re-applied</text>
+    <rect class="dbox-bad" x="650" y="160" width="180" height="60" rx="7"/>
+    <text class="dl-s" x="740" y="184" style="fill:var(--bad)">Conflict list</text>
+    <text class="ds" x="740" y="202">keep mine · take theirs · edit</text>
+    <path class="darr" d="M570,126 H610 V90 H646" marker-end="url(#m3)"/>
+    <path class="dno" d="M570,156 H610 V190 H646" marker-end="url(#m3b)"/>
+
+    <path class="dno" d="M740,160 V124"/>
+    <text class="de" x="760" y="144" style="text-anchor:start;fill:var(--bad)">blocks activation</text>
+
+    <text class="ds" x="300" y="266">An override is a patch over named properties, so the merge knows what the user</text>
+    <text class="ds" x="300" y="280">actually intended to change. A full copy loses exactly that information.</text>
+  </svg>
+  </div>
+  <figcaption><b>Never silently drop an override.</b> A dropped tailoring rationale is a compliance
+  failure, not a cosmetic one. The dry run reports definitions added, changed and removed, overrides
+  that still apply, overrides in conflict, data migrations required, and which artifacts will need
+  re-rendering — before anything changes.</figcaption>
+</figure>
+
+<div class="callout warn"><h4>Scale changes are declared, never inferred</h4>
+Every stored rating references a scale level by number. Taking a scale from five levels to four
+requires an explicit mapping in the migration, or the upgrade is rejected. And changing a matrix cell
+does <strong>not</strong> recompute findings already assessed — a signed artifact's numbers must not
+move under it. That default belongs in the UI text, not just the code.</div>
+
+<h2><em>The key ask</em>Extending a report you did not write</h2>
+
+<p>"Choosing a template should add the control fields and update the existing reports." That is an
+<code>artifact_fragment</code>: a template declares named anchors, and a fragment patches one with a
+structural operation the renderer understands — not a string substitution, which would break the
+moment the base template was reformatted.</p>
+
+<figure>
+  <div class="fscroll">
+  <svg viewBox="0 0 880 300" role="img" aria-label="The base SRTM template has five columns. A fragment declaring three table column patches produces an eight column report, with implementation statement, method and responsibility inserted at declared positions. The base template is not forked.">
+    <defs>
+      <marker id="m4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+    </defs>
+    <text class="dg" x="16" y="24">Base template — srtm, 5 columns</text>
+    <rect class="dbox" x="14"  y="36" width="128" height="38" rx="4"/><text class="ds" x="78"  y="60">Requirement</text>
+    <rect class="dbox" x="146" y="36" width="128" height="38" rx="4"/><text class="ds" x="210" y="60">Control</text>
+    <rect class="dbox" x="278" y="36" width="128" height="38" rx="4"/><text class="ds" x="342" y="60">Evidence</text>
+    <rect class="dbox" x="410" y="36" width="128" height="38" rx="4"/><text class="ds" x="474" y="60">Determination</text>
+    <rect class="dbox" x="542" y="36" width="128" height="38" rx="4"/><text class="ds" x="606" y="60">Finding</text>
+    <text class="ds" x="760" y="60" style="text-anchor:start">anchor: srtm.control_rows</text>
+
+    <rect class="dbox-a" x="14" y="112" width="400" height="66" rx="8"/>
+    <text class="dl-a" x="214" y="136">artifact_fragment</text>
+    <text class="ds" x="214" y="154">3 × table_column · after: control, evidence, method</text>
+    <text class="ds" x="214" y="169">additive only — a fragment may never remove a column</text>
+    <path class="darr" d="M214,74 V108" marker-end="url(#m4)"/>
+    <path class="darr" d="M214,178 V210" marker-end="url(#m4)"/>
+
+    <text class="dg" x="16" y="206">Rendered report — 8 columns, base template untouched</text>
+    <rect class="dbox" x="14"  y="218" width="104" height="38" rx="4"/><text class="ds" x="66"  y="242">Requirement</text>
+    <rect class="dbox" x="122" y="218" width="104" height="38" rx="4"/><text class="ds" x="174" y="242">Control</text>
+    <rect class="dbox-a" x="230" y="218" width="104" height="38" rx="4"/><text class="ds" x="282" y="237" style="fill:var(--accent)">Implementation</text><text class="ds" x="282" y="250" style="fill:var(--accent)">statement</text>
+    <rect class="dbox" x="338" y="218" width="104" height="38" rx="4"/><text class="ds" x="390" y="242">Evidence</text>
+    <rect class="dbox-a" x="446" y="218" width="104" height="38" rx="4"/><text class="ds" x="498" y="242" style="fill:var(--accent)">Method</text>
+    <rect class="dbox-a" x="554" y="218" width="104" height="38" rx="4"/><text class="ds" x="606" y="242" style="fill:var(--accent)">Responsibility</text>
+    <rect class="dbox" x="662" y="218" width="104" height="38" rx="4"/><text class="ds" x="714" y="242">Determination</text>
+    <rect class="dbox" x="770" y="218" width="104" height="38" rx="4"/><text class="ds" x="822" y="242">Finding</text>
+    <text class="ds" x="440" y="286">Patch kinds: table_column · section · row_group · summary_tile · footnote · signature_block</text>
+  </svg>
+  </div>
+  <figcaption><b>No fork, no release.</b> An administrator picks the GC control extension; the fields
+  appear on the control form and the SRTM they were already producing grows three columns. Ordering is
+  deterministic by scope specificity then declared order, because a report whose column order varies
+  between renders is worse than one that is missing a column.</figcaption>
+</figure>
+
+<h2><em>Rules</em>Configurable state changes, with a hard boundary</h2>
+
+<figure>
+  <div class="fscroll">
+  <svg viewBox="0 0 860 280" role="img" aria-label="An event feeds a predicate condition, which feeds a closed set of fifteen action verbs. Those actions may gate or request a stage transition, but may never invent a stage or grant an authorization.">
+    <defs>
+      <marker id="m5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+      <marker id="m5b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="var(--bad)"/></marker>
+    </defs>
+    <rect class="dbox" x="14" y="96" width="140" height="56" rx="7"/>
+    <text class="dl-s" x="84" y="120">on: event</text><text class="ds" x="84" y="138">14 event kinds</text>
+    <rect class="dbox" x="192" y="96" width="156" height="56" rx="7"/>
+    <text class="dl-s" x="270" y="120">when: predicate</text><text class="ds" x="270" y="138">AST, no eval</text>
+    <rect class="dbox-a" x="386" y="96" width="166" height="56" rx="7"/>
+    <text class="dl-a" x="469" y="120">then: actions</text><text class="ds" x="469" y="138">15 verbs, closed set</text>
+    <path class="darr" d="M154,124 H188" marker-end="url(#m5)"/>
+    <path class="darr" d="M348,124 H382" marker-end="url(#m5)"/>
+
+    <rect class="dbox-ok" x="616" y="40" width="214" height="52" rx="7"/>
+    <text class="dl-s" x="723" y="61">May gate a transition</text><text class="ds" x="723" y="79">block_transition · require_approval</text>
+    <rect class="dbox-ok" x="616" y="104" width="214" height="52" rx="7"/>
+    <text class="dl-s" x="723" y="125">May request one</text><text class="ds" x="723" y="143">request_transition</text>
+    <rect class="dbox-bad" x="616" y="190" width="214" height="60" rx="7"/>
+    <text class="dl-s" x="723" y="212" style="fill:var(--bad)">May never</text>
+    <text class="ds" x="723" y="229">invent a stage · skip the order</text>
+    <text class="ds" x="723" y="243">grant an authorization</text>
+    <path class="darr" d="M552,112 H586 V66 H612" marker-end="url(#m5)"/>
+    <path class="darr" d="M552,124 H586 V130 H612" marker-end="url(#m5)"/>
+    <path class="dno" d="M552,140 H586 V220 H612" marker-end="url(#m5b)"/>
+    <path class="dno" d="M578,208 L598,224 M598,208 L578,224"/>
+
+    <text class="ds" x="270" y="196">bounded: depth ≤ 3, cycle detection, queued</text>
+    <text class="ds" x="270" y="212">every execution logged with its config_hash</text>
+    <text class="ds" x="270" y="236">simulate mode is a shipping requirement —</text>
+    <text class="ds" x="270" y="250">it is how an admin trusts a gate enough to enable it</text>
+  </svg>
+  </div>
+  <figcaption><b>Authorization stays a human act.</b> A rule can stop a transition and explain why,
+  and it can ask for one. It cannot grant an ATO, invent a stage, or jump the order. That boundary is
+  what lets the pipeline stay fixed while the work inside it becomes configurable.</figcaption>
+</figure>
+
+<h2><em>Integration</em>Dynamic schema forces code generation</h2>
+
+<p>A configurable platform cannot ship a hand-written typed client, because the types depend on the
+customer's configuration. So each SDK is a thin stable core plus a generated layer, and one endpoint
+makes it possible.</p>
+
+<figure>
+  <div class="fscroll">
+  <svg viewBox="0 0 860 250" role="img" aria-label="The config schema endpoint feeds a code generator, which emits typed Node and dotnet SDK layers consumed by an integrator application. The generated code embeds the config hash it was built from, and the SDK core warns at runtime when the server reports a different one.">
+    <defs>
+      <marker id="m6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+      <marker id="m6c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker>
+    </defs>
+    <rect class="dbox-a" x="14" y="80" width="186" height="60" rx="7"/>
+    <text class="dl-a" x="107" y="104">GET /config/schema</text>
+    <text class="ds" x="107" y="122">JSON Schema per entity</text>
+    <text class="ds" x="107" y="136">+ config_hash</text>
+    <rect class="dbox" x="248" y="80" width="150" height="60" rx="7"/>
+    <text class="dl-s" x="323" y="107">codegen</text><text class="ds" x="323" y="125">npx · dotnet tool</text>
+    <path class="darr-a" d="M200,110 H244" marker-end="url(#m6c)"/>
+
+    <rect class="dbox" x="446" y="42" width="166" height="48" rx="6"/>
+    <text class="dl-s" x="529" y="63">Node / TypeScript</text><text class="ds" x="529" y="80">reference SDK</text>
+    <rect class="dbox" x="446" y="128" width="166" height="48" rx="6"/>
+    <text class="dl-s" x="529" y="149">.NET</text><text class="ds" x="529" y="166">DI · async streams</text>
+    <path class="darr" d="M398,104 H424 V66 H442" marker-end="url(#m6)"/>
+    <path class="darr" d="M398,116 H424 V152 H442" marker-end="url(#m6)"/>
+
+    <rect class="dbox" x="660" y="80" width="186" height="60" rx="7"/>
+    <text class="dl-s" x="753" y="104">Integrator app</text>
+    <text class="ds" x="753" y="122">typed, plus a raw</text><text class="ds" x="753" y="136">escape hatch</text>
+    <path class="darr" d="M612,66 H636 V104 H656" marker-end="url(#m6)"/>
+    <path class="darr" d="M612,152 H636 V116 H656" marker-end="url(#m6)"/>
+
+    <path class="dgroup" d="M107,140 V206 H753 V144"/>
+    <text class="ds" x="430" y="224">the generated code embeds the hash it was built from; the core warns when the server reports another —</text>
+    <text class="ds" x="430" y="238">which turns a confusing class of integration bug into one clear message</text>
+  </svg>
+  </div>
+  <figcaption><b>The blueprint CLI is the enterprise feature.</b> Because definitions are JSON,
+  <code>aegis blueprint validate | test | publish</code> lets customers keep configuration in git
+  with code review and CI. For regulated buyers that is often what closes the deal, and it is nearly
+  free once validation already exists as a service.</figcaption>
+</figure>
+
+<h2><em>Roadmap</em>Each phase provable by the next</h2>
+
+<div class="tscroll">
+<table>
+  <thead><tr><th>Phase</th><th>What</th><th>Size</th><th>Proves</th></tr></thead>
+  <tbody>
+    <tr><td class="ph">0</td><td>Metamodel spec, decision log, open questions answered. No code.</td><td><span class="sz s">S</span></td><td>The vocabulary is closed</td></tr>
+    <tr><td class="ph">1</td><td>Walking skeleton — definition store, resolver, effective config + hash, fields on JSON with expression indexes, steps, scales, matrices, derivations, rendering. JSON editing only.</td><td><span class="sz l">L</span></td><td>The engine holds</td></tr>
+    <tr><td class="ph">2</td><td><b>HTRA as blueprint #1.</b> Ships HTRA.</td><td><span class="sz m">M</span></td><td>It can express a whole method</td></tr>
+    <tr><td class="ph">3</td><td>Artifact fragments + <b>GC control extension as blueprint #2</b>, golden-file tests.</td><td><span class="sz m">M</span></td><td>It can extend what it didn't write</td></tr>
+    <tr><td class="ph">4</td><td>Rules engine, gates, execution log, simulate mode.</td><td><span class="sz m">M</span></td><td>State changes are explainable</td></tr>
+    <tr><td class="ph">5</td><td><b>Maker workspace UI</b> — field, step, rule, view and report editors; preview; preflight.</td><td><span class="sz l">L</span></td><td>Non-engineers can use it</td></tr>
+    <tr><td class="ph">6</td><td>Blueprint lifecycle — publish, install at scope, three-way upgrade merge, declared migrations.</td><td><span class="sz l">L</span></td><td>You can ship v2</td></tr>
+    <tr><td class="ph">7</td><td>REST API v1, <code>/config/schema</code>, webhooks.</td><td><span class="sz m">M</span></td><td>Integrators can build</td></tr>
+    <tr><td class="ph">8</td><td>SDKs (Node, .NET), codegen, blueprint CLI.</td><td><span class="sz m">M</span></td><td>Enterprise buyers can commit</td></tr>
+    <tr><td class="ph">9</td><td>First-party library — cloud, PIA, remaining GC artifacts. Customer-authored blueprints.</td><td><span class="sz m">M</span></td><td>The library compounds</td></tr>
+    <tr><td class="ph">10</td><td><i>Optional</i> — cross-tenant sharing, marketplace, signing.</td><td><span class="sz l">L</span></td><td>—</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout bad"><h4>This changes the HTRA sequencing, deliberately</h4>
+The HTRA brief phased HTRA as direct implementation. Don't build it that way now. Build Phase 1, then
+express HTRA as blueprint #1. HTRA arrives later than it would have, and in exchange you get an engine
+instead of a feature — and the GC control extension that follows costs a fraction of what it would
+have. The thing to protect: Phase 1 contains <em>only</em> what HTRA needs. If it grows a rules
+engine, a UI and an API before one blueprint exists, the plan has failed in the exact way this
+document warns about.</div>
+
+<h2><em>Discipline</em>What not to build</h2>
+
+<div class="cards">
+  <div class="card"><h4>No code execution, anywhere</h4>
+    <p>Rules, derivations, templates, prompts. One whitelisted evaluator, one audit surface. An admin
+    screen that runs code is remote code execution with extra steps.</p></div>
+  <div class="card"><h4>No new stages, ever</h4>
+    <p>Steps are configurable; the four stages are the product. Every request to add one is a request
+    to become a workflow engine.</p></div>
+  <div class="card"><h4>No visual designer in Phase 1</h4>
+    <p>JSON with validation and a preview is enough for the two blueprints that prove the engine. An
+    editor built over an unproven metamodel shapes the metamodel around what was easy to draw.</p></div>
+  <div class="card"><h4>No fragment deletion</h4>
+    <p>Additive only. A blueprint author cannot know what a downstream regulator needs in a report.
+    To change a base report, override it.</p></div>
+  <div class="card"><h4>No implicit migration</h4>
+    <p>Scale and field changes are declared or rejected. Guessing a level mapping silently rewrites
+    assessed ratings.</p></div>
+  <div class="card"><h4>Not a general app builder</h4>
+    <p>Aegis SA configures security assessment, not arbitrary business process. Say no to the first
+    customer who asks for a CRM, and keep a visible list of rejected metamodel extensions.</p></div>
+</div>
+
+<h2><em>Decide first</em>Nine open questions</h2>
+
+<p>Three change the schema, so they come first. The rest shape the product and the commercial model.</p>
+
+<ol class="ol-q">
+  <li><b>Is <code>program</code> a real scope now, or reserved?</b> Adding a ladder rung later invalidates every stored resolution. Recommendation: build it, hide it.</li>
+  <li><b>Does an override store a patch or a full copy?</b> This plan assumes a patch, because the three-way merge depends on it.</li>
+  <li><b>Are historical findings ever recomputed when a matrix changes?</b> This plan says no by default — the alternative changes what the derivation trace is for.</li>
+  <li><b>Naming:</b> Maker and Blueprint, or something else? It lands in the API namespace, so it is expensive later.</li>
+  <li><b>Who may author configuration?</b> One admin role, or separate author and publisher roles? Regulated customers will want the split.</li>
+  <li><b>Can a project-scope definition exist without ever being a blueprint?</b> Recommendation: yes — most tailoring is one-off, and forcing packaging would kill adoption.</li>
+  <li><b>Multi-tenancy:</b> one database per workspace, or shared with a tenant column? Interacts with the SQLite write limit and with how resolution is cached.</li>
+  <li><b>Is the blueprint library a differentiator or a product line?</b> Determines whether Phase 10 ever happens.</li>
+  <li><b>Do the SDKs ship with the API or a release later?</b> An API without an SDK invites integrators to hard-code a schema that is configuration — support load that looks like bugs.</li>
+</ol>
+
+<div class="linkrow">
+  <a class="lk" href="https://claude.ai/artifact/66hE3T1AvNqYHWwNRBRPEd">HTRA plan <span>Chapter A source</span></a>
+  <a class="lk" href="https://claude.ai/artifact/AfDCtqiZTK992vBd1GimcX">GC artifact coverage <span>Chapters B &amp; C source</span></a>
+  <a class="lk" href="https://claude.ai/artifact/JXnFcE3yfgrS2EZJ8cRRzU">HTRA UI mockups <span>9 screens</span></a>
+</div>
+
+<div class="end">
+  Design only — nothing to be implemented until the nine questions are answered. The full plan, with
+  schema, worked blueprint definitions for HTRA and the GC control extension, packaging and install
+  flow, is in <code>AEGIS-SA-MAKER-PLAN.md</code>.
+</div>
+</div>
+
+<script>
+document.getElementById('tt').addEventListener('click', function(){
+  var r = document.documentElement;
+  var dark = r.getAttribute('data-theme')==='dark' ||
+    (!r.getAttribute('data-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  r.setAttribute('data-theme', dark ? 'light':'dark');
+});
+</script>

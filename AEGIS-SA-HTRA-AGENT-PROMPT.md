@@ -1,5 +1,14 @@
 # Aegis SA — HTRA Module Implementation Brief
 
+> **SEQUENCING SUPERSEDED.** `AEGIS-SA-MAKER-PLAN.md` is now the master plan.
+> Do **not** implement HTRA directly as phased in §7 below. HTRA is to be built as
+> the first *blueprint* on the Maker configuration engine (Maker plan, Chapter A and
+> Phase 2). This document remains the authoritative source for HTRA **domain
+> content** — the method model, scales, matrices, derivation semantics, report
+> structure and the AI/authorization integration in §11 — all of which Chapter A
+> configures rather than replaces. Where the two disagree on *how* to build, the
+> Maker plan wins; on *what HTRA requires*, this one wins.
+
 > **How to use this document:** paste it as the opening prompt for a Claude Code
 > session in the Aegis SA repository, or save it as `docs/htra-module-brief.md`
 > and point your agent at it. It is written to be executed, not just read.
